@@ -1,0 +1,37 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: "config.gradle"
+buildscript {
+    repositories {
+        jcenter()
+        maven{
+            url uri('repo')
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.1'
+        //Gradle Android Maven plugin
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        //Gradle Bintray Plugin
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        //lambda
+        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        //aspectj
+        classpath 'org.aspectj:aspectjtools:1.8.9'
+        classpath 'com.zwh.plugin:gradleplugin:1.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.google.com" }
+    }
+}
+
+task compileJava {}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+//注意⚠️:   插件修改后运行前需要运行 ./gradlew -p plugin clean build uploadArchives --info
