@@ -17,12 +17,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.zwh.mvparms.eyepetizer.mvp.ui.activity.UserActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".mvp.ui.activity.UserActivity">
         </activity>
         <!--
         autolayout meta
@@ -46,7 +41,14 @@
             android:name="com.zwh.mvparms.eyepetizer.app.GlobalConfiguration"
             android:value="ConfigModule"/>
 
-        <activity android:name="com.zwh.mvparms.eyepetizer.mvp.ui.activity.TestActivity">
+        <activity
+            android:name=".mvp.ui.activity.HomeActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

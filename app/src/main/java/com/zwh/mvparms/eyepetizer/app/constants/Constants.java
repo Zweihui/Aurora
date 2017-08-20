@@ -8,4 +8,7 @@ public class Constants {
     //==================Router============//
     public static final String HOME = "home";
     public static final String TEST = "test";
+
+    //==================intent============//
+    public static final String TYPE = "type";
 }

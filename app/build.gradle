@@ -1,4 +1,5 @@
 import com.zwh.plugin.AspectjPlugin
+
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -19,6 +20,7 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
 
@@ -77,10 +79,11 @@ dependencies {
     debugCompile rootProject.ext.dependencies["canary-debug"]
     releaseCompile rootProject.ext.dependencies["canary-release"]
     testCompile rootProject.ext.dependencies["canary-release"]
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     annotationProcessor project(':apt')
     compile project(':apt-lib')
-    compile 'org.aspectj:aspectjrt:1.8.9'
+    compile rootProject.ext.dependencies["constraint-layout"]
+    compile rootProject.ext.dependencies["aspectjrt"]
+    compile rootProject.ext.dependencies["appbarspring"]
 }
 apply plugin: AspectjPlugin

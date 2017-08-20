@@ -14,8 +14,6 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
 import com.paginate.Paginate;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.zwh.annotation.apt.Router;
-import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerUserComponent;
 import com.zwh.mvparms.eyepetizer.di.module.UserModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.UserContract;
@@ -26,7 +24,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
-@Router(Constants.HOME)
 public class UserActivity extends BaseActivity<UserPresenter> implements UserContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(com.zwh.mvparms.eyepetizer.R.id.recyclerView)
