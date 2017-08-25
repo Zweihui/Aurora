@@ -56,6 +56,10 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
         mPresenter.requestUsers(true);//打开app时自动加载列表
     }
 
+    @Override
+    public void bind(Bundle savedInstanceState) {
+
+    }
 
 
     @Override

@@ -14,5 +14,4 @@
         <item name="android:windowAnimationStyle">@style/AnimaActivity</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
     </style>
-
 </resources>

@@ -5,6 +5,6 @@ package com.zwh.mvparms.eyepetizer.mvp.model.api;
  * contact with jess.yan.effort@gmail.com
  */
 public interface Api {
-    String APP_DOMAIN = "https://api.github.com";
+    String APP_DOMAIN = "http://baobab.kaiyanapp.com/api/";
     String RequestSuccess = "0";
 }

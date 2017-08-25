@@ -51,6 +51,7 @@ ext {
                 "paginate"                 : "com.github.markomilos:paginate:0.5.1",
                 "vlayout"                  : "com.alibaba.android:vlayout:1.0.9@aar",
                 "appbarspring"             : "com.github.todou:appbarspring:1.0.3",
+                "BaseRecyclerViewAdapterHelper"     : "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18",
 
                 //rx1
                 "rxandroid"                : "io.reactivex:rxandroid:1.2.1",

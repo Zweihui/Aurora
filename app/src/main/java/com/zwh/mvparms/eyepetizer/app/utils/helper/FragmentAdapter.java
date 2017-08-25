@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.VideoListFragment;
 
 import java.util.List;
@@ -14,12 +15,12 @@ import java.util.List;
 
 public class FragmentAdapter extends FragmentStatePagerAdapter {
     private List<VideoListFragment> mFragments;
-    private List<String> mTitles;
+    private List<Category> mCategories;
 
-    public static FragmentAdapter newInstance(FragmentManager fm, List<VideoListFragment> fragments, List<String> titles) {
+    public static FragmentAdapter newInstance(FragmentManager fm, List<VideoListFragment> fragments, List<Category> categories) {
         FragmentAdapter mFragmentAdapter = new FragmentAdapter(fm);
         mFragmentAdapter.mFragments = fragments;
-        mFragmentAdapter.mTitles = titles;
+        mFragmentAdapter.mCategories = categories;
         return mFragmentAdapter;
     }
 
@@ -39,6 +40,6 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return mTitles.get(position);
+        return mCategories.get(position).getName();
     }
 }

@@ -85,5 +85,6 @@ dependencies {
     compile rootProject.ext.dependencies["constraint-layout"]
     compile rootProject.ext.dependencies["aspectjrt"]
     compile rootProject.ext.dependencies["appbarspring"]
+    compile rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
 }
 apply plugin: AspectjPlugin

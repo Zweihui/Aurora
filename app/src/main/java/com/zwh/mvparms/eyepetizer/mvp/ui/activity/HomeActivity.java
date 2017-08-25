@@ -17,19 +17,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.apt.TRouter;
 import com.jess.arms.base.BaseActivity;
+import com.jess.arms.base.BaseApplication;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.UiUtils;
+import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.FragmentAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.VideoListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+
+import static android.R.attr.data;
 
 
 @Router(Constants.HOME)
@@ -45,8 +57,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     NavigationView mNvMainNavigation;
     @BindView(R.id.dl_main_drawer)
     DrawerLayout mDlMainDrawer;
-//    @BindView(R.id.toolbar_iv_outgoing)
-//    ImageView mToolbarIvOutgoing;
     @BindView(R.id.toolbar_iv_target)
     ImageView mToolbarIvTarget;
     @BindView(R.id.tl_tabs)
@@ -58,17 +68,13 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.nestedScrollView)
     NestedScrollView mNestedScrollView;
 
-
     ActionBarDrawerToggle mToggle;
+    @Extra(Constants.SPLASH_DATA)
+    public List<Category> list;
 
-    @Override
-    public void onBackPressed() {
-        if (mDlMainDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDlMainDrawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+    private int position = 0;
+    private long firstTime=0;
+    private List<VideoListFragment> fragments = new ArrayList<>();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,6 +108,11 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public void bind(Bundle savedInstanceState) {
+        TRouter.bind(this);
+    }
+
+    @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_home;
     }
@@ -121,27 +132,18 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
                         .setAction("Action", null).show();
             }
         });
-        List<String> mTabs = new ArrayList<>();
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        mTabs.add("热门");
-        List<VideoListFragment> listFragments = new ArrayList<>();
-        for(String type :mTabs){
-            listFragments.add(VideoListFragment.newInstance(type));
-        }
-        mViewpager.setAdapter(FragmentAdapter.newInstance(getSupportFragmentManager(),listFragments,mTabs));
-//        Observable.fromIterable(mTabs)
-//                .map(VideoListFragment::newInstance)
-//                .toList()
-//                .map(fragments -> FragmentAdapter.newInstance(getSupportFragmentManager(), fragments, mTabs))
-//                .subscribe(mFragmentAdapter -> mViewpager.setAdapter(mFragmentAdapter));
+        Observable.fromIterable(list)
+                .map(new Function<Category, VideoListFragment>() {
+                    @Override
+                    public VideoListFragment apply(@NonNull Category category) throws Exception {
+                        VideoListFragment fragment = VideoListFragment.newInstance(category);
+                        fragments.add(fragment);
+                        return fragment;
+                    }
+                })
+                .toList()
+                .map(fragments -> FragmentAdapter.newInstance(getSupportFragmentManager(), fragments, list))
+                .subscribe(mFragmentAdapter -> mViewpager.setAdapter(mFragmentAdapter));
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -150,7 +152,14 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void onPageSelected(int position) {
-
+                HomeActivity.this.position = position;
+                ((BaseApplication)getApplication())
+                        .getAppComponent()
+                        .imageLoader().loadImage(HomeActivity.this, GlideImageConfig
+                        .builder()
+                        .url(list.get(position).getHeaderImage())
+                        .imageView(mToolbarIvTarget)
+                        .build());
             }
 
             @Override
@@ -159,5 +168,30 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
         mTabLayout.setupWithViewPager(mViewpager);
+        ((BaseApplication)getApplication())
+                .getAppComponent()
+                .imageLoader().loadImage(HomeActivity.this, GlideImageConfig
+                .builder()
+                .url(list.get(0).getHeaderImage())
+                .imageView(mToolbarIvTarget)
+                .build());
     }
+
+    @Override
+    public void onBackPressed() {
+        if (mDlMainDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDlMainDrawer.closeDrawer(GravityCompat.START);
+        } else if(fragments.get(position).isLoding()){
+            fragments.get(position).hideLoading();
+        }else {
+            if (System.currentTimeMillis()-firstTime>2000){
+                UiUtils.snackbarText("再按一次退出应用");
+                firstTime=System.currentTimeMillis();
+            }else{
+                finish();
+                System.exit(0);
+            }
+        }
+    }
+
 }

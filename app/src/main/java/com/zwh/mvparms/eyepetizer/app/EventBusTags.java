@@ -5,5 +5,5 @@ package com.zwh.mvparms.eyepetizer.app;
  * Contact with jess.yan.effort@gmail.com
  */
 public interface EventBusTags {
-
+    String JUMP_TO_HOME = "jump_to_home";
 }

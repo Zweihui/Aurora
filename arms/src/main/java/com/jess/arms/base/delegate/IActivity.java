@@ -30,6 +30,7 @@ public interface IActivity {
     int initView(Bundle savedInstanceState);
 
     void initData(Bundle savedInstanceState);
+    void bind(Bundle savedInstanceState);
 
     /**
      * 这个Activity是否会使用Fragment,框架会根据这个属性判断是否注册{@link android.support.v4.app.FragmentManager.FragmentLifecycleCallbacks}
