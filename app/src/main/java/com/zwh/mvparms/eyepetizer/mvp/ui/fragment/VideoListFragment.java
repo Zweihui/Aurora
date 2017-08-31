@@ -17,6 +17,7 @@ import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zwh.mvparms.eyepetizer.R;
@@ -87,8 +88,8 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
 
     @Override
     protected void loadData() {
-         mPresenter.getVideoList(type,true);
-         mSwipeRefresh.setRefreshing(true);
+        mPresenter.getVideoList(type,getQuryId(),0,true);
+        mSwipeRefresh.setRefreshing(true);
     }
 
     @Override
@@ -135,7 +136,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
                 mRecyclerView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mPresenter.getVideoList(type,false);
+                        mPresenter.getVideoList(type,getQuryId(),getStartCount(),false);
                     }
                 },500);
             }
@@ -156,10 +157,24 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
     public void setData(Object data) {
 
     }
+    public int getStartCount() {
+        if (StringUtils.isEmpty(data)){
+            return 0;
+        }else {
+            return data.size();
+        }
+    }
+    public int getQuryId() {
+        if (StringUtils.isEmpty(data)){
+            return 1;
+        }else {
+            return data.get(data.size()-1).getData().getId();
+        }
+    }
 
     @Override
     public void onRefresh() {
-        mPresenter.getVideoList(type,true);
+        mPresenter.getVideoList(type,getQuryId(),0,true);
     }
 
     public boolean isLoding(){
@@ -185,6 +200,17 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
                     @Override
                     public void run() {
                         adapter = new VideoAdapter(R.layout.item_video_list,data);
+                        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                            @Override
+                            public void onLoadMoreRequested() {
+                                mRecyclerView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mPresenter.getVideoList(type,getQuryId(),getStartCount(),false);
+                                    }
+                                },500);
+                            }
+                        }, mRecyclerView);
                         mRecyclerView.setAdapter(adapter);
                     }
                 },1000);

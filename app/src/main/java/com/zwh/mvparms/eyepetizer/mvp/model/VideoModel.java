@@ -10,6 +10,7 @@ import com.jess.arms.di.scope.ActivityScope;
 
 import javax.inject.Inject;
 
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.cache.CommonCache;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.UserService;
@@ -50,9 +51,9 @@ public class VideoModel extends BaseModel implements VideoContract.Model {
     }
 
     @Override
-    public Observable<VideoListInfo> getVideoList(String type, int lastIdQueried, boolean update) {
+    public Observable<VideoListInfo> getVideoList(String type, String lastIdQueried,int startCount,boolean update) {
         Observable<VideoListInfo> videoInfo = mRepositoryManager.obtainRetrofitService(VideoService.class)
-                .getVideoList(type);
+                .getVideoList(startCount, Constants.HOME_VIDEO_LIST_PAGE_SIZE,type);
         //使用rxcache缓存,上拉刷新则不读取缓存,加载更多读取缓存
         return mRepositoryManager.obtainCacheService(CommonCache.class)
                 .getVideoList(videoInfo

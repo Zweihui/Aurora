@@ -12,5 +12,9 @@ public class Constants {
 
     //==================intent============//
     public static final String TYPE = "type";
+    public static final String TYPE_ID = "type_id";
     public static final String SPLASH_DATA = "splash_data";
+
+    //==================api============//
+    public static final int HOME_VIDEO_LIST_PAGE_SIZE = 10;
 }

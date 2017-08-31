@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.StringUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
@@ -43,15 +44,19 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
                         .url(item.getData().getCover().getFeed())
                         .imageView(helper.getView(R.id.img_main))
                         .build());
-        ((App)context.getApplicationContext())
-                .getAppComponent().imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
-                GlideImageConfig
-                        .builder()
-                        .transformation(new GlideCircleTransform(context))
-                        .url(item.getData().getAuthor().getIcon())
-                        .imageView(helper.getView(R.id.img_author))
-                        .build());
+        try {
+            ((App)context.getApplicationContext())
+                    .getAppComponent().imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
+                            ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+                    GlideImageConfig
+                            .builder()
+                            .transformation(new GlideCircleTransform(context))
+                            .url(StringUtils.replaceNull(item.getData().getAuthor().getIcon()))
+                            .imageView(helper.getView(R.id.img_author))
+                            .build());
+        }catch (NullPointerException e){
+
+        }
         helper.setText(R.id.title,item.getData().getTitle())
                 .setText(R.id.detail,getDetailStr(item));
     }

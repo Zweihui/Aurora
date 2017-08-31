@@ -16,5 +16,5 @@ import retrofit2.http.Query;
 public interface VideoService {
     //获取分类信息
     @GET("v3/videos")
-    Observable<VideoListInfo> getVideoList(@Query("categoryName") String categoryName);
+    Observable<VideoListInfo> getVideoList(@Query("start") int startCount,@Query("num") int num,@Query("categoryName") String categoryName);
 }

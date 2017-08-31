@@ -5,8 +5,9 @@
     android:layout_margin="@dimen/dp_10"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:foreground="?attr/selectableItemBackground"
-    android:background="?attr/backgroundCard"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_height="300dp"
     app:cardElevation="1dp"
     >
@@ -46,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginLeft="8dp"
             android:gravity="left|center_vertical"
             app:layout_constraintLeft_toLeftOf="@+id/guideline4"
@@ -99,7 +100,7 @@
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="@+id/guideline4"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.0" />
 
