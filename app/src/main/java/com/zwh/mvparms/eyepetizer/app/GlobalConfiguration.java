@@ -191,7 +191,6 @@ public final class GlobalConfiguration implements ConfigModule {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
                 Timber.w(activity + " - onActivityCreated");
-                TRouter.bind(activity);
             }
 
             @Override

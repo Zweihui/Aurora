@@ -86,5 +86,7 @@ dependencies {
     compile rootProject.ext.dependencies["aspectjrt"]
     compile rootProject.ext.dependencies["appbarspring"]
     compile rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
+    compile rootProject.ext.dependencies["ijkplayer-java"]
+    compile rootProject.ext.dependencies["ijkplayer-armv7a"]
 }
 apply plugin: AspectjPlugin

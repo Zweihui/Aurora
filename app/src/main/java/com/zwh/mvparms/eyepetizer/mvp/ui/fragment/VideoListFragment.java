@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.BaseLazyLoadFragment;
@@ -26,6 +28,7 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.DefaultVideoAdapter;
@@ -35,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static android.R.id.list;
 
 /**
  * Created by mac on 2017/8/20.
@@ -130,17 +135,12 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
     @Override
     public void initData(Bundle savedInstanceState) {
         adapter = new VideoAdapter(R.layout.item_video_list,data);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        adapter.setOnLoadMoreListener(() -> mRecyclerView.postDelayed(new Runnable() {
             @Override
-            public void onLoadMoreRequested() {
-                mRecyclerView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPresenter.getVideoList(type,getQuryId(),getStartCount(),false);
-                    }
-                },500);
+            public void run() {
+                mPresenter.getVideoList(type,getQuryId(),getStartCount(),false);
             }
-        }, mRecyclerView);
+        },500), mRecyclerView);
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -211,6 +211,13 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
                                 },500);
                             }
                         }, mRecyclerView);
+                        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                                UiUtils.snackbarText("点击了");
+                                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+                            }
+                        });
                         mRecyclerView.setAdapter(adapter);
                     }
                 },1000);

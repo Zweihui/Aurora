@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.apt.TRouter;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
@@ -58,7 +59,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
 
     @Override
     public void bind(Bundle savedInstanceState) {
-
     }
 
 

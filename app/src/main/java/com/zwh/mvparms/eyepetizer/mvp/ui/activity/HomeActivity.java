@@ -112,6 +112,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         TRouter.bind(this);
     }
 
+
     @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_home;
