@@ -2,10 +2,8 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
 import com.apt.TRouter;
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
@@ -17,11 +15,9 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerSplashComponent;
 import com.zwh.mvparms.eyepetizer.di.module.SplashModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.SplashContract;
-import com.zwh.mvparms.eyepetizer.mvp.contract.UserContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.SplashPresenter;
-import com.zwh.mvparms.eyepetizer.mvp.presenter.UserPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.WeatherView;
 
 import org.simple.eventbus.EventBus;
@@ -31,9 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static android.R.id.message;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by Administrator on 2017/8/21 0021.
@@ -68,11 +61,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     @Override
     public void initData(Bundle savedInstanceState) {
         mPresenter.requestCategories();
-    }
-
-    @Override
-    public void bind(Bundle savedInstanceState) {
-        TRouter.bind(this);
     }
 
     @Override

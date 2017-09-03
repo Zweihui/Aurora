@@ -46,7 +46,6 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
         } catch (Exception e) {
             e.printStackTrace();
         }
-        bind(savedInstanceState);
         initData(savedInstanceState);
     }
 

@@ -17,10 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.apt.TRouter;
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.base.BaseApplication;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
@@ -40,8 +37,6 @@ import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-
-import static android.R.attr.data;
 
 
 @Router(Constants.HOME)
@@ -106,12 +101,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     public void setupActivityComponent(AppComponent appComponent) {
 
     }
-
-    @Override
-    public void bind(Bundle savedInstanceState) {
-        TRouter.bind(this);
-    }
-
 
     @Override
     public int initView(Bundle savedInstanceState) {

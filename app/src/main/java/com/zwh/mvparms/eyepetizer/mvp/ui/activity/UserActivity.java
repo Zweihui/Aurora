@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.apt.TRouter;
 import com.jess.arms.base.BaseActivity;
 import com.jess.arms.base.DefaultAdapter;
 import com.jess.arms.di.component.AppComponent;
@@ -56,11 +55,6 @@ public class UserActivity extends BaseActivity<UserPresenter> implements UserCon
     public void initData(Bundle savedInstanceState) {
         mPresenter.requestUsers(true);//打开app时自动加载列表
     }
-
-    @Override
-    public void bind(Bundle savedInstanceState) {
-    }
-
 
     @Override
     public void onRefresh() {

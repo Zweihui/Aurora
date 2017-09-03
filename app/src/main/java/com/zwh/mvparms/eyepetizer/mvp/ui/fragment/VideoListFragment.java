@@ -4,20 +4,16 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.BaseLazyLoadFragment;
-import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
@@ -36,10 +32,6 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-
-import static android.R.id.list;
 
 /**
  * Created by mac on 2017/8/20.
@@ -214,7 +206,6 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
                         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                UiUtils.snackbarText("点击了");
                                 TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
                             }
                         });
