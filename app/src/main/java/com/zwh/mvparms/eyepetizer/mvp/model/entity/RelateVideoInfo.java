@@ -88,16 +88,257 @@ public class RelateVideoInfo {
         }
 
         public static class DataBean {
-
             /**
-             * type : videoSmallCard
-             * data : {"dataType":"VideoBeanForClient","id":8742,"title":"全世界最安静的「我爱你」","slogan":null,"description":"不用声带，说出全世界最甜蜜的「我爱你」。腼腆小哥实力演绎陪伴是最最最最长情的告白。BGM 是「Live and Be Free」by  Tim McMorris。From Codcast Channel","provider":{"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"},"category":"剧情","author":null,"cover":{"feed":"http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/71a7c47ceff064afc1a28faf28a72ac3.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":238,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=8742","forWeibo":"http://wandou.im/2rvw0k"},"releaseTime":1472227200000,"library":"DAILY","playInfo":[{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud","size":12906053},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=ucloud","size":12906053}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=qcloud","size":17372861},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=ucloud","size":17372861}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=qcloud","size":28144525},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=ucloud","size":28144525}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=qcloud"}],"consumption":{"collectionCount":10493,"shareCount":9163,"replyCount":162},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":108,"name":"爱情","actionUrl":"eyepetizer://tag/108/?title=%E7%88%B1%E6%83%85","adTrack":null},{"id":136,"name":"温情","actionUrl":"eyepetizer://tag/136/?title=%E6%B8%A9%E6%83%85","adTrack":null},{"id":12,"name":"剧情","actionUrl":"eyepetizer://tag/12/?title=%E5%89%A7%E6%83%85","adTrack":null},{"id":82,"name":"定格","actionUrl":"eyepetizer://tag/82/?title=%E5%AE%9A%E6%A0%BC","adTrack":null},{"id":14,"name":"动画","actionUrl":"eyepetizer://tag/14/?title=%E5%8A%A8%E7%94%BB","adTrack":null}],"type":"NORMAL","titlePgc":null,"descriptionPgc":null,"remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1472227200000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"不用声带，说出全世界最甜蜜的「我爱你」。腼腆小哥实力演绎陪伴是最最最最长情的告白。BGM 是「Live and Be Free」by  Tim McMorris。From Codcast Channel","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null}
-             * tag : null
+             * dataType : VideoBeanForClient
+             * id : 8742
+             * title : 全世界最安静的「我爱你」
+             * slogan : null
+             * description : 不用声带，说出全世界最甜蜜的「我爱你」。腼腆小哥实力演绎陪伴是最最最最长情的告白。BGM 是「Live and Be Free」by  Tim McMorris。From Codcast Channel
+             * provider : {"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"}
+             * category : 剧情
+             * author : null
+             * cover : {"feed":"http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/71a7c47ceff064afc1a28faf28a72ac3.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null}
+             * playUrl : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=default&source=qcloud
+             * thumbPlayUrl : null
+             * duration : 238
+             * webUrl : {"raw":"http://www.eyepetizer.net/detail.html?vid=8742","forWeibo":"http://wandou.im/2rvw0k"}
+             * releaseTime : 1472227200000
+             * library : DAILY
+             * playInfo : [{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud","size":12906053},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=ucloud","size":12906053}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=qcloud","size":17372861},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=ucloud","size":17372861}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=qcloud","size":28144525},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=ucloud","size":28144525}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=qcloud"}]
+             * consumption : {"collectionCount":10493,"shareCount":9163,"replyCount":162}
+             * campaign : null
+             * waterMarks : null
+             * adTrack : null
+             * tags : [{"id":108,"name":"爱情","actionUrl":"eyepetizer://tag/108/?title=%E7%88%B1%E6%83%85","adTrack":null},{"id":136,"name":"温情","actionUrl":"eyepetizer://tag/136/?title=%E6%B8%A9%E6%83%85","adTrack":null},{"id":12,"name":"剧情","actionUrl":"eyepetizer://tag/12/?title=%E5%89%A7%E6%83%85","adTrack":null},{"id":82,"name":"定格","actionUrl":"eyepetizer://tag/82/?title=%E5%AE%9A%E6%A0%BC","adTrack":null},{"id":14,"name":"动画","actionUrl":"eyepetizer://tag/14/?title=%E5%8A%A8%E7%94%BB","adTrack":null}]
+             * type : NORMAL
+             * titlePgc : null
+             * descriptionPgc : null
+             * remark : null
+             * idx : 0
+             * shareAdTrack : null
+             * favoriteAdTrack : null
+             * webAdTrack : null
+             * date : 1472227200000
+             * promotion : null
+             * label : null
+             * labelList : []
+             * descriptionEditor : 不用声带，说出全世界最甜蜜的「我爱你」。腼腆小哥实力演绎陪伴是最最最最长情的告白。BGM 是「Live and Be Free」by  Tim McMorris。From Codcast Channel
+             * collected : false
+             * played : false
+             * subtitles : []
+             * lastViewTime : null
+             * playlists : null
              */
 
+            private String dataType;
+            private int id;
+            private String title;
+            private String text;
+            private String actionUrl;
+            private Object slogan;
+            private String description;
+            private ProviderBean provider;
+            private String category;
+            private Object author;
+            private CoverBean cover;
+            private String playUrl;
+            private Object thumbPlayUrl;
+            private int duration;
+            private WebUrlBean webUrl;
+            private long releaseTime;
+            private String library;
+            private ConsumptionBean consumption;
+            private Object campaign;
+            private Object waterMarks;
+            private Object adTrack;
             private String type;
-            private DatasBean data;
-            private Object tag;
+            private Object titlePgc;
+            private Object descriptionPgc;
+            private Object remark;
+            private int idx;
+            private Object shareAdTrack;
+            private Object favoriteAdTrack;
+            private Object webAdTrack;
+            private long date;
+            private Object promotion;
+            private Object label;
+            private String descriptionEditor;
+            private boolean collected;
+            private boolean played;
+            private Object lastViewTime;
+            private Object playlists;
+            private List<PlayInfoBean> playInfo;
+            private List<TagsBean> tags;
+            private List<?> labelList;
+            private List<?> subtitles;
+
+            public String getText() {
+                return text;
+            }
+
+            public void setText(String text) {
+                this.text = text;
+            }
+
+            public String getActionUrl() {
+                return actionUrl;
+            }
+
+            public void setActionUrl(String actionUrl) {
+                this.actionUrl = actionUrl;
+            }
+
+            public String getDataType() {
+                return dataType;
+            }
+
+            public void setDataType(String dataType) {
+                this.dataType = dataType;
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public Object getSlogan() {
+                return slogan;
+            }
+
+            public void setSlogan(Object slogan) {
+                this.slogan = slogan;
+            }
+
+            public String getDescription() {
+                return description;
+            }
+
+            public void setDescription(String description) {
+                this.description = description;
+            }
+
+            public ProviderBean getProvider() {
+                return provider;
+            }
+
+            public void setProvider(ProviderBean provider) {
+                this.provider = provider;
+            }
+
+            public String getCategory() {
+                return category;
+            }
+
+            public void setCategory(String category) {
+                this.category = category;
+            }
+
+            public Object getAuthor() {
+                return author;
+            }
+
+            public void setAuthor(Object author) {
+                this.author = author;
+            }
+
+            public CoverBean getCover() {
+                return cover;
+            }
+
+            public void setCover(CoverBean cover) {
+                this.cover = cover;
+            }
+
+            public String getPlayUrl() {
+                return playUrl;
+            }
+
+            public void setPlayUrl(String playUrl) {
+                this.playUrl = playUrl;
+            }
+
+            public Object getThumbPlayUrl() {
+                return thumbPlayUrl;
+            }
+
+            public void setThumbPlayUrl(Object thumbPlayUrl) {
+                this.thumbPlayUrl = thumbPlayUrl;
+            }
+
+            public int getDuration() {
+                return duration;
+            }
+
+            public void setDuration(int duration) {
+                this.duration = duration;
+            }
+
+            public WebUrlBean getWebUrl() {
+                return webUrl;
+            }
+
+            public void setWebUrl(WebUrlBean webUrl) {
+                this.webUrl = webUrl;
+            }
+
+            public long getReleaseTime() {
+                return releaseTime;
+            }
+
+            public void setReleaseTime(long releaseTime) {
+                this.releaseTime = releaseTime;
+            }
+
+            public String getLibrary() {
+                return library;
+            }
+
+            public void setLibrary(String library) {
+                this.library = library;
+            }
+
+            public ConsumptionBean getConsumption() {
+                return consumption;
+            }
+
+            public void setConsumption(ConsumptionBean consumption) {
+                this.consumption = consumption;
+            }
+
+            public Object getCampaign() {
+                return campaign;
+            }
+
+            public void setCampaign(Object campaign) {
+                this.campaign = campaign;
+            }
+
+            public Object getWaterMarks() {
+                return waterMarks;
+            }
+
+            public void setWaterMarks(Object waterMarks) {
+                this.waterMarks = waterMarks;
+            }
+
+            public Object getAdTrack() {
+                return adTrack;
+            }
+
+            public void setAdTrack(Object adTrack) {
+                this.adTrack = adTrack;
+            }
 
             public String getType() {
                 return type;
@@ -107,273 +348,351 @@ public class RelateVideoInfo {
                 this.type = type;
             }
 
-            public DatasBean getData() {
-                return data;
+            public Object getTitlePgc() {
+                return titlePgc;
             }
 
-            public void setData(DatasBean data) {
-                this.data = data;
+            public void setTitlePgc(Object titlePgc) {
+                this.titlePgc = titlePgc;
             }
 
-            public Object getTag() {
-                return tag;
+            public Object getDescriptionPgc() {
+                return descriptionPgc;
             }
 
-            public void setTag(Object tag) {
-                this.tag = tag;
+            public void setDescriptionPgc(Object descriptionPgc) {
+                this.descriptionPgc = descriptionPgc;
             }
 
-            public static class DatasBean {
+            public Object getRemark() {
+                return remark;
+            }
+
+            public void setRemark(Object remark) {
+                this.remark = remark;
+            }
+
+            public int getIdx() {
+                return idx;
+            }
+
+            public void setIdx(int idx) {
+                this.idx = idx;
+            }
+
+            public Object getShareAdTrack() {
+                return shareAdTrack;
+            }
+
+            public void setShareAdTrack(Object shareAdTrack) {
+                this.shareAdTrack = shareAdTrack;
+            }
+
+            public Object getFavoriteAdTrack() {
+                return favoriteAdTrack;
+            }
+
+            public void setFavoriteAdTrack(Object favoriteAdTrack) {
+                this.favoriteAdTrack = favoriteAdTrack;
+            }
+
+            public Object getWebAdTrack() {
+                return webAdTrack;
+            }
+
+            public void setWebAdTrack(Object webAdTrack) {
+                this.webAdTrack = webAdTrack;
+            }
+
+            public long getDate() {
+                return date;
+            }
+
+            public void setDate(long date) {
+                this.date = date;
+            }
+
+            public Object getPromotion() {
+                return promotion;
+            }
+
+            public void setPromotion(Object promotion) {
+                this.promotion = promotion;
+            }
+
+            public Object getLabel() {
+                return label;
+            }
+
+            public void setLabel(Object label) {
+                this.label = label;
+            }
+
+            public String getDescriptionEditor() {
+                return descriptionEditor;
+            }
+
+            public void setDescriptionEditor(String descriptionEditor) {
+                this.descriptionEditor = descriptionEditor;
+            }
+
+            public boolean isCollected() {
+                return collected;
+            }
+
+            public void setCollected(boolean collected) {
+                this.collected = collected;
+            }
+
+            public boolean isPlayed() {
+                return played;
+            }
+
+            public void setPlayed(boolean played) {
+                this.played = played;
+            }
+
+            public Object getLastViewTime() {
+                return lastViewTime;
+            }
+
+            public void setLastViewTime(Object lastViewTime) {
+                this.lastViewTime = lastViewTime;
+            }
+
+            public Object getPlaylists() {
+                return playlists;
+            }
+
+            public void setPlaylists(Object playlists) {
+                this.playlists = playlists;
+            }
+
+            public List<PlayInfoBean> getPlayInfo() {
+                return playInfo;
+            }
+
+            public void setPlayInfo(List<PlayInfoBean> playInfo) {
+                this.playInfo = playInfo;
+            }
+
+            public List<TagsBean> getTags() {
+                return tags;
+            }
+
+            public void setTags(List<TagsBean> tags) {
+                this.tags = tags;
+            }
+
+            public List<?> getLabelList() {
+                return labelList;
+            }
+
+            public void setLabelList(List<?> labelList) {
+                this.labelList = labelList;
+            }
+
+            public List<?> getSubtitles() {
+                return subtitles;
+            }
+
+            public void setSubtitles(List<?> subtitles) {
+                this.subtitles = subtitles;
+            }
+
+            public static class ProviderBean {
                 /**
-                 * dataType : VideoBeanForClient
-                 * id : 8742
-                 * title : 全世界最安静的「我爱你」
-                 * slogan : null
-                 * description : 不用声带，说出全世界最甜蜜的「我爱你」。腼腆小哥实力演绎陪伴是最最最最长情的告白。BGM 是「Live and Be Free」by  Tim McMorris。From Codcast Channel
-                 * provider : {"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"}
-                 * category : 剧情
-                 * author : null
-                 * cover : {"feed":"http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100","detail":"http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100","blurred":"http://img.kaiyanapp.com/71a7c47ceff064afc1a28faf28a72ac3.jpeg?imageMogr2/quality/100","sharing":null,"homepage":null}
-                 * playUrl : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=default&source=qcloud
-                 * thumbPlayUrl : null
-                 * duration : 238
-                 * webUrl : {"raw":"http://www.eyepetizer.net/detail.html?vid=8742","forWeibo":"http://wandou.im/2rvw0k"}
-                 * releaseTime : 1472227200000
-                 * library : DAILY
-                 * playInfo : [{"height":360,"width":640,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud","size":12906053},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=ucloud","size":12906053}],"name":"流畅","type":"low","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud"},{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=qcloud","size":17372861},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=ucloud","size":17372861}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=qcloud","size":28144525},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=ucloud","size":28144525}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=high&source=qcloud"}]
-                 * consumption : {"collectionCount":10493,"shareCount":9163,"replyCount":162}
-                 * campaign : null
-                 * waterMarks : null
-                 * adTrack : null
-                 * tags : [{"id":108,"name":"爱情","actionUrl":"eyepetizer://tag/108/?title=%E7%88%B1%E6%83%85","adTrack":null},{"id":136,"name":"温情","actionUrl":"eyepetizer://tag/136/?title=%E6%B8%A9%E6%83%85","adTrack":null},{"id":12,"name":"剧情","actionUrl":"eyepetizer://tag/12/?title=%E5%89%A7%E6%83%85","adTrack":null},{"id":82,"name":"定格","actionUrl":"eyepetizer://tag/82/?title=%E5%AE%9A%E6%A0%BC","adTrack":null},{"id":14,"name":"动画","actionUrl":"eyepetizer://tag/14/?title=%E5%8A%A8%E7%94%BB","adTrack":null}]
-                 * type : NORMAL
-                 * titlePgc : null
-                 * descriptionPgc : null
-                 * remark : null
-                 * idx : 0
-                 * shareAdTrack : null
-                 * favoriteAdTrack : null
-                 * webAdTrack : null
-                 * date : 1472227200000
-                 * promotion : null
-                 * label : null
-                 * labelList : []
-                 * descriptionEditor : 不用声带，说出全世界最甜蜜的「我爱你」。腼腆小哥实力演绎陪伴是最最最最长情的告白。BGM 是「Live and Be Free」by  Tim McMorris。From Codcast Channel
-                 * collected : false
-                 * played : false
-                 * subtitles : []
-                 * lastViewTime : null
-                 * playlists : null
+                 * name : YouTube
+                 * alias : youtube
+                 * icon : http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png
                  */
 
-                private String dataType;
-                private int id;
-                private String title;
-                private String text;
-                private String actionUrl;
-                private Object slogan;
-                private String description;
-                private ProviderBean provider;
-                private String category;
-                private Object author;
-                private CoverBean cover;
-                private String playUrl;
-                private Object thumbPlayUrl;
-                private int duration;
-                private WebUrlBean webUrl;
-                private long releaseTime;
-                private String library;
-                private ConsumptionBean consumption;
-                private Object campaign;
-                private Object waterMarks;
-                private Object adTrack;
+                private String name;
+                private String alias;
+                private String icon;
+
+                public String getName() {
+                    return name;
+                }
+
+                public void setName(String name) {
+                    this.name = name;
+                }
+
+                public String getAlias() {
+                    return alias;
+                }
+
+                public void setAlias(String alias) {
+                    this.alias = alias;
+                }
+
+                public String getIcon() {
+                    return icon;
+                }
+
+                public void setIcon(String icon) {
+                    this.icon = icon;
+                }
+            }
+
+            public static class CoverBean {
+                /**
+                 * feed : http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100
+                 * detail : http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100
+                 * blurred : http://img.kaiyanapp.com/71a7c47ceff064afc1a28faf28a72ac3.jpeg?imageMogr2/quality/100
+                 * sharing : null
+                 * homepage : null
+                 */
+
+                private String feed;
+                private String detail;
+                private String blurred;
+                private Object sharing;
+                private Object homepage;
+
+                public String getFeed() {
+                    return feed;
+                }
+
+                public void setFeed(String feed) {
+                    this.feed = feed;
+                }
+
+                public String getDetail() {
+                    return detail;
+                }
+
+                public void setDetail(String detail) {
+                    this.detail = detail;
+                }
+
+                public String getBlurred() {
+                    return blurred;
+                }
+
+                public void setBlurred(String blurred) {
+                    this.blurred = blurred;
+                }
+
+                public Object getSharing() {
+                    return sharing;
+                }
+
+                public void setSharing(Object sharing) {
+                    this.sharing = sharing;
+                }
+
+                public Object getHomepage() {
+                    return homepage;
+                }
+
+                public void setHomepage(Object homepage) {
+                    this.homepage = homepage;
+                }
+            }
+
+            public static class WebUrlBean {
+                /**
+                 * raw : http://www.eyepetizer.net/detail.html?vid=8742
+                 * forWeibo : http://wandou.im/2rvw0k
+                 */
+
+                private String raw;
+                private String forWeibo;
+
+                public String getRaw() {
+                    return raw;
+                }
+
+                public void setRaw(String raw) {
+                    this.raw = raw;
+                }
+
+                public String getForWeibo() {
+                    return forWeibo;
+                }
+
+                public void setForWeibo(String forWeibo) {
+                    this.forWeibo = forWeibo;
+                }
+            }
+
+            public static class ConsumptionBean {
+                /**
+                 * collectionCount : 10493
+                 * shareCount : 9163
+                 * replyCount : 162
+                 */
+
+                private int collectionCount;
+                private int shareCount;
+                private int replyCount;
+
+                public int getCollectionCount() {
+                    return collectionCount;
+                }
+
+                public void setCollectionCount(int collectionCount) {
+                    this.collectionCount = collectionCount;
+                }
+
+                public int getShareCount() {
+                    return shareCount;
+                }
+
+                public void setShareCount(int shareCount) {
+                    this.shareCount = shareCount;
+                }
+
+                public int getReplyCount() {
+                    return replyCount;
+                }
+
+                public void setReplyCount(int replyCount) {
+                    this.replyCount = replyCount;
+                }
+            }
+
+            public static class PlayInfoBean {
+                /**
+                 * height : 360
+                 * width : 640
+                 * urlList : [{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud","size":12906053},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=ucloud","size":12906053}]
+                 * name : 流畅
+                 * type : low
+                 * url : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud
+                 */
+
+                private int height;
+                private int width;
+                private String name;
                 private String type;
-                private Object titlePgc;
-                private Object descriptionPgc;
-                private Object remark;
-                private int idx;
-                private Object shareAdTrack;
-                private Object favoriteAdTrack;
-                private Object webAdTrack;
-                private long date;
-                private Object promotion;
-                private Object label;
-                private String descriptionEditor;
-                private boolean collected;
-                private boolean played;
-                private Object lastViewTime;
-                private Object playlists;
-                private List<PlayInfoBean> playInfo;
-                private List<TagsBean> tags;
-                private List<?> labelList;
-                private List<?> subtitles;
+                private String url;
+                private List<UrlListBean> urlList;
 
-                public String getText() {
-                    return text;
+                public int getHeight() {
+                    return height;
                 }
 
-                public void setText(String text) {
-                    this.text = text;
+                public void setHeight(int height) {
+                    this.height = height;
                 }
 
-                public String getActionUrl() {
-                    return actionUrl;
+                public int getWidth() {
+                    return width;
                 }
 
-                public void setActionUrl(String actionUrl) {
-                    this.actionUrl = actionUrl;
+                public void setWidth(int width) {
+                    this.width = width;
                 }
 
-                public String getDataType() {
-                    return dataType;
+                public String getName() {
+                    return name;
                 }
 
-                public void setDataType(String dataType) {
-                    this.dataType = dataType;
-                }
-
-                public int getId() {
-                    return id;
-                }
-
-                public void setId(int id) {
-                    this.id = id;
-                }
-
-                public String getTitle() {
-                    return title;
-                }
-
-                public void setTitle(String title) {
-                    this.title = title;
-                }
-
-                public Object getSlogan() {
-                    return slogan;
-                }
-
-                public void setSlogan(Object slogan) {
-                    this.slogan = slogan;
-                }
-
-                public String getDescription() {
-                    return description;
-                }
-
-                public void setDescription(String description) {
-                    this.description = description;
-                }
-
-                public ProviderBean getProvider() {
-                    return provider;
-                }
-
-                public void setProvider(ProviderBean provider) {
-                    this.provider = provider;
-                }
-
-                public String getCategory() {
-                    return category;
-                }
-
-                public void setCategory(String category) {
-                    this.category = category;
-                }
-
-                public Object getAuthor() {
-                    return author;
-                }
-
-                public void setAuthor(Object author) {
-                    this.author = author;
-                }
-
-                public CoverBean getCover() {
-                    return cover;
-                }
-
-                public void setCover(CoverBean cover) {
-                    this.cover = cover;
-                }
-
-                public String getPlayUrl() {
-                    return playUrl;
-                }
-
-                public void setPlayUrl(String playUrl) {
-                    this.playUrl = playUrl;
-                }
-
-                public Object getThumbPlayUrl() {
-                    return thumbPlayUrl;
-                }
-
-                public void setThumbPlayUrl(Object thumbPlayUrl) {
-                    this.thumbPlayUrl = thumbPlayUrl;
-                }
-
-                public int getDuration() {
-                    return duration;
-                }
-
-                public void setDuration(int duration) {
-                    this.duration = duration;
-                }
-
-                public WebUrlBean getWebUrl() {
-                    return webUrl;
-                }
-
-                public void setWebUrl(WebUrlBean webUrl) {
-                    this.webUrl = webUrl;
-                }
-
-                public long getReleaseTime() {
-                    return releaseTime;
-                }
-
-                public void setReleaseTime(long releaseTime) {
-                    this.releaseTime = releaseTime;
-                }
-
-                public String getLibrary() {
-                    return library;
-                }
-
-                public void setLibrary(String library) {
-                    this.library = library;
-                }
-
-                public ConsumptionBean getConsumption() {
-                    return consumption;
-                }
-
-                public void setConsumption(ConsumptionBean consumption) {
-                    this.consumption = consumption;
-                }
-
-                public Object getCampaign() {
-                    return campaign;
-                }
-
-                public void setCampaign(Object campaign) {
-                    this.campaign = campaign;
-                }
-
-                public Object getWaterMarks() {
-                    return waterMarks;
-                }
-
-                public void setWaterMarks(Object waterMarks) {
-                    this.waterMarks = waterMarks;
-                }
-
-                public Object getAdTrack() {
-                    return adTrack;
-                }
-
-                public void setAdTrack(Object adTrack) {
-                    this.adTrack = adTrack;
+                public void setName(String name) {
+                    this.name = name;
                 }
 
                 public String getType() {
@@ -384,344 +703,32 @@ public class RelateVideoInfo {
                     this.type = type;
                 }
 
-                public Object getTitlePgc() {
-                    return titlePgc;
+                public String getUrl() {
+                    return url;
                 }
 
-                public void setTitlePgc(Object titlePgc) {
-                    this.titlePgc = titlePgc;
+                public void setUrl(String url) {
+                    this.url = url;
                 }
 
-                public Object getDescriptionPgc() {
-                    return descriptionPgc;
+                public List<UrlListBean> getUrlList() {
+                    return urlList;
                 }
 
-                public void setDescriptionPgc(Object descriptionPgc) {
-                    this.descriptionPgc = descriptionPgc;
+                public void setUrlList(List<UrlListBean> urlList) {
+                    this.urlList = urlList;
                 }
 
-                public Object getRemark() {
-                    return remark;
-                }
-
-                public void setRemark(Object remark) {
-                    this.remark = remark;
-                }
-
-                public int getIdx() {
-                    return idx;
-                }
-
-                public void setIdx(int idx) {
-                    this.idx = idx;
-                }
-
-                public Object getShareAdTrack() {
-                    return shareAdTrack;
-                }
-
-                public void setShareAdTrack(Object shareAdTrack) {
-                    this.shareAdTrack = shareAdTrack;
-                }
-
-                public Object getFavoriteAdTrack() {
-                    return favoriteAdTrack;
-                }
-
-                public void setFavoriteAdTrack(Object favoriteAdTrack) {
-                    this.favoriteAdTrack = favoriteAdTrack;
-                }
-
-                public Object getWebAdTrack() {
-                    return webAdTrack;
-                }
-
-                public void setWebAdTrack(Object webAdTrack) {
-                    this.webAdTrack = webAdTrack;
-                }
-
-                public long getDate() {
-                    return date;
-                }
-
-                public void setDate(long date) {
-                    this.date = date;
-                }
-
-                public Object getPromotion() {
-                    return promotion;
-                }
-
-                public void setPromotion(Object promotion) {
-                    this.promotion = promotion;
-                }
-
-                public Object getLabel() {
-                    return label;
-                }
-
-                public void setLabel(Object label) {
-                    this.label = label;
-                }
-
-                public String getDescriptionEditor() {
-                    return descriptionEditor;
-                }
-
-                public void setDescriptionEditor(String descriptionEditor) {
-                    this.descriptionEditor = descriptionEditor;
-                }
-
-                public boolean isCollected() {
-                    return collected;
-                }
-
-                public void setCollected(boolean collected) {
-                    this.collected = collected;
-                }
-
-                public boolean isPlayed() {
-                    return played;
-                }
-
-                public void setPlayed(boolean played) {
-                    this.played = played;
-                }
-
-                public Object getLastViewTime() {
-                    return lastViewTime;
-                }
-
-                public void setLastViewTime(Object lastViewTime) {
-                    this.lastViewTime = lastViewTime;
-                }
-
-                public Object getPlaylists() {
-                    return playlists;
-                }
-
-                public void setPlaylists(Object playlists) {
-                    this.playlists = playlists;
-                }
-
-                public List<PlayInfoBean> getPlayInfo() {
-                    return playInfo;
-                }
-
-                public void setPlayInfo(List<PlayInfoBean> playInfo) {
-                    this.playInfo = playInfo;
-                }
-
-                public List<TagsBean> getTags() {
-                    return tags;
-                }
-
-                public void setTags(List<TagsBean> tags) {
-                    this.tags = tags;
-                }
-
-                public List<?> getLabelList() {
-                    return labelList;
-                }
-
-                public void setLabelList(List<?> labelList) {
-                    this.labelList = labelList;
-                }
-
-                public List<?> getSubtitles() {
-                    return subtitles;
-                }
-
-                public void setSubtitles(List<?> subtitles) {
-                    this.subtitles = subtitles;
-                }
-
-                public static class ProviderBean {
+                public static class UrlListBean {
                     /**
-                     * name : YouTube
-                     * alias : youtube
-                     * icon : http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png
-                     */
-
-                    private String name;
-                    private String alias;
-                    private String icon;
-
-                    public String getName() {
-                        return name;
-                    }
-
-                    public void setName(String name) {
-                        this.name = name;
-                    }
-
-                    public String getAlias() {
-                        return alias;
-                    }
-
-                    public void setAlias(String alias) {
-                        this.alias = alias;
-                    }
-
-                    public String getIcon() {
-                        return icon;
-                    }
-
-                    public void setIcon(String icon) {
-                        this.icon = icon;
-                    }
-                }
-
-                public static class CoverBean {
-                    /**
-                     * feed : http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100
-                     * detail : http://img.kaiyanapp.com/d5a4d7a2b4a3c038d6052bd57ffdcbd5.jpeg?imageMogr2/quality/100
-                     * blurred : http://img.kaiyanapp.com/71a7c47ceff064afc1a28faf28a72ac3.jpeg?imageMogr2/quality/100
-                     * sharing : null
-                     * homepage : null
-                     */
-
-                    private String feed;
-                    private String detail;
-                    private String blurred;
-                    private Object sharing;
-                    private Object homepage;
-
-                    public String getFeed() {
-                        return feed;
-                    }
-
-                    public void setFeed(String feed) {
-                        this.feed = feed;
-                    }
-
-                    public String getDetail() {
-                        return detail;
-                    }
-
-                    public void setDetail(String detail) {
-                        this.detail = detail;
-                    }
-
-                    public String getBlurred() {
-                        return blurred;
-                    }
-
-                    public void setBlurred(String blurred) {
-                        this.blurred = blurred;
-                    }
-
-                    public Object getSharing() {
-                        return sharing;
-                    }
-
-                    public void setSharing(Object sharing) {
-                        this.sharing = sharing;
-                    }
-
-                    public Object getHomepage() {
-                        return homepage;
-                    }
-
-                    public void setHomepage(Object homepage) {
-                        this.homepage = homepage;
-                    }
-                }
-
-                public static class WebUrlBean {
-                    /**
-                     * raw : http://www.eyepetizer.net/detail.html?vid=8742
-                     * forWeibo : http://wandou.im/2rvw0k
-                     */
-
-                    private String raw;
-                    private String forWeibo;
-
-                    public String getRaw() {
-                        return raw;
-                    }
-
-                    public void setRaw(String raw) {
-                        this.raw = raw;
-                    }
-
-                    public String getForWeibo() {
-                        return forWeibo;
-                    }
-
-                    public void setForWeibo(String forWeibo) {
-                        this.forWeibo = forWeibo;
-                    }
-                }
-
-                public static class ConsumptionBean {
-                    /**
-                     * collectionCount : 10493
-                     * shareCount : 9163
-                     * replyCount : 162
-                     */
-
-                    private int collectionCount;
-                    private int shareCount;
-                    private int replyCount;
-
-                    public int getCollectionCount() {
-                        return collectionCount;
-                    }
-
-                    public void setCollectionCount(int collectionCount) {
-                        this.collectionCount = collectionCount;
-                    }
-
-                    public int getShareCount() {
-                        return shareCount;
-                    }
-
-                    public void setShareCount(int shareCount) {
-                        this.shareCount = shareCount;
-                    }
-
-                    public int getReplyCount() {
-                        return replyCount;
-                    }
-
-                    public void setReplyCount(int replyCount) {
-                        this.replyCount = replyCount;
-                    }
-                }
-
-                public static class PlayInfoBean {
-                    /**
-                     * height : 360
-                     * width : 640
-                     * urlList : [{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud","size":12906053},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=ucloud","size":12906053}]
-                     * name : 流畅
-                     * type : low
+                     * name : qcloud
                      * url : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud
+                     * size : 12906053
                      */
 
-                    private int height;
-                    private int width;
                     private String name;
-                    private String type;
                     private String url;
-                    private List<UrlListBean> urlList;
-
-                    public int getHeight() {
-                        return height;
-                    }
-
-                    public void setHeight(int height) {
-                        this.height = height;
-                    }
-
-                    public int getWidth() {
-                        return width;
-                    }
-
-                    public void setWidth(int width) {
-                        this.width = width;
-                    }
+                    private int size;
 
                     public String getName() {
                         return name;
@@ -729,14 +736,6 @@ public class RelateVideoInfo {
 
                     public void setName(String name) {
                         this.name = name;
-                    }
-
-                    public String getType() {
-                        return type;
-                    }
-
-                    public void setType(String type) {
-                        this.type = type;
                     }
 
                     public String getUrl() {
@@ -747,95 +746,59 @@ public class RelateVideoInfo {
                         this.url = url;
                     }
 
-                    public List<UrlListBean> getUrlList() {
-                        return urlList;
+                    public int getSize() {
+                        return size;
                     }
 
-                    public void setUrlList(List<UrlListBean> urlList) {
-                        this.urlList = urlList;
-                    }
-
-                    public static class UrlListBean {
-                        /**
-                         * name : qcloud
-                         * url : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=8742&editionType=low&source=qcloud
-                         * size : 12906053
-                         */
-
-                        private String name;
-                        private String url;
-                        private int size;
-
-                        public String getName() {
-                            return name;
-                        }
-
-                        public void setName(String name) {
-                            this.name = name;
-                        }
-
-                        public String getUrl() {
-                            return url;
-                        }
-
-                        public void setUrl(String url) {
-                            this.url = url;
-                        }
-
-                        public int getSize() {
-                            return size;
-                        }
-
-                        public void setSize(int size) {
-                            this.size = size;
-                        }
+                    public void setSize(int size) {
+                        this.size = size;
                     }
                 }
+            }
 
-                public static class TagsBean {
-                    /**
-                     * id : 108
-                     * name : 爱情
-                     * actionUrl : eyepetizer://tag/108/?title=%E7%88%B1%E6%83%85
-                     * adTrack : null
-                     */
+            public static class TagsBean {
+                /**
+                 * id : 108
+                 * name : 爱情
+                 * actionUrl : eyepetizer://tag/108/?title=%E7%88%B1%E6%83%85
+                 * adTrack : null
+                 */
 
-                    private int id;
-                    private String name;
-                    private String actionUrl;
-                    private Object adTrack;
+                private int id;
+                private String name;
+                private String actionUrl;
+                private Object adTrack;
 
-                    public int getId() {
-                        return id;
-                    }
+                public int getId() {
+                    return id;
+                }
 
-                    public void setId(int id) {
-                        this.id = id;
-                    }
+                public void setId(int id) {
+                    this.id = id;
+                }
 
-                    public String getName() {
-                        return name;
-                    }
+                public String getName() {
+                    return name;
+                }
 
-                    public void setName(String name) {
-                        this.name = name;
-                    }
+                public void setName(String name) {
+                    this.name = name;
+                }
 
-                    public String getActionUrl() {
-                        return actionUrl;
-                    }
+                public String getActionUrl() {
+                    return actionUrl;
+                }
 
-                    public void setActionUrl(String actionUrl) {
-                        this.actionUrl = actionUrl;
-                    }
+                public void setActionUrl(String actionUrl) {
+                    this.actionUrl = actionUrl;
+                }
 
-                    public Object getAdTrack() {
-                        return adTrack;
-                    }
+                public Object getAdTrack() {
+                    return adTrack;
+                }
 
-                    public void setAdTrack(Object adTrack) {
-                        this.adTrack = adTrack;
-                    }
+                public void setAdTrack(Object adTrack) {
+                    this.adTrack = adTrack;
                 }
             }
         }

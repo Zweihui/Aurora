@@ -3,11 +3,11 @@
               android:id="@+id/ll_root"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/colorAccent"
+              android:background="@android:color/transparent"
               android:clickable="true"
               android:gravity="center_vertical"
               android:orientation="horizontal"
-              android:padding="20dp">
+              android:padding="13dp">
 
     <TextView
         android:id="@+id/tv_name"
@@ -22,6 +22,7 @@
         android:id="@+id/iv_arrow"
         android:layout_width="15dp"
         android:layout_height="15dp"
+        android:layout_marginLeft="3dp"
         android:scaleType="fitXY"
         android:src="@drawable/right_enter_arrow"
         />

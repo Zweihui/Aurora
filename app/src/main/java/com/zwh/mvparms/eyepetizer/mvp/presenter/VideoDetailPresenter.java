@@ -6,11 +6,15 @@ import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.widget.imageloader.ImageLoader;
+import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -29,6 +33,16 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
         this.mApplication = application;
         this.mImageLoader = imageLoader;
         this.mAppManager = appManager;
+    }
+
+    public void getRelaRelateVideoInfo(int id){
+        mModel.getRelateVideoInfo(id).compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<RelateVideoInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(RelateVideoInfo info) {
+                        mRootView.setData(info);
+                    }
+                });
     }
 
     @Override

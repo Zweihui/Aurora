@@ -11,4 +11,6 @@
     <color name="white">#FFFFFF</color>
     <color name="light_blue">#02A8F3</color>
     <color name="grey">#DADADA</color>
+    <color name="trans_black">#60000000</color>
+    <color name="trans_black_heavy">#80000000</color>
 </resources>

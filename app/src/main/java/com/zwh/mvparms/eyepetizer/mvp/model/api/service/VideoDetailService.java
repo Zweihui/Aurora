@@ -1,0 +1,18 @@
+package com.zwh.mvparms.eyepetizer.mvp.model.api.service;
+
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+
+import io.reactivex.Observable;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
+/**
+ * Created by Administrator on 2017/8/23 0023.
+ */
+
+public interface VideoDetailService {
+    //获取相关视频信息
+    @GET("v4/video/related")
+    Observable<RelateVideoInfo> getRelateVideoInfo(@Query("id") int id);
+}

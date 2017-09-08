@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/black">
 
@@ -79,11 +80,11 @@
 
         <ImageView
             android:id="@+id/fullscreen"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:paddingRight="16dp"
-            android:scaleType="center"
-            android:src="@drawable/video_enlarge" />
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="fitXY"
+            />
     </LinearLayout>
 
     <ProgressBar
@@ -176,6 +177,7 @@
             android:minEms="5"
             android:paddingLeft="10dp"
             android:text="旋转镜像"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
 
@@ -187,6 +189,7 @@
             android:minEms="5"
             android:paddingLeft="10dp"
             android:text="旋转画面"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
 
@@ -198,6 +201,7 @@
             android:minEms="5"
             android:paddingLeft="10dp"
             android:text="默认比例"
+            android:visibility="gone"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
     </LinearLayout>

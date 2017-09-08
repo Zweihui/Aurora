@@ -27,12 +27,12 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
 
     @Override
     protected void convertHead(BaseViewHolder helper, RelateVideoSection item) {
-        helper.setText(R.id.tv_name,item.t.getData().getData().getText());
+        helper.setText(R.id.tv_name,item.t.getData().getText());
     }
 
     @Override
     protected void convert(BaseViewHolder helper, RelateVideoSection item) {
-        helper.setText(R.id.tv_title,item.t.getData().getData().getTitle())
+        helper.setText(R.id.tv_title,item.t.getData().getTitle())
                 .setText(R.id.tv_type,getDetailStr(item.t));
         ImageView img = helper.getView(R.id.iv_left);
         AppComponent mAppComponent = ((App)img.getContext().getApplicationContext())
@@ -43,13 +43,13 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
                         ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
                 GlideImageConfig
                         .builder()
-                        .url(item.t.getData().getData().getCover().getFeed())
-                        .imageView(helper.getView(R.id.img_main))
+                        .url(item.t.getData().getCover().getFeed())
+                        .imageView(img)
                         .build());
     }
 
     private String getDetailStr(RelateVideoInfo.ItemListBean item){
-        String duration = item.getData().getData().getDuration()+"";
+        String duration = item.getData().getDuration()+"";
         int seconds = Integer.parseInt(duration);
         int temp=0;
         StringBuffer sb=new StringBuffer();
@@ -61,7 +61,7 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
 
         temp=seconds%3600%60;
         sb.append((temp<10)?"0"+temp:""+temp);
-        String detail = "#"+item.getData().getData().getCategory()+" / "+sb.toString();
+        String detail = "#"+item.getData().getCategory()+" / "+sb.toString();
         return detail;
     }
 }

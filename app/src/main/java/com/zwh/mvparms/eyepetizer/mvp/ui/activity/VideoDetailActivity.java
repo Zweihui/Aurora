@@ -1,14 +1,21 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.StringUtils;
+import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
@@ -18,8 +25,18 @@ import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.di.component.DaggerUserComponent;
+import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
+import com.zwh.mvparms.eyepetizer.di.module.UserModule;
+import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
+import com.zwh.mvparms.eyepetizer.mvp.contract.UserContract;
+import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoDetailPresenter;
+import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
@@ -28,12 +45,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static android.R.id.message;
+
 @Router(Constants.VIDEO)
-public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> {
+public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View{
 
     @BindView(R.id.rl_screen)
     FrameLayout rlScreen;
-//    @BindView(R.id.iv_video_bg)
+    //    @BindView(R.id.iv_video_bg)
 //    @SceneTransition(Constants.TRANSLATE_VIEW)
 //    public ImageView mIvVideoBg;
     @Extra(Constants.VIDEO_INFO)
@@ -41,6 +61,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> {
 
     @BindView(R.id.detail_player)
     SampleVideo detailPlayer;
+    @BindView(R.id.iv_blur_bg)
+    ImageView ivBlurBg;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    private RelateVideoAdapter adapter;
+    private List<RelateVideoSection> datas = new ArrayList<>();
 
     private boolean isPlay;
     private boolean isPause;
@@ -57,6 +84,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> {
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
         mAppComponent = appComponent;
+        DaggerVideoDetailComponent
+                .builder()
+                .videoDetailModule(new VideoDetailModule(this))
+                .appComponent(appComponent)
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -67,16 +100,100 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> {
     @Override
     public void initData(Bundle savedInstanceState) {
 
-        String source1 = videoInfo.getData().getPlayInfo().get(0).getUrl();
-        String name = "标清";
-        SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
-        String source2 = videoInfo.getData().getPlayInfo().get(1).getUrl();
-        String name2 = "高清";
-        SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
-        List<SwitchVideoModel> list = new ArrayList<>();
-        list.add(switchVideoModel);
-        list.add(switchVideoModel2);
-        detailPlayer.setUp(list, true, "");
+        initMedia();
+        initRecyclerView();
+        mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+    }
+
+    private void initRecyclerView() {
+        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
+                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+                GlideImageConfig
+                        .builder()
+                        .url(videoInfo.getData().getCover().getBlurred())
+                        .imageView(ivBlurBg)
+                        .transformation(new FitCenter(VideoDetailActivity.this))
+                        .build());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter =new RelateVideoAdapter(R.layout.item_video_detail_group_content,
+                R.layout.item_video_detail_group_head,datas);
+        View headView = getLayoutInflater().inflate(R.layout.item_video_detail_top, recyclerView, false);
+        adapter.addHeaderView(headView);
+        recyclerView.setAdapter(adapter);
+        initHeadView(headView);
+
+    }
+
+    private void initHeadView(View headView) {
+        ExpandTextView expand = ((ExpandTextView)headView.findViewById(R.id.tv_expand));
+        expand.setTextMaxLine(2);
+        expand.setText(videoInfo.getData().getDescription());
+        ImageView expandArrow = ((ImageView)headView.findViewById(R.id.iv_expand));
+        expand.post(new Runnable() {
+            @Override
+            public void run() {
+                if (!expand.canExpand()){
+                    expandArrow.setVisibility(View.GONE);
+                }
+            }
+        });
+        ((TextView)headView.findViewById(R.id.tv_title)).setText(videoInfo.getData().getTitle());
+        ((TextView)headView.findViewById(R.id.tv_type)).setText(getDetailStr(videoInfo));
+        expandArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(expand.isExpand()){
+                    expand.shrink();
+                    expandArrow.setImageResource(R.drawable.up_enter_arrow);
+                }else {
+                    expand.expand();
+                    expandArrow.setImageResource(R.drawable.down_enter_arrow);
+                }
+            }
+        });
+        ((TextView)headView.findViewById(R.id.tv_collection)).setText(videoInfo.getData().getConsumption().getCollectionCount()+"");
+        ((TextView)headView.findViewById(R.id.tv_upload)).setText(videoInfo.getData().getConsumption().getShareCount()+"");
+        ((TextView)headView.findViewById(R.id.tv_comment)).setText(videoInfo.getData().getConsumption().getReplyCount()+"");
+        if (videoInfo.getData().getAuthor()!=null){
+            ((TextView)headView.findViewById(R.id.tv_author_name)).setText(videoInfo.getData().getAuthor().getName());
+            ((TextView)headView.findViewById(R.id.tv_author_des)).setText(videoInfo.getData().getAuthor().getDescription());
+            mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
+                            ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+                    GlideImageConfig
+                            .builder()
+                            .url(videoInfo.getData().getCover().getFeed())
+                            .imageView(((ImageView)headView.findViewById(R.id.iv_author)))
+                            .transformation(new GlideCircleTransform(VideoDetailActivity.this))
+                            .build());
+        }
+    }
+
+    private void initMedia() {
+        detailPlayer.setEnlargeImageRes(R.drawable.ve_video_full_screen); //设置全屏按钮
+        detailPlayer.setShrinkImageRes(R.drawable.ve_exit_full_screen); //设置缩屏按钮
+        try {
+            String source1 = videoInfo.getData().getPlayInfo().get(0).getUrl();
+            String name = "标清";
+            SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
+            String source2 = videoInfo.getData().getPlayInfo().get(1).getUrl();
+            String name2 = "高清";
+            SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
+            List<SwitchVideoModel> list = new ArrayList<>();
+            list.add(switchVideoModel);
+            list.add(switchVideoModel2);
+            detailPlayer.setUp(list, true, "");
+        }catch (IndexOutOfBoundsException e) {
+            String source1 = videoInfo.getData().getPlayUrl();
+            String name = "标清";
+            SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
+            String source2 = videoInfo.getData().getPlayUrl();
+            String name2 = "高清";
+            SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
+            List<SwitchVideoModel> list = new ArrayList<>();
+            list.add(switchVideoModel);
+            list.add(switchVideoModel2);
+            detailPlayer.setUp(list, true, "");
+        }
         //增加封面
         ImageView mIvVideoBg = new ImageView(this);
         mIvVideoBg.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -154,7 +271,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> {
                 }
             }
         });
-
     }
 
     @Override
@@ -196,6 +312,62 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> {
         //增加title
         detailPlayer.getTitleTextView().setVisibility(View.GONE);
         detailPlayer.getBackButton().setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setData(RelateVideoInfo info) {
+        for (RelateVideoInfo.ItemListBean item:info.getItemList()){
+            RelateVideoSection section = new RelateVideoSection(item);
+            if (item.getType().equals("textCard")){
+                section.isHeader = true;
+            }else {
+                section.isHeader = false;
+            }
+            datas.add(section);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void launchActivity(Intent intent) {
+
+    }
+
+    @Override
+    public void killMyself() {
+
+    }
+
+    private String getDetailStr(VideoListInfo.Video item){
+        String duration = item.getData().getDuration()+"";
+        int seconds = Integer.parseInt(duration);
+        int temp=0;
+        StringBuffer sb=new StringBuffer();
+        temp = seconds/3600;
+        sb.append((temp<10)?"0"+temp+":":""+temp+":");
+
+        temp=seconds%3600/60;
+        sb.append((temp<10)?"0"+temp+":":""+temp+":");
+
+        temp=seconds%3600%60;
+        sb.append((temp<10)?"0"+temp:""+temp);
+        String detail = "#"+item.getData().getCategory()+" / "+sb.toString();
+        return detail;
     }
 
 }

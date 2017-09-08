@@ -6,4 +6,7 @@
     <attr name="themeType" format="string" />
     <attr name="themeIcon" format="reference" />
     <attr name="colorWhite" format="color" />
+    <declare-styleable name="VideoControlView">
+        <attr name="itemColor" format="color"></attr>
+    </declare-styleable>
 </resources>
