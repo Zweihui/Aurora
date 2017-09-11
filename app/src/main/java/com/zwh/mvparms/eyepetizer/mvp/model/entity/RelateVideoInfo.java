@@ -60,7 +60,7 @@ public class RelateVideoInfo {
          */
 
         private String type;
-        private DataBean data;
+        private VideoListInfo.Video data;
         private Object tag;
 
         public String getType() {
@@ -71,11 +71,11 @@ public class RelateVideoInfo {
             this.type = type;
         }
 
-        public DataBean getData() {
+        public VideoListInfo.Video getData() {
             return data;
         }
 
-        public void setData(DataBean data) {
+        public void setData(VideoListInfo.Video data) {
             this.data = data;
         }
 

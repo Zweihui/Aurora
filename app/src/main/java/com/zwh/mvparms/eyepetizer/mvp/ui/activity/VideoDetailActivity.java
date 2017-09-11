@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,9 +11,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.apt.TRouter;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.StringUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
@@ -23,14 +23,13 @@ import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
+import com.zwh.annotation.apt.SceneTransition;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
-import com.zwh.mvparms.eyepetizer.di.component.DaggerUserComponent;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
-import com.zwh.mvparms.eyepetizer.di.module.UserModule;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
-import com.zwh.mvparms.eyepetizer.mvp.contract.UserContract;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoDetailPresenter;
@@ -46,21 +45,16 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import static android.R.id.message;
-
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View{
 
     @BindView(R.id.rl_screen)
     FrameLayout rlScreen;
-    //    @BindView(R.id.iv_video_bg)
-//    @SceneTransition(Constants.TRANSLATE_VIEW)
-//    public ImageView mIvVideoBg;
     @Extra(Constants.VIDEO_INFO)
     public VideoListInfo.Video videoInfo;
-
+    @SceneTransition(Constants.TRANSLATE_VIEW)
     @BindView(R.id.detail_player)
-    SampleVideo detailPlayer;
+    public SampleVideo detailPlayer;
     @BindView(R.id.iv_blur_bg)
     ImageView ivBlurBg;
     @BindView(R.id.recyclerView)
@@ -117,6 +111,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter =new RelateVideoAdapter(R.layout.item_video_detail_group_content,
                 R.layout.item_video_detail_group_head,datas);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (datas.get(position).isHeader)
+                    return;
+                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, datas.get(position).t.getData()).build());
+            }
+        });
         View headView = getLayoutInflater().inflate(R.layout.item_video_detail_top, recyclerView, false);
         adapter.addHeaderView(headView);
         recyclerView.setAdapter(adapter);

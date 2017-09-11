@@ -29,7 +29,6 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.FragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.VideoListFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.VideoControlView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +62,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
     ViewPager mViewpager;
     @BindView(R.id.nestedScrollView)
     NestedScrollView mNestedScrollView;
-    @BindView(R.id.vide_control)
-    VideoControlView videoControlView;
 
     ActionBarDrawerToggle mToggle;
     @Extra(Constants.SPLASH_DATA)
@@ -118,16 +115,6 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mDlMainDrawer.setDrawerListener(mToggle);
         mToggle.syncState();
         mNvMainNavigation.setNavigationItemSelectedListener(this);
-        videoControlView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (videoControlView.getState() ==VideoControlView.STATE_PAUSE){
-                    videoControlView.play();
-                }else {
-                    videoControlView.pause();
-                }
-            }
-        });
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

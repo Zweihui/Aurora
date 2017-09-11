@@ -92,15 +92,6 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             app:srcCompat="@android:drawable/ic_dialog_email"/>
-        <com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.VideoControlView
-            android:id="@+id/vide_control"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="@dimen/fab_margin"
-            app:itemColor="@color/colorAccent"
-            />
-
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

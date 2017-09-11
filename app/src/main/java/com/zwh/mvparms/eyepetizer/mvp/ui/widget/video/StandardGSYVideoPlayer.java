@@ -24,7 +24,6 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zwh.mvparms.eyepetizer.R;
 
 import moe.codeest.enviews.ENDownloadView;
-import moe.codeest.enviews.ENPlayView;
 
 /**
  * Created by Administrator on 2017/9/6 0006.
@@ -608,9 +607,8 @@ public class StandardGSYVideoPlayer extends GSYVideoPlayer {
      * 定义开始按键显示
      */
     protected void updateStartImage() {
-        if (mStartButton instanceof ENPlayView) {
-            ENPlayView enPlayView = (ENPlayView) mStartButton;
-            enPlayView.setDuration(500);
+        if (mStartButton instanceof VideoControlView) {
+            VideoControlView enPlayView = (VideoControlView) mStartButton;
             if (mCurrentState == CURRENT_STATE_PLAYING) {
                 enPlayView.play();
             } else if (mCurrentState == CURRENT_STATE_ERROR) {

@@ -5,23 +5,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
-import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 import com.zwh.mvparms.eyepetizer.R;
-
-import static moe.codeest.enviews.ENPlayView.DEFAULT_LINE_COLOR;
 
 /**
  * Created by Administrator on 2017/9/6 0006.
@@ -35,13 +26,7 @@ public class VideoControlView extends View {
 
     public static int DEFAULT_ITEM_COLOR = Color.WHITE;
 
-    public static int DEFAULT_BG_LINE_COLOR = 0xfffafafa;
-
-    public static int DEFAULT_LINE_WIDTH = 4;
-
-    public static int DEFAULT_BG_LINE_WIDTH = 4;
-
-    public static int DEFAULT_DURATION = 150;
+    public static int DEFAULT_DURATION = 180;
 
     private int mCurrentState = STATE_PAUSE;
 
@@ -51,9 +36,9 @@ public class VideoControlView extends View {
 
     private int mCenterX, mCenterY;
 
-    private float mFraction = 0;
+    private float mFraction = 1;
 
-    private Path mPath, mDstPath;
+    private Path mPath;
 
     private int mDuration;
 
@@ -71,7 +56,7 @@ public class VideoControlView extends View {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.VideoControlView);
         int itemColor = ta.getColor(R.styleable.VideoControlView_itemColor, DEFAULT_ITEM_COLOR);
         ta.recycle();
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(itemColor);
@@ -93,39 +78,34 @@ public class VideoControlView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
+        canvas.scale(0.5f,0.55f,mCenterX,mCenterY);
+//        canvas.translate(0.1f*mWidth,mHeight*0.1f);
         mPath.reset();
-        if (mCurrentState == STATE_PLAY) {
-            mPath.moveTo(0, 0);
-            mPath.lineTo(0, mHeight);
-            mPath.lineTo((mWidth * 5 / 14) + (mCenterX - mWidth * 5 / 14) * mFraction, mHeight - 0.25f * mHeight * mFraction);
-            mPath.lineTo((mWidth * 5 / 14) + (mCenterX - mWidth * 5 / 14) * mFraction, 0.25f * mHeight * mFraction);
-            mPath.close();
-            mPath.moveTo(mWidth, mFraction * mCenterY);
-            mPath.lineTo(mWidth, mHeight - mFraction * mCenterY);
-            mPath.lineTo((mWidth * 9 / 14) - (mCenterX - mWidth * 5 / 14) * mFraction, mHeight - 0.25f * mHeight * mFraction);
-            mPath.lineTo((mWidth * 9 / 14) - (mCenterX - mWidth * 5 / 14) * mFraction, 0.25f * mHeight * mFraction);
-            mPath.close();
-        }else {
-//            mPath.moveTo(0, 0);
-//            mPath.lineTo(0, mHeight);
-//            mPath.lineTo((mWidth * 5 / 14) * mFraction, mHeight);
-//            mPath.lineTo((mWidth * 5 / 14) + (mCenterX - mWidth * 5 / 14) * mFraction, mHeight - 0.25f * mHeight * mFraction);
-//            mPath.lineTo((mWidth * 5 / 14) + (mCenterX - mWidth * 5 / 14) * mFraction, mHeight);
-//            mPath.lineTo((mWidth * 5 / 14) * mFraction, mHeight);
-//
-//            mPath.close();
-//            mPath.moveTo(mWidth, mFraction * mCenterY);
-//            mPath.lineTo(mWidth, mHeight - mFraction * mCenterY);
-//            mPath.lineTo((mWidth * 9 / 14) * mFraction, mHeight);
-//            mPath.lineTo((mWidth * 9 / 14) - (mCenterX - mWidth * 5 / 14) * mFraction, mHeight - 0.25f * mHeight * mFraction);
-//            mPath.lineTo((mWidth * 9 / 14) - (mCenterX - mWidth * 5 / 14) * mFraction, mHeight);
-//            mPath.lineTo((mWidth * 9 / 14) * mFraction, mHeight);
-//            mPath.close();
+        mPath.moveTo(0, 0);
+        mPath.lineTo(0, mHeight);
+        mPath.lineTo((mWidth * 5 / 14) + (mCenterX - mWidth * 5 / 14) * mFraction, mHeight - 0.25f * mHeight * mFraction);
+        mPath.lineTo((mWidth * 5 / 14) + (mCenterX - mWidth * 5 / 14) * mFraction, 0.25f * mHeight * mFraction);
+        mPath.close();
+        mPath.moveTo(mWidth, mFraction * mCenterY);
+        mPath.lineTo(mWidth, mHeight - mFraction * mCenterY);
+        mPath.lineTo((mWidth * 9 / 14) - (mCenterX - mWidth * 5 / 14) * mFraction, mHeight - 0.25f * mHeight * mFraction);
+        mPath.lineTo((mWidth * 9 / 14) - (mCenterX - mWidth * 5 / 14) * mFraction, 0.25f * mHeight * mFraction);
+        mPath.close();
+        if (mFraction==1){
+            if (mCurrentState == STATE_PLAY){
+                mPath.reset();
+                mPath.moveTo(0, 0);
+                mPath.lineTo(0, mHeight);
+                mPath.lineTo(mWidth, mCenterY);
+                mPath.close();
+            }
         }
         canvas.drawPath(mPath, mPaint);
+        canvas.restore();
     }
 
-    public void play() {
+    public void pause() {
         if (mCurrentState == STATE_PLAY) {
             return;
         }
@@ -145,7 +125,7 @@ public class VideoControlView extends View {
         }
     }
 
-    public void pause() {
+    public void play() {
         if (mCurrentState == STATE_PAUSE) {
             return;
         }

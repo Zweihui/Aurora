@@ -54,6 +54,8 @@ public class VideoListInfo {
 
         private String type;
         private DataBean data;
+        private String title;
+        private String text;
         private Object tag;
 
         public String getType() {
@@ -78,6 +80,22 @@ public class VideoListInfo {
 
         public void setTag(Object tag) {
             this.tag = tag;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
         }
 
         public static class DataBean {

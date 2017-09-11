@@ -16,6 +16,7 @@ public class Constants {
     public static final String TYPE_ID = "type_id";
     public static final String SPLASH_DATA = "splash_data";
     public static final String VIDEO_INFO = "video_info";
+    public static final String RELATE_VIDEO_INFO = "relate_video_info";
     public static final String TRANSLATE_VIEW = "share_img";
 
     //==================api============//

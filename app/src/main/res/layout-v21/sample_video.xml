@@ -106,17 +106,17 @@
 
     <ProgressBar
         android:id="@+id/loading"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        style="@style/Widget.AppCompat.ProgressBar"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="invisible" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/white"
+        android:layout_gravity="center" />
 
     <com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.VideoControlView
         android:id="@+id/start"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:background="@drawable/ripple_video_control"
         app:itemColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"

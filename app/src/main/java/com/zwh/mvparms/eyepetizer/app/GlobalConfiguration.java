@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.apt.TRouter;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
 import com.jess.arms.base.App;
