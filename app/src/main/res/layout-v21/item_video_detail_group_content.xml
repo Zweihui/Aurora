@@ -8,6 +8,7 @@
     android:layout_height="100dp"
     android:orientation="vertical"
     tools:layout_editor_absoluteX="0dp"
+    android:background="?android:attr/selectableItemBackground"
     >
 
 

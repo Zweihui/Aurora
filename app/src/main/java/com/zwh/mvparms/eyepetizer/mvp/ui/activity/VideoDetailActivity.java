@@ -1,11 +1,15 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Transition;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -15,6 +19,9 @@ import com.apt.TRouter;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.AnimationUtils;
+import com.jess.arms.utils.DeviceUtils;
+import com.jess.arms.utils.StringUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
@@ -30,7 +37,6 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoDetailPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
@@ -45,8 +51,11 @@ import java.util.List;
 
 import butterknife.BindView;
 
+import static android.R.attr.type;
+import static com.jess.arms.utils.StringUtils.getUrlDecodePath;
+
 @Router(Constants.VIDEO)
-public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View{
+public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
 
     @BindView(R.id.rl_screen)
     FrameLayout rlScreen;
@@ -55,16 +64,25 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @SceneTransition(Constants.TRANSLATE_VIEW)
     @BindView(R.id.detail_player)
     public SampleVideo detailPlayer;
-    @BindView(R.id.iv_blur_bg)
-    ImageView ivBlurBg;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.second_recyclerView)
+    RecyclerView recyclerView2;
+
+    private ImageView mIvVideoBg; //视频封面
+    private View headView;
+    private View footView;
 
     private RelateVideoAdapter adapter;
+    private RelateVideoAdapter secondAdapter;
     private List<RelateVideoSection> datas = new ArrayList<>();
+    private List<RelateVideoSection> secondDatas = new ArrayList<>();
 
     private boolean isPlay;
     private boolean isPause;
+    private int selectPosition;
+    private String path;
+    private int id;
 
     private OrientationUtils orientationUtils;
 
@@ -100,71 +118,80 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     private void initRecyclerView() {
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
-                GlideImageConfig
-                        .builder()
-                        .url(videoInfo.getData().getCover().getBlurred())
-                        .imageView(ivBlurBg)
-                        .transformation(new FitCenter(VideoDetailActivity.this))
-                        .build());
+        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter =new RelateVideoAdapter(R.layout.item_video_detail_group_content,
-                R.layout.item_video_detail_group_head,datas);
+        adapter = new RelateVideoAdapter(R.layout.item_video_detail_group_content,
+                R.layout.item_video_detail_group_head, datas);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (datas.get(position).isHeader)
-                    return;
-                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, datas.get(position).t.getData()).build());
+                selectPosition = position;
+                if (datas.get(position).isHeader) {
+                    try {
+                        String[] arr = StringUtils.getUrlDecodePath
+                                (datas.get(position).t.getData().getActionUrl()).split("\\?");
+                        path = arr[0];
+                        id = Integer.parseInt(arr[1].split("=")[1]);
+                        mPresenter.getSecondRelaRelateVideoInfo(path, id, secondDatas.size());
+                        secondDatas.clear();
+                    } catch (Exception e) {
+
+                    }
+                } else {
+                    videoInfo = datas.get(position).t;
+                    mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+                    setVideoInfo();
+                    detailPlayer.startPlayLogic();
+                }
             }
         });
-        View headView = getLayoutInflater().inflate(R.layout.item_video_detail_top, recyclerView, false);
+        headView = getLayoutInflater().inflate(R.layout.item_video_detail_top, recyclerView, false);
+        footView = getLayoutInflater().inflate(R.layout.item_video_detail_foot, recyclerView, false);
         adapter.addHeaderView(headView);
+        adapter.addFooterView(footView);
         recyclerView.setAdapter(adapter);
-        initHeadView(headView);
-
+        refreshHeadView(headView);
     }
 
-    private void initHeadView(View headView) {
-        ExpandTextView expand = ((ExpandTextView)headView.findViewById(R.id.tv_expand));
+    private void refreshHeadView(View headView) {
+        ExpandTextView expand = ((ExpandTextView) headView.findViewById(R.id.tv_expand));
         expand.setTextMaxLine(2);
         expand.setText(videoInfo.getData().getDescription());
-        ImageView expandArrow = ((ImageView)headView.findViewById(R.id.iv_expand));
+        ImageView expandArrow = ((ImageView) headView.findViewById(R.id.iv_expand));
         expand.post(new Runnable() {
             @Override
             public void run() {
-                if (!expand.canExpand()){
+                if (!expand.canExpand()) {
                     expandArrow.setVisibility(View.GONE);
                 }
             }
         });
-        ((TextView)headView.findViewById(R.id.tv_title)).setText(videoInfo.getData().getTitle());
-        ((TextView)headView.findViewById(R.id.tv_type)).setText(getDetailStr(videoInfo));
+        ((TextView) headView.findViewById(R.id.tv_title)).setText(videoInfo.getData().getTitle());
+        ((TextView) headView.findViewById(R.id.tv_type)).setText(getDetailStr(videoInfo));
         expandArrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(expand.isExpand()){
+                if (expand.isExpand()) {
                     expand.shrink();
                     expandArrow.setImageResource(R.drawable.up_enter_arrow);
-                }else {
+                } else {
                     expand.expand();
                     expandArrow.setImageResource(R.drawable.down_enter_arrow);
                 }
             }
         });
-        ((TextView)headView.findViewById(R.id.tv_collection)).setText(videoInfo.getData().getConsumption().getCollectionCount()+"");
-        ((TextView)headView.findViewById(R.id.tv_upload)).setText(videoInfo.getData().getConsumption().getShareCount()+"");
-        ((TextView)headView.findViewById(R.id.tv_comment)).setText(videoInfo.getData().getConsumption().getReplyCount()+"");
-        if (videoInfo.getData().getAuthor()!=null){
-            ((TextView)headView.findViewById(R.id.tv_author_name)).setText(videoInfo.getData().getAuthor().getName());
-            ((TextView)headView.findViewById(R.id.tv_author_des)).setText(videoInfo.getData().getAuthor().getDescription());
+        ((TextView) headView.findViewById(R.id.tv_collection)).setText(videoInfo.getData().getConsumption().getCollectionCount() + "");
+        ((TextView) headView.findViewById(R.id.tv_upload)).setText(videoInfo.getData().getConsumption().getShareCount() + "");
+        ((TextView) headView.findViewById(R.id.tv_comment)).setText(videoInfo.getData().getConsumption().getReplyCount() + "");
+        if (videoInfo.getData().getAuthor() != null) {
+            ((TextView) headView.findViewById(R.id.tv_author_name)).setText(videoInfo.getData().getAuthor().getName());
+            ((TextView) headView.findViewById(R.id.tv_author_des)).setText(videoInfo.getData().getAuthor().getDescription());
             mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
                             ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
                     GlideImageConfig
                             .builder()
                             .url(videoInfo.getData().getCover().getFeed())
-                            .imageView(((ImageView)headView.findViewById(R.id.iv_author)))
+                            .imageView(((ImageView) headView.findViewById(R.id.iv_author)))
                             .transformation(new GlideCircleTransform(VideoDetailActivity.this))
                             .build());
         }
@@ -184,7 +211,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             list.add(switchVideoModel);
             list.add(switchVideoModel2);
             detailPlayer.setUp(list, true, "");
-        }catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             String source1 = videoInfo.getData().getPlayUrl();
             String name = "标清";
             SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
@@ -197,17 +224,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             detailPlayer.setUp(list, true, "");
         }
         //增加封面
-        ImageView mIvVideoBg = new ImageView(this);
+        mIvVideoBg = new ImageView(this);
         mIvVideoBg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
-                GlideImageConfig
-                        .builder()
-                        .url(videoInfo.getData().getCover().getFeed())
-                        .imageView(mIvVideoBg)
-                        .transformation(new FitCenter(VideoDetailActivity.this))
-                        .build());
-        detailPlayer.setThumbImageView(mIvVideoBg);
 
         resolveNormalVideoUI();
 
@@ -273,10 +291,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 }
             }
         });
+        detailPlayer.startPlayLogic();
     }
+
 
     @Override
     public void onBackPressed() {
+        if (recyclerView2.getVisibility() == View.VISIBLE){
+            AnimationUtils.startTranslate(recyclerView2,0,0
+                    ,0,recyclerView2.getHeight(),200,false);
+            return;
+        }
 
         if (orientationUtils != null) {
             orientationUtils.backToProtVideo();
@@ -309,6 +334,41 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             orientationUtils.releaseListener();
     }
 
+    private void setVideoInfo() {
+        try {
+            String source1 = videoInfo.getData().getPlayInfo().get(0).getUrl();
+            String name = "标清";
+            SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
+            String source2 = videoInfo.getData().getPlayInfo().get(1).getUrl();
+            String name2 = "高清";
+            SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
+            List<SwitchVideoModel> list = new ArrayList<>();
+            list.add(switchVideoModel);
+            list.add(switchVideoModel2);
+            detailPlayer.setUp(list, true, "");
+        } catch (IndexOutOfBoundsException e) {
+            String source1 = videoInfo.getData().getPlayUrl();
+            String name = "标清";
+            SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
+            String source2 = videoInfo.getData().getPlayUrl();
+            String name2 = "高清";
+            SwitchVideoModel switchVideoModel2 = new SwitchVideoModel(name2, source2);
+            List<SwitchVideoModel> list = new ArrayList<>();
+            list.add(switchVideoModel);
+            list.add(switchVideoModel2);
+            detailPlayer.setUp(list, true, "");
+        }
+        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
+                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+                GlideImageConfig
+                        .builder()
+                        .url(videoInfo.getData().getCover().getFeed())
+                        .imageView(mIvVideoBg)
+                        .transformation(new FitCenter(VideoDetailActivity.this))
+                        .build());
+        detailPlayer.setThumbImageView(mIvVideoBg);
+    }
+
 
     private void resolveNormalVideoUI() {
         //增加title
@@ -317,17 +377,72 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     @Override
-    public void setData(RelateVideoInfo info) {
-        for (RelateVideoInfo.ItemListBean item:info.getItemList()){
-            RelateVideoSection section = new RelateVideoSection(item);
-            if (item.getType().equals("textCard")){
-                section.isHeader = true;
-            }else {
-                section.isHeader = false;
+    public void setData(VideoListInfo info, boolean isShowSecond) {
+        if (isShowSecond) {
+            if (secondAdapter == null) {
+                secondAdapter = new RelateVideoAdapter(R.layout.item_video_detail_group_content,
+                        R.layout.item_video_detail_group_head, secondDatas);
+                View headView = getLayoutInflater().inflate(R.layout.item_video_detail_second_top, recyclerView2, false);
+                ((TextView)headView.findViewById(R.id.tv_name)).setText(datas.get(selectPosition).t.getData().getText());
+                ((ImageView)headView.findViewById(R.id.iv_arrow)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AnimationUtils.startTranslate(recyclerView2,0,0
+                                ,0,recyclerView2.getHeight(),200,false);
+                    }
+                });
+                secondAdapter.setHeaderView(headView);
+                recyclerView2.setAdapter(secondAdapter);
+                secondAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                        AnimationUtils.startTranslate(recyclerView2,0,0
+                                ,0,recyclerView2.getHeight(),200,false);
+                            videoInfo = secondDatas.get(position).t;
+                            mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+                            setVideoInfo();
+                            detailPlayer.startPlayLogic();
+                    }
+                });
+                secondAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                    @Override
+                    public void onLoadMoreRequested() {
+                        recyclerView2.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mPresenter.getSecondRelaRelateVideoInfo(path,id,secondDatas.size());
+                            }
+                        },500);
+                    }
+                },recyclerView2);
             }
-            datas.add(section);
+            if (!(secondDatas.size()>0)){
+                AnimationUtils.startTranslate(recyclerView2,0,recyclerView2.getHeight()
+                        ,0,0,200,true);
+            }
+            List<RelateVideoSection> newData = new ArrayList<>();
+            for (VideoListInfo.Video item : info.getItemList()) {
+                RelateVideoSection section = new RelateVideoSection(item);
+                section.isHeader = false;
+                newData.add(section);
+                secondDatas.add(section);
+            }
+            secondAdapter.addData(newData);
+            secondAdapter.loadMoreComplete();
+        } else {
+            datas.clear();
+            for (VideoListInfo.Video item : info.getItemList()) {
+                RelateVideoSection section = new RelateVideoSection(item);
+                if (item.getType().equals("textCard")) {
+                    section.isHeader = true;
+                } else {
+                    section.isHeader = false;
+                }
+                datas.add(section);
+            }
+            refreshHeadView(headView);
+            adapter.setNewData(datas);
         }
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -352,23 +467,22 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void killMyself() {
-
     }
 
-    private String getDetailStr(VideoListInfo.Video item){
-        String duration = item.getData().getDuration()+"";
+    private String getDetailStr(VideoListInfo.Video item) {
+        String duration = item.getData().getDuration() + "";
         int seconds = Integer.parseInt(duration);
-        int temp=0;
-        StringBuffer sb=new StringBuffer();
-        temp = seconds/3600;
-        sb.append((temp<10)?"0"+temp+":":""+temp+":");
+        int temp = 0;
+        StringBuffer sb = new StringBuffer();
+        temp = seconds / 3600;
+        sb.append((temp < 10) ? "0" + temp + ":" : "" + temp + ":");
 
-        temp=seconds%3600/60;
-        sb.append((temp<10)?"0"+temp+":":""+temp+":");
+        temp = seconds % 3600 / 60;
+        sb.append((temp < 10) ? "0" + temp + ":" : "" + temp + ":");
 
-        temp=seconds%3600%60;
-        sb.append((temp<10)?"0"+temp:""+temp);
-        String detail = "#"+item.getData().getCategory()+" / "+sb.toString();
+        temp = seconds % 3600 % 60;
+        sb.append((temp < 10) ? "0" + temp : "" + temp);
+        String detail = "#" + item.getData().getCategory() + " / " + sb.toString();
         return detail;
     }
 

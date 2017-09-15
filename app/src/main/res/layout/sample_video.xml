@@ -108,10 +108,11 @@
         android:id="@+id/loading"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        style="@style/Widget.AppCompat.ProgressBar"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="invisible" />
+        android:visibility="visible" />
 
     <com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.VideoControlView
         android:id="@+id/start"

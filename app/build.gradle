@@ -88,5 +88,6 @@ dependencies {
     compile rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
     compile rootProject.ext.dependencies["gsyVideoPlayer-java"]
     compile rootProject.ext.dependencies["gsyVideoPlayer-armv7a"]
+    compile rootProject.ext.dependencies["gsyVideoPlayer-x86"]
 }
 apply plugin: AspectjPlugin

@@ -9,4 +9,19 @@
     <declare-styleable name="VideoControlView">
         <attr name="itemColor" format="color"></attr>
     </declare-styleable>
+    <declare-styleable name="MyNavigationBottom">
+        <attr name="nb_xmlResource" format="reference"/>
+        <attr name="nb_defaultIndex" format="integer"/>
+        <attr name="nb_scrollDuration" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="MyNavigationBottomItem">
+        <attr name="android:title"/>
+        <attr name="nb_tabInActiveResId" format="reference"/>
+        <attr name="nb_tabActiveResId" format="reference"/>
+        <attr name="nb_insetLeft" format="dimension"/>
+        <attr name="nb_insetTop" format="dimension"/>
+        <attr name="nb_insetRight" format="dimension"/>
+        <attr name="nb_insetBottom" format="dimension"/>
+    </declare-styleable>
 </resources>

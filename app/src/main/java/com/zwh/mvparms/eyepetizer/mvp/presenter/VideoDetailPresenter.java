@@ -8,13 +8,14 @@ import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import javax.inject.Inject;
 
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
+
+import static android.R.attr.id;
 
 
 @ActivityScope
@@ -37,10 +38,19 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
 
     public void getRelaRelateVideoInfo(int id){
         mModel.getRelateVideoInfo(id).compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<RelateVideoInfo>(mErrorHandler) {
+                .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
-                    public void onNext(RelateVideoInfo info) {
-                        mRootView.setData(info);
+                    public void onNext(VideoListInfo info) {
+                        mRootView.setData(info,false);
+                    }
+                });
+    }
+    public void getSecondRelaRelateVideoInfo(String path,int id,int startnum){
+        mModel.getSecondRelateVideoInfo(path,id,startnum).compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(VideoListInfo info) {
+                        mRootView.setData(info,true);
                     }
                 });
     }

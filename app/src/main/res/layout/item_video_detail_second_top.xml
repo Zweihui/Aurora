@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/ll_root"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@android:color/transparent"
-              android:clickable="true"
-              android:gravity="center_vertical"
-              android:orientation="horizontal"
-              android:padding="13dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:clickable="true"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="13dp">
 
     <TextView
         android:id="@+id/tv_name"
@@ -15,7 +14,12 @@
         android:layout_height="wrap_content"
         android:text="相关视频推荐"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="15sp"
+        android:textSize="18sp"
+        />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
         />
 
     <ImageView
@@ -24,6 +28,6 @@
         android:layout_height="15dp"
         android:layout_marginLeft="3dp"
         android:scaleType="fitXY"
-        android:src="@drawable/right_enter_arrow"
+        android:src="@drawable/down_enter_arrow"
         />
 </LinearLayout>

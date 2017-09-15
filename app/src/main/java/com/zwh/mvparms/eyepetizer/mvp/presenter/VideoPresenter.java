@@ -22,6 +22,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.UserAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -68,9 +69,20 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {
+                        filterData(info.getItemList());
                         mRootView.setData(info.getItemList(),pullToRefresh);
                     }
                 });
+    }
+
+    private void filterData(List<VideoListInfo.Video> list) {
+        Iterator<VideoListInfo.Video> iterator = list.iterator();
+        while(iterator.hasNext()){
+            VideoListInfo.Video video = iterator.next();
+            if(video.getData().getPlayInfo() == null){
+                iterator.remove();
+            }
+        }
     }
 
     @Override

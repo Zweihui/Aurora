@@ -15,6 +15,7 @@ import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.cache.CommonCache;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.UserService;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.VideoService;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
@@ -50,6 +51,12 @@ public class VideoModel extends BaseModel implements VideoContract.Model {
         this.mApplication = null;
     }
 
+    @Override
+    public Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId) {
+         Observable<IndextVideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoService.class)
+                .getIndexVideoList(lastStartId, Constants.UDID,Constants.VC,Constants.VN,Constants.DEVICEMODEL);
+        return observable;
+    }
     @Override
     public Observable<VideoListInfo> getVideoList(String type, String lastIdQueried,int startCount,boolean update) {
         Observable<VideoListInfo> videoInfo = mRepositoryManager.obtainRetrofitService(VideoService.class)

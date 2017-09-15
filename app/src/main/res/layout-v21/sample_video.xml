@@ -110,6 +110,8 @@
         android:layout_height="60dp"
         android:indeterminateTintMode="src_atop"
         android:indeterminateTint="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center" />
 
     <com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.VideoControlView

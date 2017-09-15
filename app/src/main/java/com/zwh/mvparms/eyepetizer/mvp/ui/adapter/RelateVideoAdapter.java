@@ -9,7 +9,7 @@ import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.RelateVideoInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 
 import java.util.List;
@@ -43,13 +43,13 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
                         ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
                 GlideImageConfig
                         .builder()
-                        .url(item.t.getData().getData().getCover().getFeed())
+                        .url(item.t.getData().getCover().getFeed())
                         .imageView(img)
                         .build());
     }
 
-    private String getDetailStr(RelateVideoInfo.ItemListBean item){
-        String duration = item.getData().getData().getDuration()+"";
+    private String getDetailStr(VideoListInfo.Video item){
+        String duration = item.getData().getDuration()+"";
         int seconds = Integer.parseInt(duration);
         int temp=0;
         StringBuffer sb=new StringBuffer();
@@ -61,7 +61,7 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
 
         temp=seconds%3600%60;
         sb.append((temp<10)?"0"+temp:""+temp);
-        String detail = "#"+item.getData().getData().getCategory()+" / "+sb.toString();
+        String detail = "#"+item.getData().getCategory()+" / "+sb.toString();
         return detail;
     }
 }

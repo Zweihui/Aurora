@@ -1,6 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.model.api.service;
 
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface VideoService {
     //获取分类信息
     @GET("v3/videos")
     Observable<VideoListInfo> getVideoList(@Query("start") int startCount,@Query("num") int num,@Query("categoryName") String categoryName);
+    @GET("v4/tabs/selected")
+    Observable<IndextVideoListInfo> getIndexVideoList(@Query("lastStartId") int lastStartId, @Query("udid") String udid, @Query("vc") String vc, @Query("vn") String vn, @Query("deviceModel") String deviceModel);
 }

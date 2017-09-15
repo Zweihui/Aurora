@@ -1,5 +1,6 @@
 package com.jess.arms.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 /**
@@ -24,6 +25,19 @@ public class StringUtils {
 
     public static <V> boolean isEmpty(V[] sourceArray) {
         return (sourceArray == null || sourceArray.length == 0);
+    }
+
+    public static String getUrlDecodePath(String urlencode){
+        String path = "";
+        try {
+            path =  java.net.URLDecoder.decode(urlencode,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+        String[] s = path.split("&");
+        path = s[1].replace("url=http://baobab.kaiyanapp.com/api/v4/video/","");
+        return path;
     }
 
 }

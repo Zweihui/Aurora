@@ -21,4 +21,8 @@ public class Constants {
 
     //==================api============//
     public static final int HOME_VIDEO_LIST_PAGE_SIZE = 10;
+    public static final String UDID = "97cb741ce0b4442aaca94749a506b380ca2fb30f";
+    public static final String VC = "220";
+    public static final String VN = "3.10";
+    public static final String DEVICEMODEL = "Mi";
 }

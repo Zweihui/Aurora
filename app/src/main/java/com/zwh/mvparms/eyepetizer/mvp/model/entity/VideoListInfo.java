@@ -10,6 +10,7 @@ public class VideoListInfo {
 
     private int count;
     private int total;
+    private int refreshCount;
     private String nextPageUrl;
     private List<Video> itemList;
 
@@ -54,8 +55,6 @@ public class VideoListInfo {
 
         private String type;
         private DataBean data;
-        private String title;
-        private String text;
         private Object tag;
 
         public String getType() {
@@ -80,22 +79,6 @@ public class VideoListInfo {
 
         public void setTag(Object tag) {
             this.tag = tag;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public void setText(String text) {
-            this.text = text;
         }
 
         public static class DataBean {
@@ -143,8 +126,8 @@ public class VideoListInfo {
 
             private String dataType;
             private int id;
-            private String title;
             private Object slogan;
+            private String actionUrl;
             private String description;
             private ProviderBean provider;
             private String category;
@@ -180,6 +163,24 @@ public class VideoListInfo {
             private List<?> tags;
             private List<?> labelList;
             private List<?> subtitles;
+            private String title;
+            private String text;
+
+            public String getText() {
+                return text;
+            }
+
+            public void setText(String text) {
+                this.text = text;
+            }
+
+            public String getActionUrl() {
+                return actionUrl;
+            }
+
+            public void setActionUrl(String actionUrl) {
+                this.actionUrl = actionUrl;
+            }
 
             public String getDataType() {
                 return dataType;

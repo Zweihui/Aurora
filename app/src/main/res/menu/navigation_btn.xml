@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_home"
+        android:title="首页"
+        android:icon="@drawable/bottom_home"
+        />
+    <item
+        android:id="@+id/item_category"
+        android:title="分类"
+        android:icon="@drawable/bottom_category"
+        />
+    <item
+        android:id="@+id/item_attention"
+        android:title="关注"
+        android:icon="@drawable/bottom_attention"
+        />
+    <item
+        android:id="@+id/item_mine"
+        android:title="我的"
+        android:icon="@drawable/bottom_mine"
+        />
+</menu>

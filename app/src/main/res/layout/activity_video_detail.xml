@@ -38,17 +38,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline">
 
-        <ImageView
-            android:id="@+id/iv_blur_bg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@android:color/black" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/trans_black"
+            android:background="@color/white"
+            />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/second_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="false"
+            android:visibility="invisible"
             />
 
     </FrameLayout>

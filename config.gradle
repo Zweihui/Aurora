@@ -103,8 +103,9 @@ ext {
                 "umeng-analytics"          : "com.umeng.analytics:analytics:6.0.1",
 
                 //media
-                "gsyVideoPlayer-java"           : "com.shuyu:gsyVideoPlayer-java:2.0.6",
-                "gsyVideoPlayer-armv7a"         : "com.shuyu:gsyVideoPlayer-armv7a:2.0.6",
+                "gsyVideoPlayer-java"           : "com.shuyu:gsyVideoPlayer-java:2.0.7",
+                "gsyVideoPlayer-armv7a"         : "com.shuyu:gsyVideoPlayer-armv7a:2.0.7",
+                "gsyVideoPlayer-x86"            : "com.shuyu:gsyVideoPlayer-x86:2.0.7",
         ]
 
 
