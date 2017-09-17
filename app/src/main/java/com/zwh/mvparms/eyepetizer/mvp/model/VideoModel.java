@@ -3,23 +3,17 @@ package com.zwh.mvparms.eyepetizer.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
-
-import com.jess.arms.di.scope.ActivityScope;
-
-import javax.inject.Inject;
-
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.cache.CommonCache;
-import com.zwh.mvparms.eyepetizer.mvp.model.api.service.UserService;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.VideoService;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
-import java.util.List;
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -28,8 +22,6 @@ import io.reactivex.functions.Function;
 import io.rx_cache2.DynamicKey;
 import io.rx_cache2.EvictDynamicKey;
 import io.rx_cache2.Reply;
-
-import static com.zwh.mvparms.eyepetizer.mvp.model.UserModel.USERS_PER_PAGE;
 
 
 @ActivityScope
@@ -52,10 +44,19 @@ public class VideoModel extends BaseModel implements VideoContract.Model {
     }
 
     @Override
-    public Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId) {
+    public Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId,boolean update) {
          Observable<IndextVideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoService.class)
                 .getIndexVideoList(lastStartId, Constants.UDID,Constants.VC,Constants.VN,Constants.DEVICEMODEL);
-        return observable;
+        return mRepositoryManager.obtainCacheService(CommonCache.class)
+                .getIndexVideoList(observable
+                        , new DynamicKey(lastStartId)
+                        , new EvictDynamicKey(update))
+                .flatMap(new Function<Reply<IndextVideoListInfo>, ObservableSource<IndextVideoListInfo>>() {
+                    @Override
+                    public ObservableSource<IndextVideoListInfo> apply(@NonNull Reply<IndextVideoListInfo> listReply) throws Exception {
+                        return Observable.just(listReply.getData());
+                    }
+                });
     }
     @Override
     public Observable<VideoListInfo> getVideoList(String type, String lastIdQueried,int startCount,boolean update) {

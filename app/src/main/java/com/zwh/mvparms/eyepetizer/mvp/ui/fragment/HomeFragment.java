@@ -3,7 +3,6 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,14 +16,12 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
-import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoComponent;
+import com.zwh.mvparms.eyepetizer.di.component.DaggerHomeComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoPresenter;
@@ -35,59 +32,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by mac on 2017/8/20.
+ * Created by mac on 2017/9/16.
  */
 
-public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> implements VideoContract.View,SwipeRefreshLayout.OnRefreshListener{
+public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implements VideoContract.View,SwipeRefreshLayout.OnRefreshListener{
 
     SwipeRefreshLayout mSwipeRefresh;
     RecyclerView mRecyclerView;
 
     private BaseQuickAdapter adapter;
     private List<VideoListInfo.Video> data = new ArrayList<>();
+
     private RxPermissions mRxPermissions;
     private boolean isFirstLoad = true;
 
-    private String type ="";
+    private String type ="时尚";
 
-    public static VideoListFragment newInstance(Category category) {
-        Bundle arguments = new Bundle();
-        arguments.putString(Constants.TYPE, category.getName());
-        VideoListFragment fragment = new VideoListFragment();
-        fragment.setArguments(arguments);
+    public static HomeFragment newInstance() {
+        HomeFragment fragment = new HomeFragment();
         return fragment;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("type", type);
-    }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        type = (String) getArguments().get(Constants.TYPE);
-        if (savedInstanceState != null){
-            type =  savedInstanceState.getString("type");
-        }
-    }
-
-    @Override
-    public void setupFragmentComponent(AppComponent appComponent) {
-        this.mRxPermissions = new RxPermissions(getActivity());
-        DaggerVideoComponent //如找不到该类,请编译一下项目
-                .builder()
-                .appComponent(appComponent)
-                .videoModule(new VideoModule(this))
-                .build()
-                .inject(this);
-    }
-
-    @Override
-    protected void loadData() {
+    public void onRefresh() {
         mPresenter.getVideoList(type,getQuryId(),0,true);
-        mSwipeRefresh.setRefreshing(true);
     }
 
     @Override
@@ -104,7 +73,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
 
     @Override
     public void showMessage(String message) {
-        UiUtils.snackbarText(message);
+
     }
 
     @Override
@@ -115,6 +84,17 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    public void setupFragmentComponent(AppComponent appComponent) {
+        this.mRxPermissions = new RxPermissions(getActivity());
+        DaggerHomeComponent //如找不到该类,请编译一下项目
+                .builder()
+                .appComponent(appComponent)
+                .videoModule(new VideoModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -159,29 +139,6 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
     public void setData(Object data) {
 
     }
-    public int getStartCount() {
-        if (StringUtils.isEmpty(data)){
-            return 0;
-        }else {
-            return data.size();
-        }
-    }
-    public int getQuryId() {
-        if (StringUtils.isEmpty(data)){
-            return 1;
-        }else {
-            return data.get(data.size()-1).getData().getId();
-        }
-    }
-
-    @Override
-    public void onRefresh() {
-        mPresenter.getVideoList(type,getQuryId(),0,true);
-    }
-
-    public boolean isLoding(){
-        return mSwipeRefresh.isRefreshing();
-    }
 
     @Override
     public RxPermissions getRxPermissions() {
@@ -189,7 +146,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
     }
 
     @Override
-    public void setData(List<VideoListInfo.Video> list,Boolean isPullRefresh) {
+    public void setData(List<VideoListInfo.Video> list, Boolean isPullRefresh) {
         if (isPullRefresh){
             if (isFirstLoad){
                 isFirstLoad = false;
@@ -232,5 +189,30 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
             adapter.addData(list);
             adapter.loadMoreComplete();
         }
+    }
+
+    @Override
+    protected void loadData() {
+        mPresenter.getVideoList(type,getQuryId(),0,true);
+        mSwipeRefresh.setRefreshing(true);
+    }
+
+    public int getQuryId() {
+        if (StringUtils.isEmpty(data)){
+            return 1;
+        }else {
+            return data.get(data.size()-1).getData().getId();
+        }
+    }
+    public int getStartCount() {
+        if (StringUtils.isEmpty(data)){
+            return 0;
+        }else {
+            return data.size();
+        }
+    }
+
+    public boolean isLoding(){
+        return mSwipeRefresh.isRefreshing();
     }
 }

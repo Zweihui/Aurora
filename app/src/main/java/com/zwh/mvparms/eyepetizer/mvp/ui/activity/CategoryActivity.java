@@ -40,7 +40,7 @@ import io.reactivex.functions.Function;
 
 
 @Router(Constants.HOME)
-public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CategoryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -142,10 +142,10 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void onPageSelected(int position) {
-                HomeActivity.this.position = position;
+                CategoryActivity.this.position = position;
                 ((BaseApplication)getApplication())
                         .getAppComponent()
-                        .imageLoader().loadImage(HomeActivity.this, GlideImageConfig
+                        .imageLoader().loadImage(CategoryActivity.this, GlideImageConfig
                         .builder()
                         .url(list.get(position).getHeaderImage())
                         .imageView(mToolbarIvTarget)
@@ -160,7 +160,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         mTabLayout.setupWithViewPager(mViewpager);
         ((BaseApplication)getApplication())
                 .getAppComponent()
-                .imageLoader().loadImage(HomeActivity.this, GlideImageConfig
+                .imageLoader().loadImage(CategoryActivity.this, GlideImageConfig
                 .builder()
                 .url(list.get(0).getHeaderImage())
                 .imageView(mToolbarIvTarget)

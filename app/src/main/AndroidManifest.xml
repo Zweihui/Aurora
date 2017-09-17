@@ -41,7 +41,7 @@
             android:value="ConfigModule"/>
 
         <activity
-            android:name=".mvp.ui.activity.HomeActivity"
+            android:name=".mvp.ui.activity.CategoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             >

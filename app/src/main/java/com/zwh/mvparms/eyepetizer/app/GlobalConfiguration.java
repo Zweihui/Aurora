@@ -26,7 +26,8 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.zwh.mvparms.eyepetizer.BuildConfig;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.Api;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.HomeActivity;
+import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CategoryActivity;
+import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -199,7 +200,10 @@ public final class GlobalConfiguration implements ConfigModule {
                     //由于加强框架的兼容性,故将 setContentView 放到 onActivityCreated 之后,onActivityStarted 之前执行
                     //而 findViewById 必须在 Activity setContentView() 后才有效,所以将以下代码从之前的 onActivityCreated 中移动到 onActivityStarted 中执行
                     activity.getIntent().putExtra("isInitToolbar", true);
-                    if (activity instanceof HomeActivity){
+                    if (activity instanceof CategoryActivity){
+                        return;
+                    }
+                    if (activity instanceof MainActivity){
                         return;
                     }
                     //这里全局给Activity设置toolbar和title,你想象力有多丰富,这里就有多强大,以前放到BaseActivity的操作都可以放到这里
