@@ -15,9 +15,13 @@ import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
+import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerHomeComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoModule;
@@ -28,14 +32,19 @@ import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.DefaultVideoAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
 
+import org.simple.eventbus.Subscriber;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.zwh.mvparms.eyepetizer.R.id.view;
+import static com.zwh.mvparms.eyepetizer.app.constants.Constants.SP_LAST_START_ID;
 
 /**
  * Created by mac on 2017/9/16.
  */
 
-public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implements VideoContract.View,SwipeRefreshLayout.OnRefreshListener{
+public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implements VideoContract.View,SwipeRefreshLayout.OnRefreshListener{
 
     SwipeRefreshLayout mSwipeRefresh;
     RecyclerView mRecyclerView;
@@ -46,7 +55,8 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
     private RxPermissions mRxPermissions;
     private boolean isFirstLoad = true;
 
-    private String type ="时尚";
+    private int page = 2;
+    private int lastStartId = -1;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -56,12 +66,14 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
 
     @Override
     public void onRefresh() {
-        mPresenter.getVideoList(type,getQuryId(),0,true);
+        mPresenter.getIndexVideoList(getFirstQuryId(),true,page);
     }
 
     @Override
     public void showLoading() {
-
+        if (!mSwipeRefresh.isRefreshing()){
+            mSwipeRefresh.setRefreshing(true);
+        }
     }
 
     @Override
@@ -111,7 +123,7 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
         adapter.setOnLoadMoreListener(() -> mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.getVideoList(type,getQuryId(),getStartCount(),false);
+                mPresenter.getIndexVideoList(lastStartId,false,page);
             }
         },500), mRecyclerView);
         mSwipeRefresh.setOnRefreshListener(this);
@@ -128,7 +140,7 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+                gotoDetail(view,position);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -138,6 +150,11 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
     @Override
     public void setData(Object data) {
 
+    }
+
+    @SingleClick
+    private void gotoDetail(View view,int position){
+        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
     }
 
     @Override
@@ -165,7 +182,7 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
                                 mRecyclerView.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mPresenter.getVideoList(type,getQuryId(),getStartCount(),false);
+                                        mPresenter.getIndexVideoList(lastStartId,false,page);
                                     }
                                 },500);
                             }
@@ -173,46 +190,52 @@ public class HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implement
                         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+                                gotoDetail(view,position);
                             }
                         });
                         mRecyclerView.setAdapter(adapter);
                     }
                 },1000);
                 return;
+            }else {
+                adapter.addData(0,list);
+                mRecyclerView.scrollToPosition(0);
+                adapter.setEnableLoadMore(true);
+                UiUtils.makeText(getActivity(),"更新了"+list.size()+"条内容");
             }
-            data.clear();
-            data.addAll(list);
-            adapter.setNewData(data);
-            adapter.setEnableLoadMore(true);
+            lastStartId = list.get(0).getData().getId();
+            SharedPreferencesUtils.setParam(getActivity(),SP_LAST_START_ID,lastStartId);
         }else {
             adapter.addData(list);
             adapter.loadMoreComplete();
+            page = page + 2;
         }
     }
 
     @Override
     protected void loadData() {
-        mPresenter.getVideoList(type,getQuryId(),0,true);
-        mSwipeRefresh.setRefreshing(true);
+        lastStartId = (int) SharedPreferencesUtils.getParam(getActivity(),SP_LAST_START_ID,-1);
+        mSwipeRefresh.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.getIndexVideoList(lastStartId,true,page);
+                mSwipeRefresh.setRefreshing(true);
+            }
+        },300);
     }
-
-    public int getQuryId() {
+    @Subscriber(tag = EventBusTags.REFRESH_HOME_DATA)
+    public void refrshData(String s){
+        if (mSwipeRefresh.isRefreshing()){
+            return;
+        }
+        mSwipeRefresh.setRefreshing(true);
+        mPresenter.getIndexVideoList(lastStartId,true,page);
+    }
+    public int getFirstQuryId() {
         if (StringUtils.isEmpty(data)){
             return 1;
         }else {
-            return data.get(data.size()-1).getData().getId();
+            return data.get(0).getData().getId();
         }
-    }
-    public int getStartCount() {
-        if (StringUtils.isEmpty(data)){
-            return 0;
-        }else {
-            return data.size();
-        }
-    }
-
-    public boolean isLoding(){
-        return mSwipeRefresh.isRefreshing();
     }
 }

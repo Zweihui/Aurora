@@ -38,20 +38,18 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
+import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
 
-@Router(Constants.HOME)
-public class CategoryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.toolbar)
+@Router(Constants.CATEGORY)
+public class CategoryActivity extends BaseActivity{
+
+    @BindView(toolbar)
     Toolbar mToolbar;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
     @BindView(R.id.main_content)
     CoordinatorLayout mMainContent;
-    @BindView(R.id.nv_main_navigation)
-    NavigationView mNvMainNavigation;
-    @BindView(R.id.dl_main_drawer)
-    DrawerLayout mDlMainDrawer;
     @BindView(R.id.toolbar_iv_target)
     ImageView mToolbarIvTarget;
     @BindView(R.id.tl_tabs)
@@ -63,39 +61,13 @@ public class CategoryActivity extends BaseActivity implements NavigationView.OnN
     @BindView(R.id.nestedScrollView)
     NestedScrollView mNestedScrollView;
 
-    ActionBarDrawerToggle mToggle;
-    @Extra(Constants.SPLASH_DATA)
+    @Extra(Constants.CATEGORY_DATA)
     public List<Category> list;
 
-    private int position = 0;
+    @Extra(Constants.CATEGORY_DATA_POSITION)
+    public int position;
     private long firstTime=0;
     private List<VideoListFragment> fragments = new ArrayList<>();
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.nav_manage) ;
-        else if (item.getItemId() == R.id.nav_share) ;
-        else if (item.getItemId() == R.id.nav_theme) ;
-        mDlMainDrawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -110,11 +82,13 @@ public class CategoryActivity extends BaseActivity implements NavigationView.OnN
     @Override
     public void initData(Bundle savedInstanceState) {
         setSupportActionBar(mToolbar);
-        mToggle = new ActionBarDrawerToggle(
-                this, mDlMainDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        mDlMainDrawer.setDrawerListener(mToggle);
-        mToggle.syncState();
-        mNvMainNavigation.setNavigationItemSelectedListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +124,7 @@ public class CategoryActivity extends BaseActivity implements NavigationView.OnN
                         .url(list.get(position).getHeaderImage())
                         .imageView(mToolbarIvTarget)
                         .build());
+                setTitle(list.get(CategoryActivity.this.position).getName());
             }
 
             @Override
@@ -165,23 +140,15 @@ public class CategoryActivity extends BaseActivity implements NavigationView.OnN
                 .url(list.get(0).getHeaderImage())
                 .imageView(mToolbarIvTarget)
                 .build());
+        mViewpager.setCurrentItem(position);
     }
 
     @Override
     public void onBackPressed() {
-        if (mDlMainDrawer.isDrawerOpen(GravityCompat.START)) {
-            mDlMainDrawer.closeDrawer(GravityCompat.START);
-        } else if(fragments.get(position).isLoding()){
+        if(fragments.get(position).isLoding()){
             fragments.get(position).hideLoading();
         }else {
-            if (System.currentTimeMillis()-firstTime>2000){
-                UiUtils.snackbarText("再按一次退出应用");
-                firstTime=System.currentTimeMillis();
-            }else{
-                finish();
-                System.exit(0);
-            }
+            super.onBackPressed();
         }
     }
-
 }

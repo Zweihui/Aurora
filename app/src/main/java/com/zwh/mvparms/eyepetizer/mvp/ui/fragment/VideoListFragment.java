@@ -19,6 +19,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoComponent;
@@ -148,7 +149,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+                gotoDetail(view,position);
             }
         });
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -188,6 +189,11 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
         return mRxPermissions;
     }
 
+    @SingleClick
+    private void gotoDetail(View view,int position){
+        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+    }
+
     @Override
     public void setData(List<VideoListInfo.Video> list,Boolean isPullRefresh) {
         if (isPullRefresh){
@@ -216,7 +222,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
                         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                                TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+                                gotoDetail(view,position);
                             }
                         });
                         mRecyclerView.setAdapter(adapter);

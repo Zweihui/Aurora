@@ -17,6 +17,7 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.UserAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
@@ -24,6 +25,9 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import static android.R.attr.type;
+import static android.R.id.list;
 
 
 @ActivityScope
@@ -74,6 +78,25 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                     }
                 });
     }
+    public void getIndexVideoList(int lastStartId,Boolean isPullRefresh,int page) {
+        if (isPullRefresh){
+            mModel.getIndexVideoList(lastStartId).compose(RxUtils.applySchedulers(mRootView))
+                    .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
+                        @Override
+                        public void onNext(IndextVideoListInfo info) {
+                            mRootView.setData(getIndexVideoList(info),true);
+                        }
+                    });
+        }else {
+            mModel.getMoreIndexVideoList(page).compose(RxUtils.applySchedulers(mRootView))
+                    .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
+                        @Override
+                        public void onNext(IndextVideoListInfo info) {
+                            mRootView.setData(getIndexVideoList(info),false);
+                        }
+                    });
+        }
+    }
 
     private void filterData(List<VideoListInfo.Video> list) {
         Iterator<VideoListInfo.Video> iterator = list.iterator();
@@ -83,6 +106,21 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                 iterator.remove();
             }
         }
+    }
+    private List<VideoListInfo.Video> getIndexVideoList(IndextVideoListInfo info) {
+        List<VideoListInfo.Video> list = new ArrayList<>();
+        for (IndextVideoListInfo.ItemList itemList: info.getItemList()){
+            if (!itemList.getType().equals("followCard")){
+                continue;
+            }
+            if (itemList.getData().getContent() ==null){
+                continue;
+            }
+            if (itemList.getData().getContent().getType().equals("video")){
+                list.add(itemList.getData().getContent());
+            }
+        }
+        return list;
     }
 
     @Override

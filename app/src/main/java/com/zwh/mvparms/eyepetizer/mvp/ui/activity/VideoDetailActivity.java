@@ -1,26 +1,20 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Transition;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.apt.TRouter;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
-import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
@@ -32,27 +26,30 @@ import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoDetailPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.ReplyAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
+import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 
+import org.simple.eventbus.Subscriber;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-
-import static android.R.attr.type;
-import static com.jess.arms.utils.StringUtils.getUrlDecodePath;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -75,8 +72,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     private RelateVideoAdapter adapter;
     private RelateVideoAdapter secondAdapter;
+    private ReplyAdapter replyAdapter;
     private List<RelateVideoSection> datas = new ArrayList<>();
     private List<RelateVideoSection> secondDatas = new ArrayList<>();
+    private ShareInfo shareInfo;
+    private List<ReplySection> replyDatas = new ArrayList<>();
 
     private boolean isPlay;
     private boolean isPause;
@@ -111,10 +111,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
         initMedia();
         initRecyclerView();
         mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+        mPresenter.getShareInfo(videoInfo.getData().getId());
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setSwipeBackEnable(true);
+        setEdgeEnable(false);
     }
 
     private void initRecyclerView() {
@@ -195,11 +202,28 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                             .transformation(new GlideCircleTransform(VideoDetailActivity.this))
                             .build());
         }
+        headView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView2.removeAllViews();
+                startAnimate(true);
+                mPresenter.getReplyInfo(videoInfo.getData().getId());
+            }
+        });
+        headView.findViewById(R.id.ll_upload).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoShare();
+            }
+        });
     }
+
 
     private void initMedia() {
         detailPlayer.setEnlargeImageRes(R.drawable.ve_video_full_screen); //设置全屏按钮
         detailPlayer.setShrinkImageRes(R.drawable.ve_exit_full_screen); //设置缩屏按钮
+        detailPlayer.setBottomProgressBarDrawable(getResources().getDrawable(R.drawable.progress_video));
+        detailPlayer.setBottomShowProgressBarDrawable(getResources().getDrawable(R.drawable.progress_video), getResources().getDrawable(R.drawable.video_seek_thumb));
         try {
             String source1 = videoInfo.getData().getPlayInfo().get(0).getUrl();
             String name = "标清";
@@ -297,9 +321,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void onBackPressed() {
-        if (recyclerView2.getVisibility() == View.VISIBLE){
-            AnimationUtils.startTranslate(recyclerView2,0,0
-                    ,0,recyclerView2.getHeight(),200,false);
+        if (recyclerView2.getVisibility() == View.VISIBLE) {
+            startAnimate(false);
             return;
         }
 
@@ -378,17 +401,19 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void setData(VideoListInfo info, boolean isShowSecond) {
+        if (StringUtils.isEmpty(info.getItemList())) {
+            return;
+        }
         if (isShowSecond) {
             if (secondAdapter == null) {
                 secondAdapter = new RelateVideoAdapter(R.layout.item_video_detail_group_content,
                         R.layout.item_video_detail_group_head, secondDatas);
                 View headView = getLayoutInflater().inflate(R.layout.item_video_detail_second_top, recyclerView2, false);
-                ((TextView)headView.findViewById(R.id.tv_name)).setText(datas.get(selectPosition).t.getData().getText());
-                ((ImageView)headView.findViewById(R.id.iv_arrow)).setOnClickListener(new View.OnClickListener() {
+                ((TextView) headView.findViewById(R.id.tv_name)).setText(datas.get(selectPosition).t.getData().getText());
+                ((ImageView) headView.findViewById(R.id.iv_arrow)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AnimationUtils.startTranslate(recyclerView2,0,0
-                                ,0,recyclerView2.getHeight(),200,false);
+                        startAnimate(false);
                     }
                 });
                 secondAdapter.setHeaderView(headView);
@@ -396,12 +421,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 secondAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        AnimationUtils.startTranslate(recyclerView2,0,0
-                                ,0,recyclerView2.getHeight(),200,false);
-                            videoInfo = secondDatas.get(position).t;
-                            mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
-                            setVideoInfo();
-                            detailPlayer.startPlayLogic();
+                        startAnimate(false);
+                        videoInfo = secondDatas.get(position).t;
+                        mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+                        setVideoInfo();
+                        detailPlayer.startPlayLogic();
                     }
                 });
                 secondAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -410,15 +434,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                         recyclerView2.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mPresenter.getSecondRelaRelateVideoInfo(path,id,secondDatas.size());
+                                mPresenter.getSecondRelaRelateVideoInfo(path, id, secondDatas.size());
                             }
-                        },500);
+                        }, 500);
                     }
-                },recyclerView2);
+                }, recyclerView2);
             }
-            if (!(secondDatas.size()>0)){
-                AnimationUtils.startTranslate(recyclerView2,0,recyclerView2.getHeight()
-                        ,0,0,200,true);
+            if (!(secondDatas.size() > 0)) {
+                startAnimate(true);
             }
             List<RelateVideoSection> newData = new ArrayList<>();
             for (VideoListInfo.Video item : info.getItemList()) {
@@ -446,6 +469,75 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     @Override
+    public void setReplyData(ReplyInfo info, boolean isLoadmore) {
+        if (StringUtils.isEmpty(info.getItemList())) {
+            return;
+        }
+        if (replyAdapter == null) {
+            replyAdapter = new ReplyAdapter(R.layout.item_reply_content, R.layout.item_video_detail_group_head, replyDatas);
+        }
+        if (info.getNextPageUrl() != null) {
+            replyAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+                @Override
+                public void onLoadMoreRequested() {
+                    if (!StringUtils.isEmpty(replyDatas))
+                        mPresenter.getMoreReplyInfo(replyDatas.get(replyDatas.size() - 1).t.getData().getSequence(), videoInfo.getData().getId());
+                }
+            }, recyclerView2);
+        } else {
+            View footView2 = getLayoutInflater().inflate(R.layout.item_video_detail_foot, recyclerView2, false);
+            if (replyAdapter.getFooterLayoutCount() == 0) {
+                replyAdapter.addFooterView(footView2);
+            }
+            replyAdapter.setOnLoadMoreListener(null, recyclerView2);
+        }
+        if (isLoadmore) {
+            List<ReplySection> replies = new ArrayList<>();
+            for (ReplyInfo.Reply item : info.getItemList()) {
+                ReplySection section = new ReplySection(item);
+                if (!item.getType().equals("reply")) {
+                    section.isHeader = true;
+                } else {
+                    section.isHeader = false;
+                }
+                replies.add(section);
+            }
+            replyDatas.addAll(replies);
+            replyAdapter.addData(replies);
+            replyAdapter.loadMoreComplete();
+        } else {
+            replyDatas.clear();
+            recyclerView2.setAdapter(replyAdapter);
+
+            for (ReplyInfo.Reply item : info.getItemList()) {
+                ReplySection section = new ReplySection(item);
+                if (!item.getType().equals("reply")) {
+                    section.isHeader = true;
+                } else {
+                    section.isHeader = false;
+                }
+                replyDatas.add(section);
+            }
+        }
+    }
+
+    @Override
+    public void setShareData(ShareInfo info) {
+        shareInfo = info;
+    }
+
+    private void gotoShare() {
+        if (shareInfo == null)
+            return;
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, shareInfo.getWechat_friends().getLink());
+        intent.setType("text/plain");
+        //设置分享列表的标题，并且每次都显示分享列表
+        startActivity(Intent.createChooser(intent, "分享到"));
+    }
+
+    @Override
     public void showLoading() {
 
     }
@@ -453,6 +545,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Override
     public void hideLoading() {
 
+    }
+
+    @Subscriber(tag = EventBusTags.HIDE_RECYCLERVIEW)
+    public void startAnimate(boolean isShow) {
+        if (isShow) {
+            AnimationUtils.startTranslate(recyclerView2, 0, recyclerView2.getHeight()
+                    , 0, 0, 200, true);
+        } else {
+            AnimationUtils.startTranslate(recyclerView2, 0, 0
+                    , 0, recyclerView2.getHeight(), 200, false);
+        }
     }
 
     @Override
@@ -485,5 +588,4 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         String detail = "#" + item.getData().getCategory() + " / " + sb.toString();
         return detail;
     }
-
 }

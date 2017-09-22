@@ -10,6 +10,10 @@ import com.apt.TRouter;
 import com.jess.arms.base.delegate.IActivity;
 import com.jess.arms.mvp.IPresenter;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityBase;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityHelper;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackLayout;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.Utils;
 
 import javax.inject.Inject;
 
@@ -22,9 +26,11 @@ import static com.jess.arms.utils.ThirdViewUtil.convertAutoView;
  * Created by mac on 2017/9/2.
  */
 
-public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActivity implements IActivity {
+public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActivity implements IActivity,SwipeBackActivityBase {
     protected final String TAG = this.getClass().getSimpleName();
     private Unbinder mUnbinder;
+    protected boolean canSwipeBack = false;
+    private SwipeBackActivityHelper mHelper;
     @Inject
     protected P mPresenter;
 
@@ -49,6 +55,43 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
         }
         TRouter.bind(this);
         initData(savedInstanceState);
+        mHelper = new SwipeBackActivityHelper(this);
+        mHelper.onActivityCreate();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mHelper.onPostCreate();
+    }
+
+    @Override
+    public View findViewById(int id) {
+        View v = super.findViewById(id);
+        if (v == null && mHelper != null)
+            return mHelper.findViewById(id);
+        return v;
+    }
+
+    @Override
+    public SwipeBackLayout getSwipeBackLayout() {
+        return mHelper.getSwipeBackLayout();
+    }
+
+    @Override
+    public void setSwipeBackEnable(boolean enable) {
+        getSwipeBackLayout().setEnableGesture(enable);
+    }
+
+    @Override
+    public void setEdgeEnable(boolean enable) {
+        getSwipeBackLayout().setEdgeEnable(enable);
+    }
+
+    @Override
+    public void scrollToFinishActivity() {
+        Utils.convertActivityToTranslucent(this);
+        getSwipeBackLayout().scrollToFinishActivity();
     }
 
     @Override

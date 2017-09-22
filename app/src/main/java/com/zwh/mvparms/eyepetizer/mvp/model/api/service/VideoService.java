@@ -20,4 +20,6 @@ public interface VideoService {
     Observable<VideoListInfo> getVideoList(@Query("start") int startCount,@Query("num") int num,@Query("categoryName") String categoryName);
     @GET("v4/tabs/selected")
     Observable<IndextVideoListInfo> getIndexVideoList(@Query("lastStartId") int lastStartId, @Query("udid") String udid, @Query("vc") String vc, @Query("vn") String vn, @Query("deviceModel") String deviceModel);
+    @GET("v4/tabs/selected")
+    Observable<IndextVideoListInfo> getMoreIndexVideoList(@Query("num") int num, @Query("page") int page,@Query("udid") String udid, @Query("vc") String vc, @Query("vn") String vn, @Query("deviceModel") String deviceModel);
 }

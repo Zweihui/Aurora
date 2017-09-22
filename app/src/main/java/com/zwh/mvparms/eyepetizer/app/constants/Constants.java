@@ -10,11 +10,16 @@ public class Constants {
     public static final String SPLASH = "splash";
     public static final String VIDEO = "video";
     public static final String TEST = "test";
+    public static final String MAIN = "main";
+    public static final String SEARCH = "search";
+    public static final String CATEGORY = "category";
 
     //==================intent============//
     public static final String TYPE = "type";
     public static final String TYPE_ID = "type_id";
     public static final String SPLASH_DATA = "splash_data";
+    public static final String CATEGORY_DATA = "category_data";
+    public static final String CATEGORY_DATA_POSITION = "category_data_position";
     public static final String VIDEO_INFO = "video_info";
     public static final String RELATE_VIDEO_INFO = "relate_video_info";
     public static final String TRANSLATE_VIEW = "share_img";
@@ -25,4 +30,7 @@ public class Constants {
     public static final String VC = "220";
     public static final String VN = "3.10";
     public static final String DEVICEMODEL = "Mi";
+    //==================Sharepreference============//
+    public static final String SP_LAST_START_ID = "sp_last_start_id";
+
 }

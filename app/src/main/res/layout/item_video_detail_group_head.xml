@@ -26,4 +26,19 @@
         android:scaleType="fitXY"
         android:src="@drawable/right_enter_arrow"
         />
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        />
+    <ImageView
+        android:id="@+id/iv_arrow_right"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="6dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        android:layout_gravity="right"
+        android:src="@drawable/down_enter_arrow"
+        />
 </LinearLayout>

@@ -16,6 +16,7 @@
     <dimen name="load_more_trigger_offset_google">40dp</dimen>
     <dimen name="load_more_final_offset_google">80dp</dimen>
     <dimen name="load_more_drawable_size_google">36dp</dimen>
+    <dimen name="padding_tight">10dp</dimen>
 
 
 </resources>

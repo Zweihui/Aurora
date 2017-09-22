@@ -21,6 +21,7 @@ public interface VideoContract {
     //Model层定义接口,外部只需关心Model返回的数据,无需关心内部细节,即是否使用缓存
     interface Model extends IModel {
         Observable<VideoListInfo> getVideoList(String type,String lastIdQueried,int startCount, boolean update);
-        Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId,boolean update);
+        Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId);
+        Observable<IndextVideoListInfo> getMoreIndexVideoList(int page);
     }
 }

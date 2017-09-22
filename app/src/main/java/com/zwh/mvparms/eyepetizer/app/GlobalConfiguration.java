@@ -216,17 +216,18 @@ public final class GlobalConfiguration implements ConfigModule {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 activity.setActionBar((android.widget.Toolbar) activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar));
                                 activity.getActionBar().setDisplayShowTitleEnabled(false);
+                                activity.getActionBar().setTitle(activity.getTitle());
                             }
                         }
                     }
-                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_title) != null) {
-                        ((TextView) activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_title)).setText(activity.getTitle());
-                    }
-                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_back) != null) {
-                        activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_back).setOnClickListener(v -> {
-                            activity.onBackPressed();
-                        });
-                    }
+//                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_title) != null) {
+//                        ((TextView) activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_title)).setText(activity.getTitle());
+//                    }
+//                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_back) != null) {
+//                        activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_back).setOnClickListener(v -> {
+//                            activity.onBackPressed();
+//                        });
+//                    }
                 }
             }
 

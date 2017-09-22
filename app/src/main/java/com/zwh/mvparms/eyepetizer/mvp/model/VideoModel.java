@@ -44,20 +44,19 @@ public class VideoModel extends BaseModel implements VideoContract.Model {
     }
 
     @Override
-    public Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId,boolean update) {
+    public Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId) {
          Observable<IndextVideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoService.class)
                 .getIndexVideoList(lastStartId, Constants.UDID,Constants.VC,Constants.VN,Constants.DEVICEMODEL);
-        return mRepositoryManager.obtainCacheService(CommonCache.class)
-                .getIndexVideoList(observable
-                        , new DynamicKey(lastStartId)
-                        , new EvictDynamicKey(update))
-                .flatMap(new Function<Reply<IndextVideoListInfo>, ObservableSource<IndextVideoListInfo>>() {
-                    @Override
-                    public ObservableSource<IndextVideoListInfo> apply(@NonNull Reply<IndextVideoListInfo> listReply) throws Exception {
-                        return Observable.just(listReply.getData());
-                    }
-                });
+        return observable;
     }
+
+    @Override
+    public Observable<IndextVideoListInfo> getMoreIndexVideoList(int page) {
+        Observable<IndextVideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoService.class)
+                .getMoreIndexVideoList(2,page,Constants.UDID,Constants.VC,Constants.VN,Constants.DEVICEMODEL);
+        return observable;
+    }
+
     @Override
     public Observable<VideoListInfo> getVideoList(String type, String lastIdQueried,int startCount,boolean update) {
         Observable<VideoListInfo> videoInfo = mRepositoryManager.obtainRetrofitService(VideoService.class)

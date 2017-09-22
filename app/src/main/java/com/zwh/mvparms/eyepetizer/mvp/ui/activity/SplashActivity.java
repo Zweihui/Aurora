@@ -40,7 +40,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     private boolean isInit = true;
     private RxPermissions mRxPermissions;
-    private boolean isDataLoad = false;
+    private boolean isDataLoad = true;
     private boolean isAnimated = false;
 
     @Override
@@ -86,8 +86,8 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Subscriber(tag = EventBusTags.JUMP_TO_HOME)
     public void goToHomePage(String s) {
-        if (isDataLoad && isAnimated ){
-            TRouter.go(Constants.HOME,new DataExtra(Constants.SPLASH_DATA, list).build());
+        if (isAnimated){
+            TRouter.go(Constants.MAIN);
             finish();
         }
     }
@@ -131,4 +131,5 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         isDataLoad = true;
         EventBus.getDefault().post("gotomain",EventBusTags.JUMP_TO_HOME);
     }
+
 }

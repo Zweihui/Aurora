@@ -36,8 +36,7 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
         ImageView imgMian = helper.getView(R.id.img_main);
         ImageView imgAutor = helper.getView(R.id.img_author);
         Context context = imgMian.getContext();
-        ((App)context.getApplicationContext())
-                .getAppComponent().imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
+        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
                         ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
                 GlideImageConfig
                         .builder()

@@ -8,6 +8,8 @@ import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import javax.inject.Inject;
@@ -16,6 +18,7 @@ import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 import static android.R.attr.id;
+import static android.R.attr.path;
 
 
 @ActivityScope
@@ -36,21 +39,50 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
         this.mAppManager = appManager;
     }
 
-    public void getRelaRelateVideoInfo(int id){
+    public void getRelaRelateVideoInfo(int id) {
         mModel.getRelateVideoInfo(id).compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {
-                        mRootView.setData(info,false);
+                        mRootView.setData(info, false);
                     }
                 });
     }
-    public void getSecondRelaRelateVideoInfo(String path,int id,int startnum){
-        mModel.getSecondRelateVideoInfo(path,id,startnum).compose(RxUtils.applySchedulers(mRootView))
+
+    public void getSecondRelaRelateVideoInfo(String path, int id, int startnum) {
+        mModel.getSecondRelateVideoInfo(path, id, startnum).compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {
-                        mRootView.setData(info,true);
+                        mRootView.setData(info, true);
+                    }
+                });
+    }
+
+    public void getReplyInfo(int videoId) {
+        mModel.getAllReplyInfo(videoId).compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<ReplyInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(ReplyInfo info) {
+                        mRootView.setReplyData(info, false);
+                    }
+                });
+    }
+    public void getMoreReplyInfo(int lastId,int videoId) {
+        mModel.getMoreReplyInfo(lastId,videoId).compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<ReplyInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(ReplyInfo info) {
+                        mRootView.setReplyData(info, true);
+                    }
+                });
+    }
+    public void getShareInfo(int videoId) {
+        mModel.getShareInfo(videoId).compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<ShareInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(ShareInfo info) {
+                        mRootView.setShareData(info);
                     }
                 });
     }
