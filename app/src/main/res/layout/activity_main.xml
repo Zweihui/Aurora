@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dl_main_drawer"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.zwh.mvparms.eyepetizer.mvp.ui.activity.CategoryActivity"
@@ -13,28 +14,29 @@
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         android:clipChildren="false">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay"
             app:layout_behavior="com.zwh.mvparms.eyepetizer.mvp.ui.widget.behavior.TitleBehavior">
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="56dp">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="56dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay" >
             </android.support.v7.widget.Toolbar>
             <com.zwh.mvparms.eyepetizer.mvp.ui.widget.MaterialSearchView
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="match_parent"
                 />
             </FrameLayout>
         </android.support.design.widget.AppBarLayout>

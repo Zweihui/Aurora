@@ -30,7 +30,7 @@ public class SearchTransitioner {
     public SearchTransitioner(Activity activity, ViewGroup activityContent, ViewGroup searchView) {
         this.activity = activity;
         this.activityContent = activityContent;
-        this.searchView = searchView;
+        this.searchView = (ViewGroup) searchView.getChildAt(0);
         this.toolbarMargin = activity.getResources().getDimensionPixelSize(R.dimen.padding_tight);
     }
 
@@ -43,10 +43,9 @@ public class SearchTransitioner {
             Transition transition = FadeOutTransition.withAction(navigateToSearchWhenDone());
             TransitionManager.beginDelayedTransition(searchView, transition);
             expandToolbar();
-//            ViewFader.hideContentOf(searchView);
-
-//            TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.OUT));
-//            activityContent.setVisibility(View.GONE);
+            ViewFader.hideContentOf(searchView);
+            TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.OUT));
+            activityContent.setVisibility(View.GONE);
         } else {
             TRouter.go(Constants.SEARCH);
         }
@@ -84,8 +83,8 @@ public class SearchTransitioner {
             TransitionManager.beginDelayedTransition(searchView, FadeInTransition.createTransition());
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) searchView.getLayoutParams();
             layoutParams.setMargins(toolbarMargin, toolbarMargin, toolbarMargin, toolbarMargin);
-            ViewFader.showContent(searchView);
             searchView.setLayoutParams(layoutParams);
+            ViewFader.showContent(searchView);
             TransitionManager.beginDelayedTransition(activityContent, new Fade(Fade.IN));
             activityContent.setVisibility(View.VISIBLE);
         }

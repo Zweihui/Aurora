@@ -77,7 +77,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
                             isAnimated = true;
                             EventBus.getDefault().post("gotomain",EventBusTags.JUMP_TO_HOME);
                         }
-                    }, 4000);
+                    }, 3000);
                 }
             }, 200);
             isInit = false;

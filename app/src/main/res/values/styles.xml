@@ -9,6 +9,14 @@
         <item name="android:windowAnimationStyle">@style/AnimaActivity</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
     </style>
+    <style name="AppTheme_normal" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowAnimationStyle">@style/AnimaActivity</item>
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+    </style>
 
     <style name="AnimaActivity">
         <item name="android:activityOpenEnterAnimation">@anim/translate_right_to_center</item>

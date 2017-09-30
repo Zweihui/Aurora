@@ -45,13 +45,19 @@
             android:layout_height="match_parent"
             android:background="@color/white" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/second_recyclerView"
+        <com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView
+            android:id="@+id/dbv_drag"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:clickable="false"
-            android:visibility="invisible" />
+            android:visibility="invisible">
+
+            <com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomRecyclerView
+                android:id="@+id/second_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

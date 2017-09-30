@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:fitsSystemWindows="true"
+            app:contentInsetStart="0dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <LinearLayout
+                android:id="@+id/linearLayout_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/image_search_back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="12dp"
+                    app:srcCompat="@drawable/ve_arrow_grey" />
+
+                <EditText
+                    android:id="@+id/edit_text_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#fff"
+                    android:gravity="center_vertical"
+                    android:hint="搜索"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapWords"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="8dp"
+                    android:singleLine="true"
+                    android:textColor="#707070"
+                    android:textColorHint="@color/secondary_text" />
+
+                <ImageView
+                    android:id="@+id/clearSearch"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:padding="12dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ve_clear_grey" />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="- 热门搜索词 -"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/sp_14" />
+        <FrameLayout
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.zwh.mvparms.eyepetizer.mvp.ui.widget.FlowLayout
+                android:id="@+id/flowlayout"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_marginRight="26dp"
+                android:layout_marginLeft="26dp"
+                >
+            </com.zwh.mvparms.eyepetizer.mvp.ui.widget.FlowLayout>
+            <include
+                android:id="@+id/list_root"
+                android:visibility="gone"
+                layout="@layout/common_recyclerview"/>
+        </FrameLayout>
+
+    </LinearLayout>
+</LinearLayout>

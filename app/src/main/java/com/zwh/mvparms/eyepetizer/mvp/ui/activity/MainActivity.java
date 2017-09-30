@@ -80,6 +80,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private long firstTime = 0;
     private int usableHeightPrevious;
     boolean isSoftKeyBoardShow = false;
+    boolean isShowTransition = false;
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -141,7 +142,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
         initToolBar();
-        searchTransitioner = new SearchTransitioner(this,((CardView)mDlMainDrawer.findViewById(R.id.card_search)),searchView);
+        searchTransitioner = new SearchTransitioner(this,mViewpager,searchView);
     }
 
     private void initToolBar() {
@@ -153,6 +154,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 switch (menuItem) {
                     case R.id.action_search:
                         searchView.showView();
+                        searchView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                gotoSearch();
+                            }
+                        },300);
                         break;
                     default:
                         break;
@@ -160,16 +167,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 return false;
             }
         });
-        searchView.findViewById(R.id.clearSearch).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gotoSearch();
-            }
-        });
+//        searchView.findViewById(R.id.clearSearch).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                gotoSearch();
+//            }
+//        });
     }
 
     private void gotoSearch(){
         searchTransitioner.transitionToSearch();
+        isShowTransition = true;
     }
 
     private void initFragment() {
@@ -183,6 +191,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mViewpager.setOffscreenPageLimit(4);
         mViewpager.setPagingEnabled(false);
         mViewpager.setAdapter(MainFragmentAdapter.newInstance(getSupportFragmentManager(), list));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mDlMainDrawer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                searchTransitioner.onActivityResumed();
+            }
+        },250);
+        mDlMainDrawer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isShowTransition = false;
+                if (searchView.isShowing()){
+                    searchView.showView();
+                }
+            }
+        },500);
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -220,7 +249,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 isSoftKeyBoardShow = true;
             } else {
                 isSoftKeyBoardShow = false;
-                if (searchView.isShowing())
+                if (searchView.isShowing()&&!isShowTransition)
                     searchView.showView();
             }
             mDlMainDrawer.requestLayout();
@@ -248,5 +277,34 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (isShouldHideKeyboard(searchView, ev)) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(searchView,InputMethodManager.SHOW_FORCED);
+                imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+    private boolean isShouldHideKeyboard(View v, MotionEvent event) {
+        if (v != null && (v instanceof MaterialSearchView)) {
+            int[] l = {0, 0};
+            v.getLocationInWindow(l);
+            int left = l[0],
+                    top = l[1],
+                    bottom = top + v.getHeight(),
+                    right = left + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 }

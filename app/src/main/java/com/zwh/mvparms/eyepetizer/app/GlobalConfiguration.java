@@ -74,19 +74,19 @@ public final class GlobalConfiguration implements ConfigModule {
                     public Response onHttpResultResponse(String httpResult, Interceptor.Chain chain, Response response) {
                         /* 这里可以先客户端一步拿到每一次http请求的结果,可以解析成json,做一些操作,如检测到token过期后
                            重新请求token,并重新执行请求 */
-                        try {
-                            if (!TextUtils.isEmpty(httpResult) && RequestInterceptor.isJson(response.body().contentType())) {
-                                JSONArray array = new JSONArray(httpResult);
-                                JSONObject object = (JSONObject) array.get(0);
-                                String login = object.getString("login");
-                                String avatar_url = object.getString("avatar_url");
-                                Timber.w("Result ------> " + login + "    ||   Avatar_url------> " + avatar_url);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            return response;
-                        }
+//                        try {
+//                            if (!TextUtils.isEmpty(httpResult) && RequestInterceptor.isJson(response.body().contentType())) {
+//                                JSONArray array = new JSONArray(httpResult);
+//                                JSONObject object = (JSONObject) array.get(0);
+//                                String login = object.getString("login");
+//                                String avatar_url = object.getString("avatar_url");
+//                                Timber.w("Result ------> " + login + "    ||   Avatar_url------> " + avatar_url);
+//                            }
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            return response;
+//                        }
 
                      /* 这里如果发现token过期,可以先请求最新的token,然后在拿新的token放入request里去重新请求
                         注意在这个回调之前已经调用过proceed,所以这里必须自己去建立网络请求,如使用okhttp使用新的request去请求

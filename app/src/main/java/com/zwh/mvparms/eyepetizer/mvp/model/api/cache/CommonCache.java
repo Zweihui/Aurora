@@ -33,5 +33,7 @@ public interface CommonCache {
 
     @LifeCache(duration = 3, timeUnit = TimeUnit.DAYS)
     Observable<Reply<List<Category>>> getCategories(Observable<List<Category>> categories);
+    @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
+    Observable<Reply<List<String>>> getHotWords(Observable<List<String>> strs);
 
 }

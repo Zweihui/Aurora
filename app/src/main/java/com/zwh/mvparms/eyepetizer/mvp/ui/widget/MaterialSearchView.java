@@ -37,6 +37,7 @@ public class MaterialSearchView extends FrameLayout {
     private ListView listView;
     private EditText editText;
     private View line_divider;
+    private boolean isAnimating = false;
     public MaterialSearchView(@NonNull Context context) {
         this(context,null);
     }
@@ -57,7 +58,7 @@ public class MaterialSearchView extends FrameLayout {
         search = (CardView) view.findViewById(R.id.card_search);
         listView = (ListView) view.findViewById(R.id.listView);
         editText = (EditText) view.findViewById(R.id.edit_text_search);
-        line_divider = findViewById(R.id.line_divider);
+//        line_divider = findViewById(R.id.line_divider);
         searchBack = (ImageView) findViewById(R.id.image_search_back);
         searchBack.setOnClickListener(new OnClickListener() {
             @Override
@@ -72,7 +73,7 @@ public class MaterialSearchView extends FrameLayout {
     }
 
     public void showView() {
-        if (toolbarMain == null){
+        if (toolbarMain == null||isAnimating){
             return;
         }
         final Animation fade_in = AnimationUtils.loadAnimation(context.getApplicationContext(), android.R.anim.fade_in);
@@ -87,11 +88,12 @@ public class MaterialSearchView extends FrameLayout {
                 animatorHide.addListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-
+                        isAnimating = true;
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        isAnimating = false;
                         search.setVisibility(View.GONE);
                         ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(search.getWindowToken(), 0);
                         listView.setVisibility(View.GONE);
@@ -132,10 +134,12 @@ public class MaterialSearchView extends FrameLayout {
                 animator.addListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
+                        isAnimating = true;
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        isAnimating = false;
                         ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                     }
 

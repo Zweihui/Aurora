@@ -39,6 +39,8 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.ReplyAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomRecyclerView;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
@@ -64,7 +66,9 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.second_recyclerView)
-    RecyclerView recyclerView2;
+    DragBottomRecyclerView recyclerView2;
+    @BindView(R.id.dbv_drag)
+    DragBottomView dragBottomView;
 
     private ImageView mIvVideoBg; //视频封面
     private View headView;
@@ -180,10 +184,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             public void onClick(View v) {
                 if (expand.isExpand()) {
                     expand.shrink();
-                    expandArrow.setImageResource(R.drawable.up_enter_arrow);
+                    expandArrow.setImageResource(R.drawable.down_enter_arrow);
                 } else {
                     expand.expand();
-                    expandArrow.setImageResource(R.drawable.down_enter_arrow);
+                    expandArrow.setImageResource(R.drawable.up_enter_arrow);
                 }
             }
         });
@@ -550,11 +554,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Subscriber(tag = EventBusTags.HIDE_RECYCLERVIEW)
     public void startAnimate(boolean isShow) {
         if (isShow) {
-            AnimationUtils.startTranslate(recyclerView2, 0, recyclerView2.getHeight()
+            AnimationUtils.startTranslate(dragBottomView, 0, dragBottomView.getHeight()
                     , 0, 0, 200, true);
         } else {
-            AnimationUtils.startTranslate(recyclerView2, 0, 0
-                    , 0, recyclerView2.getHeight(), 200, false);
+            AnimationUtils.startTranslate(dragBottomView, 0, 0
+                    , 0, dragBottomView.getHeight(), 200, false);
         }
     }
 

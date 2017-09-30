@@ -6,6 +6,8 @@ import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.mvp.BasePresenter;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
@@ -72,6 +74,12 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
         mModel.getVideoList(type,type+lastId,startCount,cache).compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        if (pullToRefresh)
+                        mRootView.showLoading();
+                    }
+
+                    @Override
                     public void onNext(VideoListInfo info) {
                         filterData(info.getItemList());
                         mRootView.setData(info.getItemList(),pullToRefresh);
@@ -83,6 +91,11 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
             mModel.getIndexVideoList(lastStartId).compose(RxUtils.applySchedulers(mRootView))
                     .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
                         @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+                            mRootView.showLoading();
+                        }
+
+                        @Override
                         public void onNext(IndextVideoListInfo info) {
                             mRootView.setData(getIndexVideoList(info),true);
                         }
@@ -90,6 +103,10 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
         }else {
             mModel.getMoreIndexVideoList(page).compose(RxUtils.applySchedulers(mRootView))
                     .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
+                        @Override
+                        public void onSubscribe(@NonNull Disposable d) {
+                        }
+
                         @Override
                         public void onNext(IndextVideoListInfo info) {
                             mRootView.setData(getIndexVideoList(info),false);
