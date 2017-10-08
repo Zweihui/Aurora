@@ -11,8 +11,6 @@ import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
 
 import org.simple.eventbus.EventBus;
@@ -44,6 +42,7 @@ public class ReplyAdapter extends BaseSectionQuickAdapter<ReplySection,BaseViewH
         helper.getView(R.id.iv_arrow).setVisibility(View.GONE);
         if (helper.getLayoutPosition() == 0){
             helper.getView(R.id.iv_arrow_right).setVisibility(View.VISIBLE);
+            helper.getView(R.id.view).setVisibility(View.VISIBLE);
             helper.getView(R.id.iv_arrow_right).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -51,6 +50,7 @@ public class ReplyAdapter extends BaseSectionQuickAdapter<ReplySection,BaseViewH
                 }
             });
         }else {
+            helper.getView(R.id.view).setVisibility(View.GONE);
             helper.getView(R.id.iv_arrow_right).setVisibility(View.GONE);
         }
     }

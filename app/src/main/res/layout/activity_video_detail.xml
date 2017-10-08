@@ -50,9 +50,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="false"
+            android:orientation="vertical"
             android:visibility="invisible">
-
-            <com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/second_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

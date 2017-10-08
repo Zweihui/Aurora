@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/ll_root"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@android:color/transparent"
               android:clickable="true"
               android:gravity="center_vertical"
-              android:orientation="horizontal"
-              android:padding="13dp">
-
+              android:orientation="vertical"
+              >
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:background="@color/divider"
+        />
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="相关视频推荐"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="13dp"
         android:textColor="@color/colorPrimaryText"
         android:textSize="15sp"
         />
@@ -23,13 +33,10 @@
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:layout_marginLeft="3dp"
+        android:layout_toRightOf="@id/tv_name"
+        android:layout_centerVertical="true"
         android:scaleType="fitXY"
         android:src="@drawable/right_enter_arrow"
-        />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_weight="1"
         />
     <ImageView
         android:id="@+id/iv_arrow_right"
@@ -37,8 +44,10 @@
         android:layout_height="30dp"
         android:padding="6dp"
         android:scaleType="fitXY"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_gravity="right"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:src="@drawable/down_enter_arrow"
         />
-</LinearLayout>
+</RelativeLayout>

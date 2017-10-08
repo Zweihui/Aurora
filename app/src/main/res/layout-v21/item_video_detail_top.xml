@@ -182,8 +182,8 @@
 
     <ImageView
         android:id="@+id/iv_expand"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:padding="5dp"
         android:scaleType="fitXY"
         android:clickable="true"

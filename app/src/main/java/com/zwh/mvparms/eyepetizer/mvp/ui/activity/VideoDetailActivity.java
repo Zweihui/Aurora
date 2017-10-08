@@ -39,7 +39,6 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.ReplyAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomRecyclerView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
@@ -66,7 +65,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.second_recyclerView)
-    DragBottomRecyclerView recyclerView2;
+    RecyclerView recyclerView2;
     @BindView(R.id.dbv_drag)
     DragBottomView dragBottomView;
 
@@ -325,7 +324,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void onBackPressed() {
-        if (recyclerView2.getVisibility() == View.VISIBLE) {
+        if (dragBottomView.getVisibility() == View.VISIBLE) {
             startAnimate(false);
             return;
         }
