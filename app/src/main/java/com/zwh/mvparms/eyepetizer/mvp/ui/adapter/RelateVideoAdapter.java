@@ -1,6 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.adapter;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseSectionQuickAdapter;
@@ -9,8 +10,11 @@ import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
+
+import org.simple.eventbus.EventBus;
 
 import java.util.List;
 
@@ -28,6 +32,12 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
     @Override
     protected void convertHead(BaseViewHolder helper, RelateVideoSection item) {
         helper.setText(R.id.tv_name,item.t.getData().getText());
+        if (helper.getLayoutPosition() == 0){
+            helper.getView(R.id.iv_arrow_right).setVisibility(View.VISIBLE);
+        }else {
+            helper.getView(R.id.view).setVisibility(View.GONE);
+        }
+        helper.getView(R.id.iv_arrow_right).setVisibility(View.GONE);
     }
 
     @Override

@@ -25,6 +25,7 @@ import com.jess.arms.utils.UiUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.zwh.mvparms.eyepetizer.BuildConfig;
+import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.Api;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CategoryActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
@@ -197,37 +198,6 @@ public final class GlobalConfiguration implements ConfigModule {
             public void onActivityStarted(Activity activity) {
                 Timber.w(activity + " - onActivityStarted");
                 if (!activity.getIntent().getBooleanExtra("isInitToolbar", false)) {
-                    //由于加强框架的兼容性,故将 setContentView 放到 onActivityCreated 之后,onActivityStarted 之前执行
-                    //而 findViewById 必须在 Activity setContentView() 后才有效,所以将以下代码从之前的 onActivityCreated 中移动到 onActivityStarted 中执行
-                    activity.getIntent().putExtra("isInitToolbar", true);
-                    if (activity instanceof CategoryActivity){
-                        return;
-                    }
-                    if (activity instanceof MainActivity){
-                        return;
-                    }
-                    //这里全局给Activity设置toolbar和title,你想象力有多丰富,这里就有多强大,以前放到BaseActivity的操作都可以放到这里
-                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar) != null) {
-                        if (activity instanceof AppCompatActivity) {
-                            ((AppCompatActivity) activity).setSupportActionBar((Toolbar) activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar));
-                            ((AppCompatActivity) activity).getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-                        } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                activity.setActionBar((android.widget.Toolbar) activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar));
-                                activity.getActionBar().setDisplayShowTitleEnabled(false);
-                                activity.getActionBar().setTitle(activity.getTitle());
-                            }
-                        }
-                    }
-//                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_title) != null) {
-//                        ((TextView) activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_title)).setText(activity.getTitle());
-//                    }
-//                    if (activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_back) != null) {
-//                        activity.findViewById(com.zwh.mvparms.eyepetizer.R.id.toolbar_back).setOnClickListener(v -> {
-//                            activity.onBackPressed();
-//                        });
-//                    }
                 }
             }
 

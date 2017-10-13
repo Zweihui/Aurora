@@ -8,7 +8,6 @@ import com.jess.arms.di.component.AppComponent;
 
 import com.zwh.mvparms.eyepetizer.di.module.SplashModule;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.SplashActivity;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.UserActivity;
 
 
 @ActivityScope

@@ -22,6 +22,12 @@ android {
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         vectorDrawables.useSupportLibrary = true
     }
+
+    packagingOptions {
+        //打包时的相关配置
+        exclude 'META-INF/rxjava.properties'
+    }
+
     buildTypes {
 
         debug {
@@ -45,6 +51,12 @@ android {
         disable 'InvalidPackage'
         disable "ResourceType"
         abortOnError false
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
     }
 }
 
@@ -89,13 +101,12 @@ dependencies {
     compile rootProject.ext.dependencies["gsyVideoPlayer-java"]
     compile rootProject.ext.dependencies["gsyVideoPlayer-armv7a"]
     compile rootProject.ext.dependencies["gsyVideoPlayer-x86"]
-    compile files('libs/ShareSDK-Wechat-Moments-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-Core-3.1.0.jar')
-    compile files('libs/ShareSDK-Wechat-3.1.0.jar')
-    compile files('libs/ShareSDK-SinaWeibo-3.1.0.jar')
-    compile files('libs/ShareSDK-QQ-3.1.0.jar')
-    compile files('libs/ShareSDK-Core-3.1.0.jar')
-    compile files('libs/MobTools-2017.0914.1125.jar')
-    compile files('libs/MobCommons-2017.0914.1125.jar')
+    compile rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
+    compile(rootProject.ext.dependencies["bmob-sdk"]) {
+    }
+    compile rootProject.ext.dependencies["http-legacy"]
+    compile rootProject.ext.dependencies["bmob-sms"]
+    compile rootProject.ext.dependencies["ucrop"]
+    compile(name:'matisse_ucrop_1.0.0', ext:'aar')
 }
 apply plugin: AspectjPlugin

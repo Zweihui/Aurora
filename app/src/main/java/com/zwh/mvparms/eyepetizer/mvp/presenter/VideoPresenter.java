@@ -15,21 +15,14 @@ import javax.inject.Inject;
 
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.widget.imageloader.ImageLoader;
-import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.UserAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static android.R.attr.type;
-import static android.R.id.list;
 
 
 @ActivityScope

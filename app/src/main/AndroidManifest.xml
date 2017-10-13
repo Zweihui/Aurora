@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="com.jess.arms.base.BaseApplication"
@@ -17,7 +18,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mvp.ui.activity.UserActivity" />
+
         <!--
         autolayout meta
         配置设计图的宽高,配合AutoLauout控件使用,在设计图尺寸以外的其它尺寸手机上,也能达到和设计图一样的效果
@@ -43,11 +44,12 @@
         <activity
             android:name=".mvp.ui.activity.CategoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,13 +73,29 @@
             android:name=".mvp.ui.activity.VideoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_video_detail"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.SearchActivity"
-            android:theme="@style/AppTheme_normal">
-
-        </activity>
+            android:theme="@style/AppTheme_normal" />
+        <activity
+            android:name=".mvp.ui.activity.LoginActivity"
+            android:label="登录"></activity>
+        <activity
+            android:name=".mvp.ui.activity.RegistActivity"
+            android:label="注册帐号"></activity>
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.zwh.mvparms.eyepetizer.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public"></meta-data>
+        </provider>
     </application>
 
 </manifest>

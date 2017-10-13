@@ -74,12 +74,17 @@ public class GlideImageConfig extends ImageConfig {
         private ImageView[] imageViews;
         private boolean isClearMemory;//清理内存缓存
         private boolean isClearDiskCache;//清理本地缓存
+        private int resID;
 
         private Builder() {
         }
 
         public Builder url(String url) {
             this.url = url;
+            return this;
+        }
+        public Builder load(int resID) {
+            this.resID = resID;
             return this;
         }
 

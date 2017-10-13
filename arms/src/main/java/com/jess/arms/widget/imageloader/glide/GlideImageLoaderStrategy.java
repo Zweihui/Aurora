@@ -26,7 +26,7 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<GlideIm
     public void loadImage(Context ctx, GlideImageConfig config) {
         if (ctx == null) throw new NullPointerException("Context is required");
         if (config == null) throw new NullPointerException("GlideImageConfig is required");
-        if (TextUtils.isEmpty(config.getUrl())) throw new NullPointerException("Url is required");
+        if (TextUtils.isEmpty(config.getUrl())&&config.getPlaceholder()==0) throw new NullPointerException("Url is required");
         if (config.getImageView() == null) throw new NullPointerException("Imageview is required");
 
 

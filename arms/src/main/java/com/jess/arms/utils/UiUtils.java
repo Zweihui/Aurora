@@ -1,11 +1,13 @@
 package com.jess.arms.utils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -182,6 +185,16 @@ public class UiUtils {
      */
     public static View inflate(Context context, int detailScreen) {
         return View.inflate(context, detailScreen, null);
+    }
+
+    /**
+     * 隐藏软键盘
+     *
+     */
+
+    public static void hidesoftInput(Context context,View view) {
+        InputMethodManager immHide = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE); // 隐藏软键盘
+        immHide.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     /**

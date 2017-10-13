@@ -14,8 +14,8 @@
         />
     <item
         android:id="@+id/item_attention"
-        android:title="关注"
-        android:icon="@drawable/bottom_attention"
+        android:title="热门"
+        android:icon="@drawable/bottom_hot"
         />
     <item
         android:id="@+id/item_mine"

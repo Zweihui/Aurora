@@ -13,6 +13,8 @@ public class Constants {
     public static final String MAIN = "main";
     public static final String SEARCH = "search";
     public static final String CATEGORY = "category";
+    public static final String LOGIN = "login";
+    public static final String REGIST = "regist";
 
     //==================intent============//
     public static final String TYPE = "type";
@@ -32,5 +34,13 @@ public class Constants {
     public static final String DEVICEMODEL = "Mi";
     //==================Sharepreference============//
     public static final String SP_LAST_START_ID = "sp_last_start_id";
+    public static final String USER_NAME = "user_name";
+    public static final String USER_SESSION_TOKEN = "user_session_token";
+    public static final String USER_NICK_NAME = "user_nick_name";
+
+
+    //==================SDKScrete============//
+    public static final String BMOB_APP_ID  = "53b5764378874032bfcf0167923861d8";
+    public static final String BMOB_API_KEY = "fc0da456f24bca186119d70f64c07700";
 
 }
