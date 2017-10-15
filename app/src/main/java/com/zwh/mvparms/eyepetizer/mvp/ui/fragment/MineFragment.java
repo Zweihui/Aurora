@@ -1,12 +1,10 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.fragment;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -15,27 +13,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.utils.SharedPreferencesUtils;
-import com.jess.arms.utils.UiUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.filter.Filter;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
-import com.zhihu.matisse.ui.MatisseActivity;
+import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
-import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 
 import org.simple.eventbus.EventBus;
@@ -48,10 +38,6 @@ import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
-
-import static android.R.attr.name;
-import static android.os.Build.VERSION_CODES.M;
-import static com.zhihu.matisse.Matisse.obtainPathResult;
 
 /**
  * Created by Administrator on 2017/10/12 0012.
@@ -100,6 +86,7 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     }
 
     @Override
+    @CheckLogin
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_face:
@@ -153,26 +140,25 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     }
     @Subscriber(tag = EventBusTags.MINE_FRAGMENT_SET_FACE_PIC)
     private void setFacePic(String path){
-        BmobFile file = new BmobFile((String)SharedPreferencesUtils.getParam(getActivity(), Constants.USER_NAME,""),null,path);
+        BmobUser bmobUser = BmobUser.getCurrentUser();
+        BmobFile file = new BmobFile(new File(path));
         file.upload(new UploadFileListener() {
             @Override
             public void done(BmobException e) {
                 if (e == null){
+                    User user = new User();
+                    user.setIcon(file);
+                    user.update(bmobUser.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null){
 
+                            }
+                        }
+                    });
                 }
             }
         });
-//        BmobUser bmobUser = BmobUser.getCurrentUser();
-//        User user = new User();
-//        user.setIcon(file);
-//        user.update(bmobUser.getObjectId(), new UpdateListener() {
-//            @Override
-//            public void done(BmobException e) {
-//                if (e == null){
-//
-//                }
-//            }
-//        });
         appComponent.imageLoader().loadImage(getActivity(), GlideImageConfig
                 .builder()
                 .url(path)
