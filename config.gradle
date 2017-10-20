@@ -110,9 +110,12 @@ ext {
                 "gsyVideoPlayer-arm64"            : "com.shuyu:gsyVideoPlayer-arm64:2.0.9",
 
                 //Server
-                "bmob-sdk"                 : "cn.bmob.android:bmob-sdk:3.5.5",
-                "http-legacy"              : "cn.bmob.android:http-legacy:1.0",
-                "bmob-sms"              : "cn.bmob.android:bmob-sms:1.0.1",
+                "bmob-sdk"                  : "cn.bmob.android:bmob-sdk:3.5.5",
+                "http-legacy"               : "cn.bmob.android:http-legacy:1.0",
+                "bmob-sms"                  : "cn.bmob.android:bmob-sms:1.0.1",
+                //dao
+                "greendao"                  : "org.greenrobot:greendao:3.2.2",
+
         ]
 
 

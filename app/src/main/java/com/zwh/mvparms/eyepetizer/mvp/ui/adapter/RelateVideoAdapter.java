@@ -34,6 +34,7 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
         helper.setText(R.id.tv_name,item.t.getData().getText());
         if (helper.getLayoutPosition() == 0){
             helper.getView(R.id.iv_arrow_right).setVisibility(View.VISIBLE);
+            helper.getView(R.id.view).setVisibility(View.VISIBLE);
         }else {
             helper.getView(R.id.view).setVisibility(View.GONE);
         }

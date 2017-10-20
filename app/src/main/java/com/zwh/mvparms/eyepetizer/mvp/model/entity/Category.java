@@ -26,6 +26,13 @@ public class Category implements Serializable{
     private String bgColor;
     private String headerImage;
 
+    public Category(String description,String name){
+        this.name = name;
+        this.description = description;
+    }
+    public Category(){
+    }
+
     public int getId() {
         return id;
     }

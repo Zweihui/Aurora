@@ -58,6 +58,19 @@
                 android:layout_height="match_parent"
                 android:background="@color/white" />
         </com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView>
+        <com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView
+            android:id="@+id/dbv_drag_reply"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="false"
+            android:orientation="vertical"
+            android:visibility="invisible">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reply_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+        </com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

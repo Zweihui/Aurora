@@ -13,6 +13,8 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.zwh.mvparms.eyepetizer.R.id.view;
+
 /**
  * Created by jess on 11/10/2016 16:39
  * Contact with jess.yan.effort@gmail.com
@@ -32,7 +34,7 @@ public class RxUtils {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
-                                view.showLoading();//显示进度条
+                                view.showLoading();
                             }
                         })
                         .subscribeOn(AndroidSchedulers.mainThread())
@@ -43,6 +45,16 @@ public class RxUtils {
                                 view.hideLoading();//隐藏进度条
                             }
                         }).compose(RxUtils.bindToLifecycle(view));
+            }
+        };
+    }
+    public static <T> ObservableTransformer<T, T> applySchedulersWithLifeCycle(IView view) {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public Observable<T> apply(Observable<T> observable) {
+                return observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(RxUtils.bindToLifecycle(view));
             }
         };
     }

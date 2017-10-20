@@ -35,5 +35,7 @@ public interface CommonCache {
     Observable<Reply<List<Category>>> getCategories(Observable<List<Category>> categories);
     @LifeCache(duration = 1, timeUnit = TimeUnit.DAYS)
     Observable<Reply<List<String>>> getHotWords(Observable<List<String>> strs);
+    @LifeCache(duration = 1, timeUnit = TimeUnit.HOURS)
+    Observable<Reply<VideoListInfo>> getRankVideoList(Observable<VideoListInfo> videolistInfo,DynamicKey idLastUserQueried, EvictProvider evictProvider);
 
 }

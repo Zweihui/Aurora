@@ -8,7 +8,6 @@ import com.jess.arms.mvp.BasePresenter;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
@@ -17,23 +16,24 @@ import javax.inject.Inject;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
-import com.zwh.mvparms.eyepetizer.mvp.contract.SearchContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
+import com.zwh.mvparms.eyepetizer.mvp.contract.HotContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import static android.R.attr.type;
 
 
 @ActivityScope
-public class SearchPresenter extends BasePresenter<SearchContract.Model, SearchContract.View> {
+public class HotPresenter extends BasePresenter<HotContract.Model, HotContract.View> {
     private RxErrorHandler mErrorHandler;
     private Application mApplication;
     private ImageLoader mImageLoader;
     private AppManager mAppManager;
 
     @Inject
-    public SearchPresenter(SearchContract.Model model, SearchContract.View rootView
+    public HotPresenter(HotContract.Model model, HotContract.View rootView
             , RxErrorHandler handler, Application application
             , ImageLoader imageLoader, AppManager appManager) {
         super(model, rootView);
@@ -43,7 +43,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.Model, SearchC
         this.mAppManager = appManager;
     }
 
-    public void getHotWords() {
+    public void getRankVideoList(String strate) {
         PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
@@ -55,48 +55,24 @@ public class SearchPresenter extends BasePresenter<SearchContract.Model, SearchC
                 mRootView.showMessage("Request permissons failure");
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
-        mModel.getHotWord().compose(RxUtils.applySchedulers(mRootView))
-                .subscribe(new ErrorHandleSubscriber<List<String>>(mErrorHandler) {
-                    @Override
-                    public void onNext(List<String> list) {
-                        mRootView.setHotWordData(list);
-                    }
-                });
-    }
-    public void getSearchList(String start,String query,boolean isLoadMore) {
-        mModel.getSearchList(start,query).compose(RxUtils.applySchedulers(mRootView))
-                .doFinally(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        if (!isLoadMore){
-                            mRootView.hideLoading();
-                        }
-                    }
-                })
+        mModel.getRankVideoList(strate).compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                        if (!isLoadMore){
-                            mRootView.showLoading();
-                        }
-                    }
-
                     @Override
                     public void onNext(VideoListInfo info) {
-                        mRootView.setListData(filter(info),isLoadMore,info.getTotal());
+                        filterData(info.getItemList());
+                        mRootView.setData(info.getItemList());
                     }
                 });
     }
 
-    private List<VideoListInfo.Video> filter(VideoListInfo info) {
-        List<VideoListInfo.Video> list = new ArrayList<>();
-        for (VideoListInfo.Video itemList: info.getItemList()){
-            if (itemList.getType().equals("video")){
-                list.add(itemList);
+    private void filterData(List<VideoListInfo.Video> list) {
+        Iterator<VideoListInfo.Video> iterator = list.iterator();
+        while(iterator.hasNext()){
+            VideoListInfo.Video video = iterator.next();
+            if(video.getData().getPlayInfo() == null){
+                iterator.remove();
             }
         }
-        return list;
     }
 
     @Override

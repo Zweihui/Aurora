@@ -22,4 +22,7 @@ public interface VideoService {
     Observable<IndextVideoListInfo> getIndexVideoList(@Query("lastStartId") int lastStartId, @Query("udid") String udid, @Query("vc") String vc, @Query("vn") String vn, @Query("deviceModel") String deviceModel);
     @GET("v4/tabs/selected")
     Observable<IndextVideoListInfo> getMoreIndexVideoList(@Query("num") int num, @Query("page") int page,@Query("udid") String udid, @Query("vc") String vc, @Query("vn") String vn, @Query("deviceModel") String deviceModel);
+    //获取排行信息
+    @GET("v3/ranklist")
+    Observable<VideoListInfo> getRankVideoList(@Query("strategy") String strategy);
 }

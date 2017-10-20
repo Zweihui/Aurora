@@ -13,9 +13,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.google.gson.Gson;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
 import com.jess.arms.utils.StringUtils;
+import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
@@ -28,11 +30,15 @@ import com.zwh.annotation.apt.SceneTransition;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
+import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoDetailPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
@@ -48,9 +54,15 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -68,6 +80,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     RecyclerView recyclerView2;
     @BindView(R.id.dbv_drag)
     DragBottomView dragBottomView;
+    @BindView(R.id.reply_recyclerView)
+    RecyclerView replyRecyclerView2;
+    @BindView(R.id.dbv_drag_reply)
+    DragBottomView replyDragBottomView;
 
     private ImageView mIvVideoBg; //视频封面
     private View headView;
@@ -90,6 +106,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     private OrientationUtils orientationUtils;
 
     private AppComponent mAppComponent;
+    private Gson gson;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -99,6 +116,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
         mAppComponent = appComponent;
+        gson = mAppComponent.gson();
         DaggerVideoDetailComponent
                 .builder()
                 .videoDetailModule(new VideoDetailModule(this))
@@ -130,6 +148,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     private void initRecyclerView() {
         recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        replyRecyclerView2.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RelateVideoAdapter(R.layout.item_video_detail_group_content,
                 R.layout.item_video_detail_group_head, datas);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -142,8 +161,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                                 (datas.get(position).t.getData().getActionUrl()).split("\\?");
                         path = arr[0];
                         id = Integer.parseInt(arr[1].split("=")[1]);
-                        mPresenter.getSecondRelaRelateVideoInfo(path, id, secondDatas.size());
-                        secondDatas.clear();
+                        if (StringUtils.isEmpty(secondDatas)){
+                            mPresenter.getSecondRelaRelateVideoInfo(path, id, secondDatas.size());
+                        }
+                        startAnimate(dragBottomView,true);
                     } catch (Exception e) {
 
                     }
@@ -208,8 +229,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         headView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recyclerView2.removeAllViews();
-                startAnimate(true);
+                startAnimate(replyDragBottomView,true);
                 mPresenter.getReplyInfo(videoInfo.getData().getId());
             }
         });
@@ -325,7 +345,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Override
     public void onBackPressed() {
         if (dragBottomView.getVisibility() == View.VISIBLE) {
-            startAnimate(false);
+            startAnimate(dragBottomView,false);
+            return;
+        }
+        if (replyDragBottomView.getVisibility() == View.VISIBLE) {
+            startAnimate(replyDragBottomView,false);
             return;
         }
 
@@ -416,15 +440,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 ((ImageView) headView.findViewById(R.id.iv_arrow)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        startAnimate(false);
+                        startAnimate(dragBottomView,false);
                     }
                 });
                 secondAdapter.setHeaderView(headView);
-                recyclerView2.setAdapter(secondAdapter);
                 secondAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                        startAnimate(false);
+                        startAnimate(dragBottomView,false);
                         videoInfo = secondDatas.get(position).t;
                         mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
                         setVideoInfo();
@@ -442,9 +465,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                         }, 500);
                     }
                 }, recyclerView2);
-            }
-            if (!(secondDatas.size() > 0)) {
-                startAnimate(true);
+                recyclerView2.setAdapter(secondAdapter);
             }
             List<RelateVideoSection> newData = new ArrayList<>();
             for (VideoListInfo.Video item : info.getItemList()) {
@@ -486,13 +507,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                     if (!StringUtils.isEmpty(replyDatas))
                         mPresenter.getMoreReplyInfo(replyDatas.get(replyDatas.size() - 1).t.getData().getSequence(), videoInfo.getData().getId());
                 }
-            }, recyclerView2);
+            }, replyRecyclerView2);
         } else {
-            View footView2 = getLayoutInflater().inflate(R.layout.item_video_detail_foot, recyclerView2, false);
+            View footView2 = getLayoutInflater().inflate(R.layout.item_video_detail_foot, replyRecyclerView2, false);
             if (replyAdapter.getFooterLayoutCount() == 0) {
                 replyAdapter.addFooterView(footView2);
             }
-            replyAdapter.setOnLoadMoreListener(null, recyclerView2);
+            replyAdapter.setOnLoadMoreListener(null, replyRecyclerView2);
         }
         if (isLoadmore) {
             List<ReplySection> replies = new ArrayList<>();
@@ -510,7 +531,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             replyAdapter.loadMoreComplete();
         } else {
             replyDatas.clear();
-            recyclerView2.setAdapter(replyAdapter);
+            replyRecyclerView2.setAdapter(replyAdapter);
 
             for (ReplyInfo.Reply item : info.getItemList()) {
                 ReplySection section = new ReplySection(item);
@@ -551,12 +572,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     @Subscriber(tag = EventBusTags.HIDE_RECYCLERVIEW)
-    public void startAnimate(boolean isShow) {
+    public void startAnimate(View view,boolean isShow) {
         if (isShow) {
-            AnimationUtils.startTranslate(dragBottomView, 0, dragBottomView.getHeight()
+            AnimationUtils.startTranslate(view, 0, dragBottomView.getHeight()
                     , 0, 0, 200, true);
         } else {
-            AnimationUtils.startTranslate(dragBottomView, 0, 0
+            AnimationUtils.startTranslate(view, 0, 0
                     , 0, dragBottomView.getHeight(), 200, false);
         }
     }
@@ -590,5 +611,40 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         sb.append((temp < 10) ? "0" + temp : "" + temp);
         String detail = "#" + item.getData().getCategory() + " / " + sb.toString();
         return detail;
+    }
+
+    private void saveVideoHistory() {
+        VideoDaoEntity daoEntity = new VideoDaoEntity();
+        daoEntity.setId(new Long((long)videoInfo.getData().getId()));
+        daoEntity.setBody(gson.toJson(videoInfo.getData()));
+        daoEntity.setDate(new Date());
+        daoEntity.setStartTime(detailPlayer.getCurrentPositionWhenPlaying());
+        daoEntity.setTotalTime(videoInfo.getData().getDuration());
+        Observable.create((ObservableOnSubscribe<Boolean>) e -> {
+            DaoMaster master = GreenDaoHelper.getInstance().create(daoEntity.getDbName()).getMaster();
+            if(master.newSession().getVideoDaoEntityDao().loadByRowId(daoEntity.getId())==null){
+                master.newSession()
+                        .getVideoDaoEntityDao()
+                        .insert(daoEntity);
+                e.onNext(true);
+            }
+        }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
+                        .subscribe(new Consumer<Boolean>() {
+                                       @Override
+                                       public void accept(@NonNull Boolean aBoolean) throws Exception {
+                                       }
+                                   }
+                                , new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(@NonNull Throwable throwable) throws Exception {
+                                    }
+                                }
+                        );
+    }
+
+    @Override
+    public void finish() {
+        saveVideoHistory();
+        super.finish();
     }
 }

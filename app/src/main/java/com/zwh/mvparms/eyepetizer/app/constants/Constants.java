@@ -15,6 +15,7 @@ public class Constants {
     public static final String CATEGORY = "category";
     public static final String LOGIN = "login";
     public static final String REGIST = "regist";
+    public static final String HISTORY = "history";
 
     //==================intent============//
     public static final String TYPE = "type";
@@ -36,6 +37,7 @@ public class Constants {
     public static final String SP_LAST_START_ID = "sp_last_start_id";
     public static final String USER_NAME = "user_name";
     public static final String USER_SESSION_TOKEN = "user_session_token";
+    public static final String USER_FACE_PIC_URL = "user_face_pic_url";
     public static final String USER_NICK_NAME = "user_nick_name";
 
 

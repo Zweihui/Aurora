@@ -4,16 +4,23 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'key0'
+            keyPassword 'zwh12583258'
+            storeFile file('C:/Users/Administrator/Desktop/Sunny_key.jks')
+            storePassword 'zwh12583258'
+        }
+    }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
     useLibrary 'org.apache.http.legacy'
-
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
     }
-
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.zwh.mvparms.eyepetizer"
         minSdkVersion rootProject.ext.android["minSdkVersion"]
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
@@ -22,12 +29,13 @@ android {
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         vectorDrawables.useSupportLibrary = true
     }
-
     packagingOptions {
         //打包时的相关配置
         exclude 'META-INF/rxjava.properties'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
     }
-
     buildTypes {
 
         debug {
@@ -46,16 +54,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     lintOptions {
         disable 'InvalidPackage'
         disable "ResourceType"
         abortOnError false
     }
-
     repositories {
         flatDir {
             dirs 'libs'
+        }
+    }
+    productFlavors {
+        sunny {
+            signingConfig signingConfigs.release
         }
     }
 }
@@ -86,8 +97,7 @@ dependencies {
     //arms
     compile project(':arms')
     //    compile 'me.jessyan:arms:2.1.5'
-
-    //test
+    compile rootProject.ext.dependencies["multidex"]
     testCompile rootProject.ext.dependencies["junit"]
     debugCompile rootProject.ext.dependencies["canary-debug"]
     releaseCompile rootProject.ext.dependencies["canary-release"]
@@ -103,10 +113,16 @@ dependencies {
     compile rootProject.ext.dependencies["gsyVideoPlayer-x86"]
     compile rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
     compile(rootProject.ext.dependencies["bmob-sdk"]) {
+        exclude module: 'com.squareup.okhttp'
+        exclude module: 'com.squareup.okio'
     }
     compile rootProject.ext.dependencies["http-legacy"]
     compile rootProject.ext.dependencies["bmob-sms"]
     compile rootProject.ext.dependencies["ucrop"]
-    compile(name:'matisse_ucrop_1.0.0', ext:'aar')
+    compile rootProject.ext.dependencies["greendao"]
+    compile(name: 'matisse_ucrop_1.0.0', ext: 'aar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 apply plugin: AspectjPlugin
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'

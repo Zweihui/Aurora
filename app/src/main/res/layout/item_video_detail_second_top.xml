@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:clickable="true"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="13dp">
-
+    >
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="0.8dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/divider"
+        />
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="相关视频推荐"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="13dp"
+        android:layout_alignParentLeft="true"
         android:textColor="@color/colorPrimaryText"
         android:textSize="18sp"
-        />
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_weight="1"
         />
 
     <ImageView
@@ -27,8 +29,10 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:padding="6dp"
-        android:layout_marginLeft="3dp"
+        android:layout_margin="13dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:scaleType="fitXY"
         android:src="@drawable/down_enter_arrow"
         />
-</LinearLayout>
+</RelativeLayout>

@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.apt.TRouter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
@@ -23,8 +25,10 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zwh.annotation.aspect.CheckLogin;
+import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 
@@ -45,9 +49,13 @@ import cn.bmob.v3.listener.UploadFileListener;
 
 public class MineFragment extends BaseLazyLoadFragment implements View.OnClickListener {
 
-    private LinearLayout mLlFace;
+    private CardView mLlFace;
     private CircleImageView mCivFace;
     private TextView mTvName;
+    private LinearLayout mLlAttention;
+    private LinearLayout mLlCache;
+    private LinearLayout mLlRecord;
+    private LinearLayout mLlFeedBack;
     public static final int REQUEST_CODE_CHOOSE = 11;
     AppComponent appComponent;
 
@@ -64,9 +72,13 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_mine, container, false);
-        mLlFace = (LinearLayout) view.findViewById(R.id.ll_face);
+        mLlFace = (CardView) view.findViewById(R.id.ll_face);
         mCivFace = (CircleImageView) view.findViewById(R.id.civ_face);
         mTvName = (TextView) view.findViewById(R.id.tv_name);
+        mLlCache = (LinearLayout) view.findViewById(R.id.ll_cache);
+        mLlAttention = (LinearLayout) view.findViewById(R.id.ll_attention);
+        mLlFeedBack = (LinearLayout) view.findViewById(R.id.ll_feedback);
+        mLlRecord = (LinearLayout) view.findViewById(R.id.ll_record);
         return view;
     }
 
@@ -83,18 +95,31 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     @Override
     protected void loadData() {
         mLlFace.setOnClickListener(this);
+        mLlCache.setOnClickListener(this);
+        mLlAttention.setOnClickListener(this);
+        mLlFeedBack.setOnClickListener(this);
+        mLlRecord.setOnClickListener(this);
     }
 
     @Override
-    @CheckLogin
+    @SingleClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_face:
                 requestSelectPic();
                 break;
+            case R.id.ll_record:
+                TRouter.go(Constants.HISTORY);
+                break;
+            case R.id.ll_cache:
+                break;
+            case R.id.ll_attention:
+                break;
+            case R.id.ll_feedback:
+                break;
         }
     }
-
+    @CheckLogin
     private void requestSelectPic(){
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setMessage("前往更换头像").setPositiveButton("确定",
@@ -174,7 +199,6 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                     .builder()
                     .url(file.getFileUrl())
                     .imageView(mCivFace)
-                    .placeholder(R.drawable.ic_noface)
                     .errorPic(R.drawable.ic_noface)
                     .build());
         }

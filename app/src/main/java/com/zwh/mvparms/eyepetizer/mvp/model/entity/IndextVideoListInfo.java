@@ -1,12 +1,13 @@
 package com.zwh.mvparms.eyepetizer.mvp.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2017/9/15 0015.
  */
 
-public class IndextVideoListInfo {
+public class IndextVideoListInfo implements Serializable{
     private int count;
     private int total;
     private int refreshCount;

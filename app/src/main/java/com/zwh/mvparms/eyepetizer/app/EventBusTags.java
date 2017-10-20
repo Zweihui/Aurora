@@ -11,5 +11,6 @@ public interface EventBusTags {
     String SET_USER_INFO = "set_user_info";
     String MAIN_ACTIVITY_PERMISSION = "main_activity_permission";
     String MINE_FRAGMENT_PERMISSION_BACK = "mine_fragment_permission_back";
+    String HOT_FRAGMENT_SET_VIEWPAGER = "hot_fragment_set_viewpager";
     String MINE_FRAGMENT_SET_FACE_PIC = "mine_fragment_set_face_pic";
 }

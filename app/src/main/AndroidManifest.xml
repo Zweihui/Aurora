@@ -16,6 +16,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -44,7 +45,8 @@
         <activity
             android:name=".mvp.ui.activity.CategoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_Transparent" />
         <activity
             android:name=".mvp.ui.activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -79,14 +81,14 @@
             android:theme="@style/AppTheme_normal" />
         <activity
             android:name=".mvp.ui.activity.LoginActivity"
-            android:label="登录"></activity>
+            android:label="登录" />
         <activity
             android:name=".mvp.ui.activity.RegistActivity"
-            android:label="注册帐号"></activity>
+            android:label="注册帐号" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.zwh.mvparms.eyepetizer.fileprovider"
@@ -94,8 +96,12 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths_public"></meta-data>
+                android:resource="@xml/file_paths_public" />
         </provider>
+
+        <activity
+            android:name=".mvp.ui.activity.HistoryActivity"
+            android:label="观看记录" />
     </application>
 
 </manifest>

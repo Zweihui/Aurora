@@ -129,7 +129,7 @@ public class CategoryFragment extends BaseLazyLoadFragment<CategoryPresenter> im
 
     @Override
     public void showLoading() {
-
+        mSwipeRefresh.setRefreshing(true);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
                 GlideImageConfig
                         .builder()
                         .url(item.getData().getCover().getFeed())
-                        .imageView(helper.getView(R.id.img_main))
+                        .imageView(imgMian)
                         .build());
         try {
             ((App)context.getApplicationContext())

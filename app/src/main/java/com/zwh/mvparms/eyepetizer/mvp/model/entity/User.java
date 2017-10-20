@@ -7,6 +7,12 @@ import cn.bmob.v3.datatype.BmobFile;
 public class User extends BmobUser {
     private BmobFile icon;
 
+    public User(BmobUser bmobUser){
+        this.setUsername(bmobUser.getUsername());
+    }
+    public User(){
+    }
+
     public BmobFile getIcon() {
         return icon;
     }

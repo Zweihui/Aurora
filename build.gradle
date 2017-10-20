@@ -3,6 +3,7 @@ apply from: "config.gradle"
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
         maven{
             url uri('repo')
         }
@@ -18,6 +19,8 @@ buildscript {
         //aspectj
         classpath 'org.aspectj:aspectjtools:1.8.9'
         classpath 'com.zwh.plugin:gradleplugin:1.0.0'
+        //greendao
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
     }
 }
 

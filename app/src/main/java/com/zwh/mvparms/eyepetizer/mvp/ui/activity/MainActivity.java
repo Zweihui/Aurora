@@ -10,7 +10,9 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.CardView;
@@ -42,10 +44,13 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Person;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CategoryFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HomeFragment;
+import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotContainerFragment;
+import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.BottomNavigationViewHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
@@ -65,6 +70,7 @@ import butterknife.ButterKnife;
 import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.listener.RequestSMSCodeListener;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.SaveListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -86,8 +92,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     CoordinatorLayout mainContent;
     @BindView(toolbar)
     Toolbar mToolbar;
-    //    @BindView(R.id.appbar)
-//    AppBarLayout mAppbar;
+    @BindView(R.id.appbar)
+    AppBarLayout mAppbar;
+    @BindView(R.id.tl_tabs)
+    TabLayout mTabLayout;;
     @BindView(R.id.nv_main_navigation)
     NavigationView mNvMainNavigation;
     @BindView(R.id.dl_main_drawer)
@@ -100,6 +108,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private HomeFragment mHomeFragment;
     private CategoryFragment mCategoryFragment;
     private MineFragment mMineFragment;
+    private HotContainerFragment mHotContainerFragment;
+    private HotFragment mHotFragment;
 
     private SearchTransitioner searchTransitioner;
 
@@ -141,18 +151,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     case R.id.item_home:
                         mViewpager.setCurrentItem(0);
                         setTitle("首页");
+                        mTabLayout.setVisibility(View.GONE);
                         break;
                     case R.id.item_category:
                         mViewpager.setCurrentItem(1);
                         setTitle("分类");
+                        mTabLayout.setVisibility(View.GONE);
                         break;
                     case R.id.item_attention:
                         mViewpager.setCurrentItem(2);
-                        setTitle("关注");
+                        setTitle("热门");
+                        mTabLayout.setVisibility(View.VISIBLE);
                         break;
                     case R.id.item_mine:
                         mViewpager.setCurrentItem(3);
                         setTitle("我的");
+                        mTabLayout.setVisibility(View.GONE);
                         break;
                 }
                 return true;
@@ -175,6 +189,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         });
         initToolBar();
         searchTransitioner = new SearchTransitioner(this, mViewpager, searchView);
+        mDlMainDrawer.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                User user = BmobUser.getCurrentUser(User.class);
+                if (user != null){
+                    EventBus.getDefault().post(user, EventBusTags.SET_USER_INFO);
+                }
+            }
+        },800);
     }
 
     private void initToolBar() {
@@ -210,10 +233,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mHomeFragment = HomeFragment.newInstance();
         mCategoryFragment = CategoryFragment.newInstance();
         mMineFragment = MineFragment.newInstance();
+        mHotContainerFragment = HotContainerFragment.newInstance();
+//        mHotFragment = HotFragment.newInstance(new Category("weekly","周排行"));
         List<BaseLazyLoadFragment> list = new ArrayList<>();
         list.add(mHomeFragment);
         list.add(mCategoryFragment);
-        list.add(HomeFragment.newInstance());
+        list.add(mHotContainerFragment);
         list.add(mMineFragment);
         mViewpager.setOffscreenPageLimit(4);
         mViewpager.setPagingEnabled(false);
@@ -356,7 +381,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             .builder()
                             .transformation(new GlideCircleTransform(this))
                             .url(user.getIcon().getFileUrl())
-                            .placeholder(R.drawable.ic_noface)
                             .errorPic(R.drawable.ic_noface)
                             .imageView(img)
                             .build());
@@ -377,6 +401,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 UiUtils.makeText(MainActivity.this, "权限被拒绝");
             }
         }, rxPermissions, mErrorHandler);
+    }
+
+    @Subscriber(tag = EventBusTags.MINE_FRAGMENT_SET_FACE_PIC)
+    private void setFacePic(String path){
+        CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
+        appComponent.imageLoader().loadImage(this,
+                GlideImageConfig
+                        .builder()
+                        .transformation(new GlideCircleTransform(this))
+                        .url(path)
+                        .errorPic(R.drawable.ic_noface)
+                        .imageView(img)
+                        .build());
+    }
+    @Subscriber(tag = EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER)
+    private void setHotPager(ViewPager viewPager){
+        mTabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(0);
     }
 
 }

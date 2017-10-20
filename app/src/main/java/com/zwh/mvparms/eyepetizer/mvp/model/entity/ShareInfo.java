@@ -2,11 +2,13 @@ package com.zwh.mvparms.eyepetizer.mvp.model.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2017/9/20 0020.
  */
 
-public class ShareInfo {
+public class ShareInfo implements Serializable {
 
     /**
      * QQ : {"sourceType":"VIDEO","itemType":"WEB_PAGE","sharePlatform":"QQ","title":"塞维利亚街头乱舞 | 开眼 Eyepetizer","description":"塞维利亚街头乱舞乱记","imageUrl":"","link":"http://www.eyepetizer.net/detail.html?vid=48053&utm_campaign=routine&utm_medium=share&utm_source=qq&uid=0","callbackUrl":null}

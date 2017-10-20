@@ -104,6 +104,7 @@ public class LoginActivity extends BaseActivity {
                         if (e == null){
                             SharedPreferencesUtils.setParam(LoginActivity.this,Constants.USER_NAME,user.getUsername());
                             SharedPreferencesUtils.setParam(LoginActivity.this,Constants.USER_SESSION_TOKEN,user.getSessionToken());
+                            SharedPreferencesUtils.setParam(LoginActivity.this,Constants.USER_FACE_PIC_URL,user.getIcon().getFileUrl());
                             UiUtils.makeText(LoginActivity.this,"登陆成功");
                             EventBus.getDefault().post(user, EventBusTags.SET_USER_INFO);
                             dialog.dismiss();
