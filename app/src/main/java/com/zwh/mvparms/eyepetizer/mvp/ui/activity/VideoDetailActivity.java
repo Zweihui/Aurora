@@ -17,7 +17,6 @@ import com.google.gson.Gson;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
@@ -51,6 +50,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
@@ -59,7 +59,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -169,6 +168,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
                     }
                 } else {
+                    saveVideoHistory(videoInfo.clone());
                     videoInfo = datas.get(position).t;
                     mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
                     setVideoInfo();
@@ -448,6 +448,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                     @Override
                     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                         startAnimate(dragBottomView,false);
+                        saveVideoHistory(videoInfo.clone());
                         videoInfo = secondDatas.get(position).t;
                         mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
                         setVideoInfo();
@@ -613,7 +614,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         return detail;
     }
 
-    private void saveVideoHistory() {
+    private void saveVideoHistory(VideoListInfo.Video videoInfo) {
         VideoDaoEntity daoEntity = new VideoDaoEntity();
         daoEntity.setId(new Long((long)videoInfo.getData().getId()));
         daoEntity.setBody(gson.toJson(videoInfo.getData()));
@@ -627,6 +628,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                         .getVideoDaoEntityDao()
                         .insert(daoEntity);
                 e.onNext(true);
+            }else {
+                master.newSession()
+                        .getVideoDaoEntityDao()
+                        .update(daoEntity);
             }
         }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
                         .subscribe(new Consumer<Boolean>() {
@@ -644,7 +649,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void finish() {
-        saveVideoHistory();
+        saveVideoHistory(videoInfo);
+        EventBus.getDefault().post("",EventBusTags.HISTORY_BACK_REFRESH);
         super.finish();
     }
 }

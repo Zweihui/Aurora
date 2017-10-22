@@ -48,7 +48,8 @@ public class VideoListInfo implements Serializable {
     public void setItemList(List<Video> itemList) {
         this.itemList = itemList;
     }
-    public static class Video {
+
+    public static class Video implements Cloneable {
         /**
          * type : video
          * data : {"dataType":"VideoBeanForClient","id":45784,"title":"圣典传媒企业见证片","slogan":null,"description":"圣典传媒企业见证片，圣典传媒，专业的企业宣传片拍摄制作公司。服务项目包括企业宣传片,企业品牌形象片, 企业招商片,企业文化片,企业产品片,企业见证片企业，微电影，大型演唱会承办、企业明星代言等。","provider":{"name":"PGC","alias":"PGC","icon":""},"category":"广告","author":{"id":1234,"icon":"http://img.kaiyanapp.com/6523a507dcccb28dc9fdea801c9e7f4b.png?imageMogr2/quality/60/format/jpg","name":"圣典传媒","description":"圣典传媒，专业的企业宣传片拍摄制作公司。服务项目包括企业宣传片,企业品牌形象片, 企业招商片,企业文化片,企业产品片,企业见证片企业，微电影，大型演唱会承办、企业明星代言等。","link":"","latestReleaseTime":1503476192000,"videoNum":21,"adTrack":null,"follow":{"itemType":"author","itemId":1234,"followed":false},"shield":{"itemType":"author","itemId":1234,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/1f7ee51c324009cfced4172070564784.png?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/1f7ee51c324009cfced4172070564784.png?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/6f6b2ef467af60c6504b07c0abd37126.jpeg?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":237,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=45784","forWeibo":"http://wandou.im/3o6qrn"},"releaseTime":1503476192000,"library":"BLOCK","playInfo":[{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=normal&source=qcloud","size":21906753},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=normal&source=ucloud","size":21906753}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=high&source=qcloud","size":39277495},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=high&source=ucloud","size":39277495}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=45784&editionType=high&source=qcloud"}],"consumption":{"collectionCount":0,"shareCount":0,"replyCount":1},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[],"type":"NORMAL","titlePgc":"圣典传媒企业见证片","descriptionPgc":"圣典传媒企业见证片，圣典传媒，专业的企业宣传片拍摄制作公司。服务项目包括企业宣传片,企业品牌形象片, 企业招商片,企业文化片,企业产品片,企业见证片企业，微电影，大型演唱会承办、企业明星代言等。","remark":"","idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1503476192000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null}
@@ -57,6 +58,17 @@ public class VideoListInfo implements Serializable {
         private String type;
         private VideoData data;
         private Object tag;
+
+        @Override
+        public Video clone() {
+            Video video = null;
+            try {
+                video = (Video) super.clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            return video;
+        }
 
         public String getType() {
             return type;
@@ -81,6 +93,7 @@ public class VideoListInfo implements Serializable {
         public void setTag(Object tag) {
             this.tag = tag;
         }
+
         public static class VideoData {
             /**
              * dataType : VideoBeanForClient

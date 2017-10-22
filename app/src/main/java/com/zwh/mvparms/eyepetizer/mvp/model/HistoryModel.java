@@ -3,21 +3,21 @@ package com.zwh.mvparms.eyepetizer.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
-
-import com.jess.arms.di.scope.ActivityScope;
-
-import javax.inject.Inject;
-
 import com.jess.arms.utils.StringUtils;
 import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
 import com.zwh.mvparms.eyepetizer.mvp.contract.HistoryContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntityDao;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -51,6 +51,7 @@ public class HistoryModel extends BaseModel implements HistoryContract.Model {
                     .getVideoDaoEntityDao().queryBuilder()
                     .limit(10)
                     .offset(start)
+                    .orderDesc(VideoDaoEntityDao.Properties.Date)
                     .list();
             List<VideoDaoEntity> infolist = new ArrayList<VideoDaoEntity>();
             if (!StringUtils.isEmpty(list)){
@@ -60,6 +61,20 @@ public class HistoryModel extends BaseModel implements HistoryContract.Model {
                 }
             }
             e.onNext(infolist);
+        });
+    }
+
+    @Override
+    public Observable<Boolean> deleteFromDb(VideoDaoEntity daoEntity) {
+        return Observable.create((ObservableOnSubscribe<Boolean>) e -> {
+            DaoMaster master = GreenDaoHelper.getInstance().create(daoEntity.getDbName()).getMaster();
+            if(master.newSession().getVideoDaoEntityDao().loadByRowId(daoEntity.getId())==null){
+            }else{
+                master.newSession()
+                        .getVideoDaoEntityDao()
+                        .delete(daoEntity);
+                e.onNext(true);
+            }
         });
     }
 }
