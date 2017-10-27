@@ -58,6 +58,15 @@ public class RxUtils {
             }
         };
     }
+    public static <T> ObservableTransformer<T, T> applySchedulers() {
+        return new ObservableTransformer<T, T>() {
+            @Override
+            public Observable<T> apply(Observable<T> observable) {
+                return observable.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
+            }
+        };
+    }
 
 
     public static <T> LifecycleTransformer<T> bindToLifecycle(IView view) {

@@ -1,11 +1,17 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -14,15 +20,19 @@ import android.widget.TextView;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
+import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
+import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.StringUtils;
+import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
@@ -37,13 +47,16 @@ import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoDetailPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.ReplyAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
+import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
@@ -53,15 +66,22 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import me.jessyan.progressmanager.ProgressListener;
+import me.jessyan.progressmanager.ProgressManager;
+import me.jessyan.progressmanager.body.ProgressInfo;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -106,6 +126,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     private AppComponent mAppComponent;
     private Gson gson;
+    private RxPermissions mRxPermissions;
+    private DownLoadService downloadService;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -114,6 +136,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
+        this.mRxPermissions = new RxPermissions(this);
         mAppComponent = appComponent;
         gson = mAppComponent.gson();
         DaggerVideoDetailComponent
@@ -239,6 +262,45 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 gotoShare();
             }
         });
+        headView.findViewById(R.id.ll_download).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
+                    @Override
+                    public void onRequestPermissionSuccess() {
+                        checkDownload(videoInfo);
+                    }
+
+                    @Override
+                    public void onRequestPermissionFailure() {
+                        showMessage("Request permissons failure");
+                    }
+                }, mRxPermissions, mAppComponent.rxErrorHandler());
+            }
+        });
+        headView.findViewById(R.id.ll_collection).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VideoDetailActivity.this,DownLoadService.class);
+                VideoDownLoadInfo info = new VideoDownLoadInfo();
+                info.setVideo(videoInfo.getData());
+                info.setId(Long.parseLong(videoInfo.getData().getId()+""));
+                intent.putExtra(DownLoadService.VIDEOS_INFO,info);
+                intent.putExtra(DownLoadService.PAUSE_DOWNLOAD,true);
+                startService(intent);
+            }
+        });
+    }
+
+    private void downloadVideo() {
+        Intent intent = new Intent(this,DownLoadService.class);
+        VideoDownLoadInfo info = new VideoDownLoadInfo();
+        info.setVideo(videoInfo.getData());
+        info.setBody(gson.toJson(videoInfo.getData()));
+        info.setFinish(false);
+        info.setId(Long.parseLong(videoInfo.getData().getId()+""));
+        intent.putExtra(DownLoadService.VIDEOS_INFO,info);
+        startService(intent);
     }
 
 
@@ -268,7 +330,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             List<SwitchVideoModel> list = new ArrayList<>();
             list.add(switchVideoModel);
             list.add(switchVideoModel2);
-            detailPlayer.setUp(list, true, "");
+            detailPlayer.setUp(list, true,"");
         }
         //增加封面
         mIvVideoBg = new ImageView(this);
@@ -377,11 +439,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        Intent intent = new Intent(this,DownLoadService.class);
+        stopService(intent);
         GSYVideoPlayer.releaseAllVideos();
         //GSYPreViewManager.instance().releaseMediaPlayer();
         if (orientationUtils != null)
             orientationUtils.releaseListener();
+        super.onDestroy();
     }
 
     private void setVideoInfo() {
@@ -614,24 +678,69 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         return detail;
     }
 
+    private void checkDownload(VideoListInfo.Video videoInfo){
+        Observable.create((ObservableOnSubscribe<Boolean>) e -> {
+                DaoMaster master = GreenDaoHelper.getInstance().create("DOWNLOAD").getMaster();
+                VideoDownLoadInfo video = master.newSession().getVideoDownLoadInfoDao().loadByRowId(videoInfo.getData().getId());
+                if(video==null){
+                    downloadVideo();
+                    e.onComplete();
+                }else {
+                    e.onNext(video.getFinish());
+                }
+        }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
+                .subscribe(new Consumer<Boolean>() {
+                               @Override
+                               public void accept(@NonNull Boolean aBoolean) throws Exception {
+                                   if (aBoolean){
+
+                                   }else {
+
+                                   }
+                                   UiUtils.makeText(VideoDetailActivity.this,"视频已在缓存列表中");
+                               }
+                           }
+                        , new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                            }
+                        }
+                );
+    }
+
     private void saveVideoHistory(VideoListInfo.Video videoInfo) {
         VideoDaoEntity daoEntity = new VideoDaoEntity();
         daoEntity.setId(new Long((long)videoInfo.getData().getId()));
         daoEntity.setBody(gson.toJson(videoInfo.getData()));
         daoEntity.setDate(new Date());
+        if (shareInfo.getWechat_friends()!=null){
+            daoEntity.setShareInfo(shareInfo.getWechat_friends().getLink());
+        }
         daoEntity.setStartTime(detailPlayer.getCurrentPositionWhenPlaying());
         daoEntity.setTotalTime(videoInfo.getData().getDuration());
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user != null){
+            daoEntity.setUserId(user.getObjectId());
+        }
         Observable.create((ObservableOnSubscribe<Boolean>) e -> {
-            DaoMaster master = GreenDaoHelper.getInstance().create(daoEntity.getDbName()).getMaster();
-            if(master.newSession().getVideoDaoEntityDao().loadByRowId(daoEntity.getId())==null){
-                master.newSession()
-                        .getVideoDaoEntityDao()
-                        .insert(daoEntity);
-                e.onNext(true);
-            }else {
-                master.newSession()
-                        .getVideoDaoEntityDao()
-                        .update(daoEntity);
+            if (user != null){
+                daoEntity.save(new SaveListener<String>() {
+                    @Override
+                    public void done(String s, BmobException e) {
+                    }
+                });
+            }else{
+                DaoMaster master = GreenDaoHelper.getInstance().create(daoEntity.getDbName()).getMaster();
+                if(master.newSession().getVideoDaoEntityDao().loadByRowId(daoEntity.getId())==null){
+                    master.newSession()
+                            .getVideoDaoEntityDao()
+                            .insert(daoEntity);
+                    e.onNext(true);
+                }else {
+                    master.newSession()
+                            .getVideoDaoEntityDao()
+                            .update(daoEntity);
+                }
             }
         }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
                         .subscribe(new Consumer<Boolean>() {

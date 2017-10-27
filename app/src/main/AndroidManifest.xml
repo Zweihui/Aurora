@@ -102,6 +102,7 @@
         <activity
             android:name=".mvp.ui.activity.HistoryActivity"
             android:label="观看记录" />
+        <service android:name="com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService"/>
     </application>
 
 </manifest>

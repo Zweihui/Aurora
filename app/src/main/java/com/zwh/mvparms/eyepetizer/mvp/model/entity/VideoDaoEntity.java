@@ -11,11 +11,15 @@ import java.util.Date;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Transient;
 
+import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
+
 /**
  * Created by Administrator on 2017/10/19 0019.
  */
 @Entity(nameInDb = "VIDEO")
-public class VideoDaoEntity implements Serializable,DaoEntity{
+public class VideoDaoEntity extends BmobObject implements Serializable,DaoEntity{
 
     private static final long serialVersionUID = 123456789L;
 
@@ -30,18 +34,23 @@ public class VideoDaoEntity implements Serializable,DaoEntity{
     @Property
     private Integer startTime;
     @Property
+    private String shareInfo;
+    @Property
     private Date date;
+    @Transient
+    public String userId;
     @Transient
     private VideoListInfo.Video.VideoData video;
 
 
-    @Generated(hash = 516995707)
+    @Generated(hash = 1004013563)
     public VideoDaoEntity(Long id, String body, Integer totalTime,
-            Integer startTime, Date date) {
+            Integer startTime, String shareInfo, Date date) {
         this.id = id;
         this.body = body;
         this.totalTime = totalTime;
         this.startTime = startTime;
+        this.shareInfo = shareInfo;
         this.date = date;
     }
 
@@ -95,6 +104,22 @@ public class VideoDaoEntity implements Serializable,DaoEntity{
 
     public void setVideo(VideoListInfo.Video.VideoData video) {
         this.video = video;
+    }
+
+    public String getShareInfo() {
+        return shareInfo;
+    }
+
+    public void setShareInfo(String shareInfo) {
+        this.shareInfo = shareInfo;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override

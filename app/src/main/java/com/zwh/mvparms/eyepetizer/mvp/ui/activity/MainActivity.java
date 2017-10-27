@@ -327,8 +327,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             UiUtils.snackbarText("再按一次退出应用");
             firstTime = System.currentTimeMillis();
         } else {
-            finish();
-            System.exit(0);
+            appComponent.appManager().killAll();
         }
     }
 

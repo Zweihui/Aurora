@@ -12,7 +12,6 @@ import cn.bmob.v3.BmobUser;
 
 
 /**
- * Created by baixiaokang
  * 通过CheckLogin注解检查用户是否登陆注解，通过aop切片的方式在编译期间织入源代码中
  * 功能：检查用户是否登陆，未登录则提示登录，不会执行下面的逻辑
  */

@@ -148,6 +148,10 @@ public static java.lang.String TABLENAME;
 -keep class com.zhy.autolayout.** { *; }
 -keep interface com.zhy.autolayout.** { *; }
 
+################ProgressManager###############
+-keep class me.jessyan.progressmanager.** { *; }
+-keep interface me.jessyan.progressmanager.** { *; }
+
 
 # OkHttp3
 -keep class com.squareup.okhttp.** { *; }

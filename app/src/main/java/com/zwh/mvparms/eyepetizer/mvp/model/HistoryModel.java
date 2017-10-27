@@ -19,6 +19,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 
@@ -54,9 +58,9 @@ public class HistoryModel extends BaseModel implements HistoryContract.Model {
                     .orderDesc(VideoDaoEntityDao.Properties.Date)
                     .list();
             List<VideoDaoEntity> infolist = new ArrayList<VideoDaoEntity>();
-            if (!StringUtils.isEmpty(list)){
-                for (VideoDaoEntity entity1 : list){
-                    entity1.setVideo(mGson.fromJson(entity1.getBody(),VideoListInfo.Video.VideoData.class));
+            if (!StringUtils.isEmpty(list)) {
+                for (VideoDaoEntity entity1 : list) {
+                    entity1.setVideo(mGson.fromJson(entity1.getBody(), VideoListInfo.Video.VideoData.class));
                     infolist.add(entity1);
                 }
             }
@@ -68,13 +72,52 @@ public class HistoryModel extends BaseModel implements HistoryContract.Model {
     public Observable<Boolean> deleteFromDb(VideoDaoEntity daoEntity) {
         return Observable.create((ObservableOnSubscribe<Boolean>) e -> {
             DaoMaster master = GreenDaoHelper.getInstance().create(daoEntity.getDbName()).getMaster();
-            if(master.newSession().getVideoDaoEntityDao().loadByRowId(daoEntity.getId())==null){
-            }else{
+            if (master.newSession().getVideoDaoEntityDao().loadByRowId(daoEntity.getId()) == null) {
+            } else {
                 master.newSession()
                         .getVideoDaoEntityDao()
                         .delete(daoEntity);
                 e.onNext(true);
             }
+        });
+    }
+
+    @Override
+    public Observable<List<VideoDaoEntity>> getListFromNet(int start, String userid) {
+        return Observable.create((ObservableOnSubscribe<List<VideoDaoEntity>>) emitter -> {
+
+            BmobQuery<VideoDaoEntity> query = new BmobQuery<VideoDaoEntity>();
+            query.addWhereEqualTo("userId", userid);
+            query.setLimit(10);
+            query.order("-date");
+            query.setSkip(start);
+            query.findObjects(new FindListener<VideoDaoEntity>() {
+                @Override
+                public void done(List<VideoDaoEntity> list, BmobException e) {
+                    if (!StringUtils.isEmpty(list)) {
+                        List<VideoDaoEntity> infolist = new ArrayList<VideoDaoEntity>();
+                        for (VideoDaoEntity entity1 : list) {
+                            entity1.setVideo(mGson.fromJson(entity1.getBody(), VideoListInfo.Video.VideoData.class));
+                            infolist.add(entity1);
+                        }
+                        emitter.onNext(infolist);
+                    }
+                }
+            });
+        });
+    }
+
+    @Override
+    public Observable<Boolean> deleteFromNet(VideoDaoEntity entity) {
+        return Observable.create((ObservableOnSubscribe<Boolean>) emitter -> {
+            entity.delete(new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        emitter.onNext(true);
+                    }
+                }
+            });
         });
     }
 }

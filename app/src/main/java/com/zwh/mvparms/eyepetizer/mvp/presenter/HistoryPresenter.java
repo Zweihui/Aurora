@@ -48,7 +48,7 @@ public class HistoryPresenter extends BasePresenter<HistoryContract.Model, Histo
                 .subscribe(new ErrorHandleSubscriber<List<VideoDaoEntity>>(mErrorHandler) {
                     @Override
                     public void onNext(@NonNull List<VideoDaoEntity> videos) {
-                        mRootView.setData(videos,isLoadMore);
+                        mRootView.setData(videos, isLoadMore);
                         onComplete();
                     }
 
@@ -59,7 +59,8 @@ public class HistoryPresenter extends BasePresenter<HistoryContract.Model, Histo
                 });
 
     }
-    public void deleteFromDb(VideoDaoEntity daoEntity,final int position) {
+
+    public void deleteFromDb(VideoDaoEntity daoEntity, final int position) {
         mModel.deleteFromDb(daoEntity)
                 .delay(600, TimeUnit.MILLISECONDS)
                 .compose(RxUtils.applySchedulers(mRootView))
@@ -78,8 +79,38 @@ public class HistoryPresenter extends BasePresenter<HistoryContract.Model, Histo
 
     }
 
-    public Observable<List<VideoListInfo.Video>> getListFromNet() {
-        return null;
+    public void getListFromNet(int start, String userId, boolean isLoadMore) {
+        mModel.getListFromNet(start, userId)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<List<VideoDaoEntity>>(mErrorHandler) {
+                    @Override
+                    public void onNext(@NonNull List<VideoDaoEntity> videos) {
+                        mRootView.setData(videos, isLoadMore);
+                        onComplete();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mRootView.hideLoading();
+                    }
+                });
+    }
+
+    public void deleteFromNet(VideoDaoEntity daoEntity, final int position) {
+        mModel.deleteFromNet(daoEntity)
+                .compose(RxUtils.applySchedulers(mRootView))
+                .subscribe(new ErrorHandleSubscriber<Boolean>(mErrorHandler) {
+                    @Override
+                    public void onNext(@NonNull Boolean succeed) {
+                        mRootView.deleteData(position);
+                        onComplete();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mRootView.hideLoading();
+                    }
+                });
     }
 
 

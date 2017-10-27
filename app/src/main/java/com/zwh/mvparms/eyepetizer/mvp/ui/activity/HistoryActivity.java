@@ -28,6 +28,7 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerHistoryComponent;
 import com.zwh.mvparms.eyepetizer.di.module.HistoryModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.HistoryContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.HistoryPresenter;
@@ -39,7 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobUser;
 
+import static android.media.CamcorderProfile.get;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 @Router(Constants.HISTORY)
@@ -107,7 +110,12 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
 
     @Subscriber(tag = EventBusTags.HISTORY_BACK_REFRESH)
     private void refreshData(String tag) {
-        mPresenter.getListFromDb(0,false);
+        User user = BmobUser.getCurrentUser(User.class);
+        if (user == null){
+            mPresenter.getListFromDb(0,false);
+        }else {
+            mPresenter.getListFromNet(0,user.getObjectId(),false);
+        }
     }
 
     private void initToolBar() {
@@ -139,7 +147,12 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
             adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
                 @Override
                 public void onLoadMoreRequested() {
-                    mPresenter.getListFromDb(data.size()-1,true);
+                    User user = BmobUser.getCurrentUser(User.class);
+                    if (user == null){
+                        mPresenter.getListFromDb(data.size(),true);
+                    }else {
+                        mPresenter.getListFromNet(data.size(),user.getObjectId(),true);
+                    }
                 }
             },mRecyclerView);
         }
@@ -174,18 +187,31 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        gotoShare();
+                        String share = data.get(position).getShareInfo();
+                        if (share!=null){
+                            gotoShare(share);
+                        }
                         popupWindow.dismiss();
                     }
                 });
             popupWindow.showAsDropDown(view, 0, -view.getHeight());
     }
 
-    private void gotoShare() {
+    private void gotoShare(String share) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, share);
+        intent.setType("text/plain");
+        //设置分享列表的标题，并且每次都显示分享列表
+        startActivity(Intent.createChooser(intent, "分享到"));
     }
 
     private void deleteVideoHistory(VideoDaoEntity daoEntity,int position) {
-        mPresenter.deleteFromDb(daoEntity,position);
+        if (BmobUser.getCurrentUser()==null){
+            mPresenter.deleteFromDb(daoEntity,position);
+        }else {
+            mPresenter.deleteFromNet(daoEntity,position);
+        }
     }
 
     @Override

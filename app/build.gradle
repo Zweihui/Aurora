@@ -87,7 +87,6 @@ dependencies {
     //tools
     provided rootProject.ext.dependencies["javax.annotation"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
-    compile rootProject.ext.dependencies["progressmanager"]
     //view
     annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
         exclude module: 'support-annotations'
@@ -121,6 +120,7 @@ dependencies {
     compile rootProject.ext.dependencies["ucrop"]
     compile rootProject.ext.dependencies["greendao"]
     compile(name: 'matisse_ucrop_1.0.0', ext: 'aar')
+    compile(name: 'progress-release', ext: 'aar')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 apply plugin: AspectjPlugin

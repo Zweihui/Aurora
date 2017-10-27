@@ -20,5 +20,7 @@ public interface HistoryContract {
     interface Model extends IModel {
         Observable<List<VideoDaoEntity>> getListFromDb(int start);
         Observable<Boolean> deleteFromDb(VideoDaoEntity entity);
+        Observable<List<VideoDaoEntity>> getListFromNet(int start,String userid);
+        Observable<Boolean> deleteFromNet(VideoDaoEntity entity);
     }
 }

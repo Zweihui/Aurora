@@ -14,7 +14,6 @@ import java.util.Calendar;
 import timber.log.Timber;
 
 /**
- * Created by baixiaokang on 16/12/9.
  * 防止View被连续点击,间隔时间600ms
  */
 
