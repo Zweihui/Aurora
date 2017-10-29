@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
     <TextView
         android:id="@+id/error_msg"
         android:layout_width="wrap_content"
@@ -37,7 +39,7 @@
             android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/right_enter_arrow"
+            app:srcCompat="@drawable/ve_right_enter_arrow"
             />
         <View
             android:layout_width="match_parent"

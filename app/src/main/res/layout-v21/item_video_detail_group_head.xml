@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/ll_root"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/tv_name"
         android:scaleType="fitXY"
-        android:src="@drawable/right_enter_arrow"
+        app:srcCompat="@drawable/ve_right_enter_arrow"
         />
 
     <ImageView
@@ -49,9 +50,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_gravity="right"
-        android:padding="6dp"
         android:scaleType="fitXY"
-        android:src="@drawable/down_enter_arrow"
+        app:srcCompat="@drawable/ve_down_enter_arrow"
         android:visibility="visible"
         />
 </RelativeLayout>

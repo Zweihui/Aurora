@@ -1,6 +1,5 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -15,7 +14,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,16 +21,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apt.TRouter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
@@ -44,8 +38,6 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.Person;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CategoryFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HomeFragment;
@@ -57,7 +49,6 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MaterialSearchView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.transition.SearchTransitioner;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -66,19 +57,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import cn.bmob.sms.BmobSMS;
-import cn.bmob.sms.listener.RequestSMSCodeListener;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
-import static android.R.attr.keyHeight;
-import static android.R.attr.tag;
 import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
-import static com.zwh.mvparms.eyepetizer.R.id.view;
 import static com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment.REQUEST_CODE_CHOOSE;
 
 /**
@@ -95,7 +78,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.appbar)
     AppBarLayout mAppbar;
     @BindView(R.id.tl_tabs)
-    TabLayout mTabLayout;;
+    TabLayout mTabLayout;
     @BindView(R.id.nv_main_navigation)
     NavigationView mNvMainNavigation;
     @BindView(R.id.dl_main_drawer)

@@ -5,12 +5,12 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     signingConfigs {
-        release {
-            keyAlias 'key0'
-            keyPassword 'zwh12583258'
-            storeFile file('C:/Users/Administrator/Desktop/Sunny_key.jks')
-            storePassword 'zwh12583258'
-        }
+//        release {
+//            keyAlias 'key0'
+//            keyPassword 'zwh12583258'
+//            storeFile file('C:/Users/Administrator/Desktop/Sunny_key.jks')
+//            storePassword 'zwh12583258'
+//        }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -65,9 +65,9 @@ android {
         }
     }
     productFlavors {
-        sunny {
-            signingConfig signingConfigs.release
-        }
+//        sunny {
+//            signingConfig signingConfigs.release
+//        }
     }
 }
 

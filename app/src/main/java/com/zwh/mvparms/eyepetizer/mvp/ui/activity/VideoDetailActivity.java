@@ -1,17 +1,11 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.IBinder;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,7 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
-import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
 import com.jess.arms.utils.PermissionUtil;
@@ -66,7 +59,6 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -79,9 +71,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import me.jessyan.progressmanager.ProgressListener;
-import me.jessyan.progressmanager.ProgressManager;
-import me.jessyan.progressmanager.body.ProgressInfo;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -227,10 +216,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             public void onClick(View v) {
                 if (expand.isExpand()) {
                     expand.shrink();
-                    expandArrow.setImageResource(R.drawable.down_enter_arrow);
+                    expandArrow.setImageResource(R.drawable.ve_down_enter_arrow);
                 } else {
                     expand.expand();
-                    expandArrow.setImageResource(R.drawable.up_enter_arrow);
+                    expandArrow.setImageResource(R.drawable.ve_up_enter_arrow);
                 }
             }
         });

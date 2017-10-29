@@ -1,31 +1,22 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.service;
 
-import android.app.Activity;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.jess.arms.base.BaseApplication;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.utils.UiUtils;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
-import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
@@ -194,6 +185,8 @@ public class DownLoadService extends IntentService {
                 getNotificationManager().notify(1, getNotification("正在下载视频" + currentVideo.getId() + "...", progressInfo.getPercent()));
                 if (progressInfo.getPercent() == 100){
                     currentVideo.setFinish(true);
+                    DaoMaster master = GreenDaoHelper.getInstance().create("DOWNLOAD").getMaster();
+                    master.newSession().getVideoDownLoadInfoDao().update(currentVideo);
                     getNotificationManager().cancel(1);
                 }
             }

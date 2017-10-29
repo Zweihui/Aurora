@@ -112,6 +112,7 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                 TRouter.go(Constants.HISTORY);
                 break;
             case R.id.ll_cache:
+                TRouter.go(Constants.CACHE);
                 break;
             case R.id.ll_attention:
                 break;

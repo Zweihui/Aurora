@@ -16,6 +16,7 @@ public class Constants {
     public static final String LOGIN = "login";
     public static final String REGIST = "regist";
     public static final String HISTORY = "history";
+    public static final String CACHE = "cache";
 
     //==================intent============//
     public static final String TYPE = "type";

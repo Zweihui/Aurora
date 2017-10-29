@@ -185,7 +185,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/down_enter_arrow"
+        android:src="@drawable/ve_down_enter_arrow"
         android:layout_marginTop="8dp"
         android:layout_marginRight="24dp"
         app:layout_constraintRight_toRightOf="parent" />
