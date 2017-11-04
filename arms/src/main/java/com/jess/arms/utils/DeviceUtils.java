@@ -2,6 +2,7 @@ package com.jess.arms.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
@@ -31,6 +32,7 @@ import android.view.inputmethod.InputMethodManager;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -773,7 +775,21 @@ public class DeviceUtils {
         else
             return false;
     }
-
+    public static boolean isServiceRunning(Context context, String ServiceName) {
+        if (("").equals(ServiceName) || ServiceName == null)
+            return false;
+        ActivityManager myManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
+                .getRunningServices(200);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString()
+                    .equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
 

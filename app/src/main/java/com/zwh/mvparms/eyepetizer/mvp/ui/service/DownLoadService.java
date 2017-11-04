@@ -16,16 +16,22 @@ import android.support.v4.app.NotificationCompat;
 import com.jess.arms.base.BaseApplication;
 import com.jess.arms.utils.StringUtils;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
+import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CacheActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
+
+import org.simple.eventbus.EventBus;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 
 import me.jessyan.progressmanager.ProgressListener;
@@ -35,6 +41,7 @@ import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import timber.log.Timber;
 
 /**
  * Created by Administrator on 2017/10/26 0026.
@@ -44,11 +51,15 @@ public class DownLoadService extends IntentService {
 
     private String currentUrl;
     private VideoDownLoadInfo currentVideo;
+    private List<VideoDownLoadInfo> videos = new ArrayList<>();
     public final static String VIDEOS_INFO = "videos_info";
+    public final static String VIDEOS_INSERT = "videos_insert";
     public final static String PAUSE_DOWNLOAD = "pause_download";
+    public final static String MORE_DOWNLOAD = "more_download";
     private OkHttpClient mOkHttpClient;
     private Call call;
-    private DownloadBinder mBinder = new DownloadBinder();
+    private ProgressInfo info;
+    Long start = 0L;
 
 
     public DownLoadService() {
@@ -64,60 +75,86 @@ public class DownLoadService extends IntentService {
     public void onCreate() {
         super.onCreate();
         mOkHttpClient = ((BaseApplication) getApplication()).getAppComponent().okHttpClient();
+        Timber.e("onCreate");
+    }
+
+    @Override
+    public void onStart(@Nullable Intent intent, int startId) {
+        super.onStart(intent, startId);
+        Timber.e("onStart");
     }
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        if (intent.getBooleanExtra(PAUSE_DOWNLOAD,false)){
+        Timber.e("onStartCommand");
+        VideoDownLoadInfo video = (VideoDownLoadInfo) intent.getSerializableExtra(VIDEOS_INFO);
+        if (intent.getBooleanExtra(PAUSE_DOWNLOAD, false)) {
             pause();
             return START_REDELIVER_INTENT;
         }
-        return super.onStartCommand(intent, flags, startId);
+        if (videos.size() < 1) {
+            videos.add(video);
+            return super.onStartCommand(intent, flags, startId);
+        } else {
+            videos.add(video);
+            DaoMaster master = GreenDaoHelper.getInstance().create(video.getDbName()).getMaster();
+            master.newSession()
+                    .getVideoDownLoadInfoDao()
+                    .insertOrReplace(video);
+            return START_REDELIVER_INTENT;
+        }
+
+
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        Timber.e("onHandleIntent");
         VideoDownLoadInfo video = (VideoDownLoadInfo) intent.getSerializableExtra(VIDEOS_INFO);
+        Boolean needInsert = intent.getBooleanExtra(VIDEOS_INSERT, true);
         currentVideo = video;
-        ProgressManager.getInstance().addResponseListener(video.getVideo().getPlayInfo().get(0).getUrl(), getDownloadListener());
-        DaoMaster master = GreenDaoHelper.getInstance().create(video.getDbName()).getMaster();
-        VideoDownLoadInfo videofromdao = master.newSession().getVideoDownLoadInfoDao().loadByRowId(video.getId());
-        master.newSession()
-                .getVideoDownLoadInfoDao()
-                .insert(currentVideo);
+        if (needInsert) {
+            DaoMaster master = GreenDaoHelper.getInstance().create(video.getDbName()).getMaster();
+            master.newSession()
+                    .getVideoDownLoadInfoDao()
+                    .insertOrReplace(currentVideo);
+        }
         beginDownload(video);
     }
 
     private void beginDownload(VideoDownLoadInfo video) {
-        currentUrl = video.getVideo().getPlayInfo().get(0).getUrl();
+        currentUrl = video.getVideo().getPlayUrl();
         String url = new String(currentUrl);
-        ProgressManager.getInstance().addResponseListener(url,getDownloadListener());
-        Long start = video.getCurrentBytes() == null ? 0 : video.getCurrentBytes();
+        ProgressManager.getInstance().addResponseListener(url, getDownloadListener());
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(dir.getAbsolutePath(), video.getId() + ".mp4");
+        RandomAccessFile savedFile = null;
+        if (file.exists()) {
+            //如果文件存在的话，得到文件的大小
+            start = file.length();
+        } else {
+            start = 0L;
+        }
         try {
             Request request = new Request.Builder()
-                    .addHeader("RANGE", "bytes="+start+"-")
+                    .addHeader("RANGE", "bytes=" + start + "-")
                     .url(url)
                     .build();
             call = mOkHttpClient.newCall(request);
             Response response = call.execute();
-
+            savedFile = new RandomAccessFile(file, "rw");
+            savedFile.seek(start);
             InputStream is = response.body().byteStream();
-            //为了方便就不动态申请权限了,直接将文件放到CacheDir()中
-//            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + video.getId() + ".mp4");
-            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos");
-            if (!dir.exists()){
-                dir.mkdirs();
-            }
-            File file = new File(dir.getAbsolutePath() , video.getId() + ".mp4");
-            FileOutputStream fos = new FileOutputStream(file);
             BufferedInputStream bis = new BufferedInputStream(is);
             byte[] buffer = new byte[1024];
             int len;
             while ((len = bis.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
+                savedFile.write(buffer, 0, len);
             }
-            fos.flush();
-            fos.close();
+            savedFile.close();
             bis.close();
             is.close();
         } catch (IOException e) {
@@ -130,15 +167,25 @@ public class DownLoadService extends IntentService {
     public void pause() {
         if (call != null) {
             call.cancel();
-        }
-        String url = new String(currentUrl);
-        List<ProgressListener> listeners = ProgressManager.getInstance().getListener(url);
-        if (StringUtils.isEmpty(listeners)) {
-            for (ProgressListener lis : listeners) {
-                lis.onPause();
-            }
+        } else {
+            stopSelf();
+            return;
         }
         getNotificationManager().cancel(1);
+        EventBus.getDefault().post(videos.get(0).getId(), EventBusTags.CACHE_DOWNLOAD_CACNCEL);
+        if (videos.size() > 0) {
+            videos.remove(0);
+            if (videos.size()>0){
+                Intent intent = new Intent(this,DownLoadService.class);
+                intent.putExtra(DownLoadService.VIDEOS_INFO,videos.get(0));
+                onStart(intent,START_REDELIVER_INTENT);
+            }else {
+//                EventBus.getDefault().post(-1L, EventBusTags.CACHE_DOWNLOAD_CACNCEL);
+                stopSelf();
+            }
+        } else {
+            stopSelf();
+        }
     }
 
     private NotificationManager getNotificationManager() {
@@ -146,7 +193,8 @@ public class DownLoadService extends IntentService {
     }
 
     private Notification getNotification(String title, int progress) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, CacheActivity.class);
+        intent.putExtra(CacheActivity.FROM_NOTIFICATION, true);
         //PendingIntent是等待的Intent,这是跳转到一个Activity组件。当用户点击通知时，会跳转到MainActivity
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, 0);
         /**
@@ -174,32 +222,40 @@ public class DownLoadService extends IntentService {
 
     private ProgressListener getDownloadListener() {
         return new ProgressListener() {
-            ProgressInfo info;
 
             @Override
             public void onProgress(ProgressInfo progressInfo) {
                 info = progressInfo;
-                currentVideo.setContentLength(progressInfo.getContentLength());
-                currentVideo.setCurrentBytes(progressInfo.getCurrentbytes());
-                currentVideo.setPath(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + info.getId() + ".mp4").getAbsolutePath());
-                getNotificationManager().notify(1, getNotification("正在下载视频" + currentVideo.getId() + "...", progressInfo.getPercent()));
-                if (progressInfo.getPercent() == 100){
+                ProgressInfo _info = new ProgressInfo(currentVideo.getId());
+                _info.setContentLength(progressInfo.getContentLength() + start);
+                _info.setCurrentbytes(progressInfo.getCurrentbytes() + start);
+//                currentVideo.setPath(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + info.getId() + ".mp4").getAbsolutePath());
+                getNotificationManager().notify(1, getNotification("正在下载视频" + currentVideo.getId(), _info.getPercent()));
+                if (progressInfo.isFinish()) {
                     currentVideo.setFinish(true);
-                    DaoMaster master = GreenDaoHelper.getInstance().create("DOWNLOAD").getMaster();
-                    master.newSession().getVideoDownLoadInfoDao().update(currentVideo);
+                    currentVideo.setContentLength(progressInfo.getContentLength() + start);
+                    DaoMaster master = GreenDaoHelper.getInstance().create(currentVideo.getDbName()).getMaster();
+                    master.newSession()
+                            .getVideoDownLoadInfoDao()
+                            .update(currentVideo);
                     getNotificationManager().cancel(1);
+                    EventBus.getDefault().post("finish", EventBusTags.CACHE_DOWNLOAD_FINISH);
+                    if (videos.size() > 0) {
+                        videos.remove(0);
+                        if (videos.size()>0){
+                            Intent intent = new Intent(DownLoadService.this,DownLoadService.class);
+                            intent.putExtra(DownLoadService.VIDEOS_INFO,videos.get(0));
+                            onStart(intent,START_REDELIVER_INTENT);
+                        }
+                    }
+                    return;
                 }
+                EventBus.getDefault().post(_info, EventBusTags.CACHE_DOWNLOAD_PROGRESS);
             }
 
             @Override
             public void onError(long id, Exception e) {
-
-            }
-
-
-            @Override
-            public void onPause() {
-
+                EventBus.getDefault().post("finish", EventBusTags.CACHE_DOWNLOAD_CACNCEL);
             }
         };
     }
@@ -209,18 +265,13 @@ public class DownLoadService extends IntentService {
      */
     @Override
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return null;
     }
 
-    public class DownloadBinder extends Binder {
-        /**
-         * 获取当前Service的实例
-         *
-         * @return
-         */
-        public DownLoadService getService() {
-            return DownLoadService.this;
-        }
-    }
 
+    @Override
+    public void onDestroy() {
+        Timber.e("onDestroy");
+        super.onDestroy();
+    }
 }

@@ -3,6 +3,7 @@ package com.jess.arms.utils;
 import android.text.TextUtils;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
 import java.util.Collection;
 
 /**
@@ -53,33 +54,79 @@ public class StringUtils {
         }
     }
 
-    public static String getPrintSize(long size) {
-        //如果字节数少于1024，则直接以B为单位，否则先除于1024，后3位因太少无意义
+    public static String getPrintSize(long size, boolean withUnit) {
+        DecimalFormat df = new DecimalFormat("#.0");
+        String fileSizeString = "";
         if (size < 1024) {
-            return String.valueOf(size) + "B";
+            if (withUnit){
+                fileSizeString = df.format((double) size) + "B";
+            }else {
+                fileSizeString =0.0 + "";
+            }
+        } else if (size < 1048576) {
+            if (withUnit){
+                fileSizeString = df.format((double) size / 1024) + "KB";
+            }else {
+                fileSizeString =0.0 + "";
+            }
+        } else if (size < 1073741824) {
+            if (withUnit){
+                fileSizeString = df.format((double) size / 1048576) + "MB";
+            }else {
+                fileSizeString = df.format((double) size / 1048576);
+            }
         } else {
-            size = size / 1024;
+            if (withUnit){
+                fileSizeString = df.format((double) size / 1073741824) + "GB";
+            }else {
+                fileSizeString = df.format((double) size / 1073741824);
+            }
         }
-        //如果原字节数除于1024之后，少于1024，则可以直接以KB作为单位
-        //因为还没有到达要使用另一个单位的时候
-        //接下去以此类推
-        if (size < 1024) {
-            return String.valueOf(size) + "KB";
-        } else {
-            size = size / 1024;
-        }
-        if (size < 1024) {
-            //因为如果以MB为单位的话，要保留最后1位小数，
-            //因此，把此数乘以100之后再取余
-            size = size * 100;
-            return String.valueOf((size / 100)) + "."
-                    + String.valueOf((size % 100)) + "MB";
-        } else {
-            //否则如果要以GB为单位的，先除于1024再作同样的处理
-            size = size * 100 / 1024;
-            return String.valueOf((size / 100)) + "."
-                    + String.valueOf((size % 100)) + "GB";
-        }
+        return fileSizeString;
+//        //如果字节数少于1024，则直接以B为单位，否则先除于1024，后3位因太少无意义
+//        if (size < 1024) {
+//            if (withUnit){
+//                return String.valueOf(size) + "B";
+//            }else {
+//                return String.valueOf(size);
+//            }
+//        } else {
+//            size = size / 1024;
+//        }
+//        //如果原字节数除于1024之后，少于1024，则可以直接以KB作为单位
+//        //因为还没有到达要使用另一个单位的时候
+//        //接下去以此类推
+//        if (size < 1024) {
+//            if (withUnit){
+//                return String.valueOf(size) + "KB";
+//            }else {
+//                return String.valueOf(size);
+//            }
+//        } else {
+//            size = size / 1024;
+//        }
+//        if (size < 1024) {
+//            //因为如果以MB为单位的话，要保留最后1位小数，
+//            //因此，把此数乘以100之后再取余
+//            size = size * 100;
+//            if (withUnit){
+//                return String.valueOf((size / 100)) + "."
+//                        + String.valueOf((size % 100)) + "MB";
+//            }else {
+//                return String.valueOf((size / 100)) + "."
+//                        + String.valueOf((size % 100));
+//            }
+//        } else {
+//            //否则如果要以GB为单位的，先除于1024再作同样的处理
+//            size = size * 100 / 1024;
+//            if (withUnit){
+//                return String.valueOf((size / 100)) + "."
+//                        + String.valueOf((size % 100)) + "GB";
+//            }else {
+//                return String.valueOf((size / 100)) + "."
+//                        + String.valueOf((size % 100));
+//            }
+//        }
     }
 
 }

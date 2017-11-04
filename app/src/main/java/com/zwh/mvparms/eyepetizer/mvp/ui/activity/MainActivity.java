@@ -34,11 +34,13 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.ui.MatisseActivity;
 import com.zwh.annotation.apt.Router;
+import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CategoryFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HomeFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotContainerFragment;
@@ -61,6 +63,7 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
+import static com.zwh.mvparms.eyepetizer.R.id.swipe;
 import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
 import static com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment.REQUEST_CODE_CHOOSE;
 
@@ -68,7 +71,7 @@ import static com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment.REQUEST_CO
  * Created by zwh on 2017/9/15 0015.
  */
 @Router(Constants.MAIN)
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigation;
     @BindView(R.id.main_content)
@@ -127,6 +130,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mDlMainDrawer.setDrawerListener(mToggle);
         mToggle.syncState();
         mNvMainNavigation.setNavigationItemSelectedListener(this);
+        mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face).setOnClickListener(this);
+        mNvMainNavigation.getHeaderView(0).findViewById(R.id.tv_name).setOnClickListener(this);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -199,6 +204,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             }
                         }, 300);
                         break;
+                    case R.id.action_settings:
+                        TRouter.go(Constants.SETTINGS);
+                        break;
                     default:
                         break;
                 }
@@ -229,6 +237,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.im_face:
+            case R.id.tv_name:
+                gotoLogin();
+                break;
+        }
+    }
+
+    @CheckLogin
+    private void gotoLogin(){
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mDlMainDrawer.postDelayed(new Runnable() {
@@ -252,10 +275,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.nav_manage) ;
-        else if (item.getItemId() == R.id.nav_share) {
+        if (item.getItemId() == R.id.nav_login) {
             TRouter.go(Constants.LOGIN);
-        } else if (item.getItemId() == R.id.nav_theme) ;
+        }
+        if (item.getItemId() == R.id.nav_attention){
+
+        }
+        if (item.getItemId() == R.id.nav_cache){
+            TRouter.go(Constants.CACHE);
+        }
+        if (item.getItemId() == R.id.nav_recode){
+            TRouter.go(Constants.HISTORY);
+        }
+        if (item.getItemId() == R.id.nav_setting){
+            TRouter.go(Constants.SETTINGS);
+        }
         mDlMainDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -268,11 +302,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-
-                return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 

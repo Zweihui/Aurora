@@ -104,10 +104,10 @@ ext {
                 "umeng-analytics"          : "com.umeng.analytics:analytics:6.0.1",
 
                 //media
-                "gsyVideoPlayer-java"           : "com.shuyu:gsyVideoPlayer-java:2.0.9",
-                "gsyVideoPlayer-armv7a"         : "com.shuyu:gsyVideoPlayer-armv7a:2.0.9",
-                "gsyVideoPlayer-x86"            : "com.shuyu:gsyVideoPlayer-x86:2.0.9",
-                "gsyVideoPlayer-arm64"            : "com.shuyu:gsyVideoPlayer-arm64:2.0.9",
+                "gsyVideoPlayer-java"           : "com.shuyu:gsyVideoPlayer-java:2.1.1",
+                "gsyVideoPlayer-armv7a"         : "com.shuyu:gsyVideoPlayer-armv7a:2.1.1",
+                "gsyVideoPlayer-x86"            : "com.shuyu:gsyVideoPlayer-x86:2.1.1",
+                "gsyVideoPlayer-arm64"            : "com.shuyu:gsyVideoPlayer-arm64:2.1.1",
 
                 //Server
                 "bmob-sdk"                  : "cn.bmob.android:bmob-sdk:3.5.5",

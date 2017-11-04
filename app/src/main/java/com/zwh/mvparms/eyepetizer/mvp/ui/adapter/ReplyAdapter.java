@@ -40,6 +40,7 @@ public class ReplyAdapter extends BaseSectionQuickAdapter<ReplySection,BaseViewH
     protected void convertHead(BaseViewHolder helper, ReplySection item) {
         helper.setText(R.id.tv_name,item.t.getData().getText());
         helper.getView(R.id.iv_arrow).setVisibility(View.GONE);
+        helper.addOnClickListener(R.id.iv_arrow_right);
         if (helper.getLayoutPosition() == 0){
             helper.getView(R.id.iv_arrow_right).setVisibility(View.VISIBLE);
             helper.getView(R.id.view).setVisibility(View.VISIBLE);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
+import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
@@ -29,6 +31,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
+import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -71,6 +74,9 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import timber.log.Timber;
+
+import static com.zwh.mvparms.eyepetizer.R.id.view;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -257,7 +263,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
-                        checkDownload(videoInfo);
+                        checkDownload(v,videoInfo);
                     }
 
                     @Override
@@ -270,13 +276,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         headView.findViewById(R.id.ll_collection).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(VideoDetailActivity.this,DownLoadService.class);
-                VideoDownLoadInfo info = new VideoDownLoadInfo();
-                info.setVideo(videoInfo.getData());
-                info.setId(Long.parseLong(videoInfo.getData().getId()+""));
-                intent.putExtra(DownLoadService.VIDEOS_INFO,info);
-                intent.putExtra(DownLoadService.PAUSE_DOWNLOAD,true);
-                startService(intent);
+
             }
         });
     }
@@ -287,9 +287,24 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         info.setVideo(videoInfo.getData());
         info.setBody(gson.toJson(videoInfo.getData()));
         info.setFinish(false);
+        info.setCreatTime(new Date());
         info.setId(Long.parseLong(videoInfo.getData().getId()+""));
         intent.putExtra(DownLoadService.VIDEOS_INFO,info);
+        if (DeviceUtils.isServiceRunning(this,"com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService")){
+            Timber.e("-------------PostSticky");
+            EventBus.getDefault().postSticky(info,EventBusTags.CACHE_DOWNLOAD_BEGIN);
+        }
         startService(intent);
+        Snackbar.make(rlScreen, "视频离线缓存中",Snackbar.LENGTH_LONG)
+                .setAction("查看任务", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(VideoDetailActivity.this, CacheActivity.class);
+                        intent.putExtra(CacheActivity.FROM_NOTIFICATION,true);
+                        startActivity(intent);
+                    }
+                })
+                .show();
     }
 
 
@@ -417,19 +432,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Override
     protected void onPause() {
         super.onPause();
-        isPause = true;
+        detailPlayer.onVideoPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        isPause = false;
+        detailPlayer.onVideoResume();
     }
 
     @Override
     protected void onDestroy() {
-        Intent intent = new Intent(this,DownLoadService.class);
-        stopService(intent);
         GSYVideoPlayer.releaseAllVideos();
         //GSYPreViewManager.instance().releaseMediaPlayer();
         if (orientationUtils != null)
@@ -476,7 +489,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     private void resolveNormalVideoUI() {
         //增加title
         detailPlayer.getTitleTextView().setVisibility(View.GONE);
-        detailPlayer.getBackButton().setVisibility(View.GONE);
+        detailPlayer.getBackButton().setVisibility(View.VISIBLE);
+        detailPlayer.getBackButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -553,6 +572,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         }
         if (replyAdapter == null) {
             replyAdapter = new ReplyAdapter(R.layout.item_reply_content, R.layout.item_video_detail_group_head, replyDatas);
+            replyAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                @Override
+                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                    if (view.getId() == R.id.iv_arrow_right){
+                        startAnimate(dragBottomView,false);
+                    }
+                }
+            });
         }
         if (info.getNextPageUrl() != null) {
             replyAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -666,27 +693,26 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         String detail = "#" + item.getData().getCategory() + " / " + sb.toString();
         return detail;
     }
-
-    private void checkDownload(VideoListInfo.Video videoInfo){
+    @SingleClick
+    private void checkDownload(View view,VideoListInfo.Video videoInfo){
         Observable.create((ObservableOnSubscribe<Boolean>) e -> {
                 DaoMaster master = GreenDaoHelper.getInstance().create("DOWNLOAD").getMaster();
                 VideoDownLoadInfo video = master.newSession().getVideoDownLoadInfoDao().loadByRowId(videoInfo.getData().getId());
                 if(video==null){
-                    downloadVideo();
-                    e.onComplete();
+                    e.onNext(false);
                 }else {
-                    e.onNext(video.getFinish());
+                    e.onNext(true);
                 }
+            e.onComplete();
         }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
                 .subscribe(new Consumer<Boolean>() {
                                @Override
                                public void accept(@NonNull Boolean aBoolean) throws Exception {
                                    if (aBoolean){
-
+                                       UiUtils.makeText(VideoDetailActivity.this,"视频已在缓存列表中");
                                    }else {
-
+                                       downloadVideo();
                                    }
-                                   UiUtils.makeText(VideoDetailActivity.this,"视频已在缓存列表中");
                                }
                            }
                         , new Consumer<Throwable>() {
@@ -702,8 +728,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         daoEntity.setId(new Long((long)videoInfo.getData().getId()));
         daoEntity.setBody(gson.toJson(videoInfo.getData()));
         daoEntity.setDate(new Date());
-        if (shareInfo.getWechat_friends()!=null){
-            daoEntity.setShareInfo(shareInfo.getWechat_friends().getLink());
+        if (shareInfo != null){
+            if (shareInfo.getWechat_friends()!=null){
+                daoEntity.setShareInfo(shareInfo.getWechat_friends().getLink());
+            }
         }
         daoEntity.setStartTime(detailPlayer.getCurrentPositionWhenPlaying());
         daoEntity.setTotalTime(videoInfo.getData().getDuration());

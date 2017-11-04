@@ -93,7 +93,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
 
     @Override
     public void showLoading() {
-
+        mSwipeRefresh.setRefreshing(true);
     }
 
     @Override
@@ -177,6 +177,8 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
 
     @Override
     public void onRefresh() {
+        if (mPresenter == null){
+        }
         mPresenter.getVideoList(type,getQuryId(),0,true);
     }
 
@@ -238,5 +240,11 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
             adapter.addData(list);
             adapter.loadMoreComplete();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mRxPermissions = null;
     }
 }

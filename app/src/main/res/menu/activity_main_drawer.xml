@@ -4,21 +4,29 @@
     <group android:checkableBehavior="none">
 
         <item
-            android:id="@+id/nav_share"
+            android:id="@+id/nav_login"
             android:icon="@drawable/ic_user"
             android:title="登录" />
 
         <item
-            android:id="@+id/nav_theme"
-            android:icon="@drawable/icon_theme"
-            android:title="主題" />
+            android:id="@+id/nav_attention"
+            android:icon="@drawable/ve_attention_grey"
+            android:title="关注" />
+        <item
+            android:id="@+id/nav_cache"
+            android:icon="@drawable/ve_video_library_grey"
+            android:title="缓存" />
+        <item
+            android:id="@+id/nav_recode"
+            android:icon="@drawable/ve_access_time_grey"
+            android:title="观看记录" />
 
     </group>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_manage"
+                android:id="@+id/nav_setting"
                 android:icon="@drawable/ic_setting"
                 android:title="设置" />
         </menu>

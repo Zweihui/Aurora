@@ -14,12 +14,12 @@ import java.util.List;
  */
 
 public class FragmentAdapter extends FragmentStatePagerAdapter {
-    private List<VideoListFragment> mFragments;
+//    private List<VideoListFragment> mFragments;//
     private List<Category> mCategories;
 
-    public static FragmentAdapter newInstance(FragmentManager fm, List<VideoListFragment> fragments, List<Category> categories) {
+    public static FragmentAdapter newInstance(FragmentManager fm,List<Category> categories) {
         FragmentAdapter mFragmentAdapter = new FragmentAdapter(fm);
-        mFragmentAdapter.mFragments = fragments;
+//        mFragmentAdapter.mFragments = fragments;
         mFragmentAdapter.mCategories = categories;
         return mFragmentAdapter;
     }
@@ -30,12 +30,13 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position);
+//        return mFragments.get(position);
+        return VideoListFragment.newInstance(mCategories.get(position));
     }
 
     @Override
     public int getCount() {
-        return mFragments.size();
+        return mCategories.size();
     }
 
     @Override

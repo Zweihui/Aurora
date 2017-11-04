@@ -67,7 +67,6 @@ public class CategoryActivity extends BaseActivity{
     @Extra(Constants.CATEGORY_DATA_POSITION)
     public int position;
     private long firstTime=0;
-    private List<VideoListFragment> fragments = new ArrayList<>();
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -96,18 +95,7 @@ public class CategoryActivity extends BaseActivity{
                         .setAction("Action", null).show();
             }
         });
-        Observable.fromIterable(list)
-                .map(new Function<Category, VideoListFragment>() {
-                    @Override
-                    public VideoListFragment apply(@NonNull Category category) throws Exception {
-                        VideoListFragment fragment = VideoListFragment.newInstance(category);
-                        fragments.add(fragment);
-                        return fragment;
-                    }
-                })
-                .toList()
-                .map(fragments -> FragmentAdapter.newInstance(getSupportFragmentManager(), fragments, list))
-                .subscribe(mFragmentAdapter -> mViewpager.setAdapter(mFragmentAdapter));
+        mViewpager.setAdapter(FragmentAdapter.newInstance(getSupportFragmentManager(),list));
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -124,7 +112,7 @@ public class CategoryActivity extends BaseActivity{
                         .url(list.get(position).getHeaderImage())
                         .imageView(mToolbarIvTarget)
                         .build());
-                setTitle(list.get(CategoryActivity.this.position).getName());
+                mCollapsingToolbar.setTitle(list.get(CategoryActivity.this.position).getName());
             }
 
             @Override
@@ -140,15 +128,8 @@ public class CategoryActivity extends BaseActivity{
                 .url(list.get(0).getHeaderImage())
                 .imageView(mToolbarIvTarget)
                 .build());
+        mViewpager.setOffscreenPageLimit(4);
         mViewpager.setCurrentItem(position);
     }
 
-    @Override
-    public void onBackPressed() {
-        if(fragments.get(position).isLoding()){
-            fragments.get(position).hideLoading();
-        }else {
-            super.onBackPressed();
-        }
-    }
 }

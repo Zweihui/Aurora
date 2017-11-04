@@ -6,6 +6,9 @@ import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Transient;
 
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.Date;
+
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
@@ -29,20 +32,26 @@ public class VideoDownLoadInfo implements Serializable,DaoEntity{
     private Boolean finish; //进度是否完成
     @Property
     private String path; //全路径
+    @Property
+    private Date creatTime;
 
     @Transient
     private VideoListInfo.Video.VideoData video;
+    @Transient
+    private boolean isDownLoading;
+    @Transient
+    private boolean isLineUp;
 
 
-    @Generated(hash = 890312406)
-    public VideoDownLoadInfo(Long id, String body, Long currentBytes,
-            Long contentLength, Boolean finish, String path) {
+    @Generated(hash = 767729281)
+    public VideoDownLoadInfo(Long id, String body, Long currentBytes, Long contentLength, Boolean finish, String path, Date creatTime) {
         this.id = id;
         this.body = body;
         this.currentBytes = currentBytes;
         this.contentLength = contentLength;
         this.finish = finish;
         this.path = path;
+        this.creatTime = creatTime;
     }
 
     @Generated(hash = 1738706251)
@@ -106,8 +115,55 @@ public class VideoDownLoadInfo implements Serializable,DaoEntity{
         this.video = video;
     }
 
+    public Date getCreatTime() {
+        return creatTime;
+    }
+
+    public void setCreatTime(Date creatTime) {
+        this.creatTime = creatTime;
+    }
+
+    public int getPercent() {
+        if (this.getCurrentBytes() == null){
+            return 0;
+        }else {
+            return this.getCurrentBytes() > 0L && this.getContentLength() > 0L?(int)(100L * this.getCurrentBytes() / this.getContentLength()):0;
+        }
+    }
+
+    public boolean getDownLoading() {
+        return isDownLoading;
+    }
+
+    public void setDownLoading(boolean downLoading) {
+        isDownLoading = downLoading;
+    }
+
+    public boolean isLineUp() {
+        return isLineUp;
+    }
+
+    public void setLineUp(boolean lineUp) {
+        isLineUp = lineUp;
+    }
+
     @Override
     public String getDbName() {
         return "DOWNLOAD";
+    }
+
+    public static class InfoComparator implements Comparator<VideoDownLoadInfo> {
+
+
+        @Override
+        public int compare(VideoDownLoadInfo video1, VideoDownLoadInfo video2) {
+            if (video1.isLineUp() == true&&video2.isLineUp()==false){
+                return -1;
+            }else if(video1.isLineUp() == false&&video2.isLineUp()==true){
+                return 1;
+            }else {
+                return video1.getCreatTime().compareTo(video2.getCreatTime());
+            }
+        }
     }
 }

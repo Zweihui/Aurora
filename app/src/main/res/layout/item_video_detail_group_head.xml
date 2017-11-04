@@ -32,8 +32,8 @@
 
     <ImageView
         android:id="@+id/iv_arrow"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/tv_name"
         android:layout_centerVertical="true"
@@ -42,10 +42,12 @@
         />
     <ImageView
         android:id="@+id/iv_arrow_right"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
         android:scaleType="fitXY"
         android:visibility="visible"
+        android:clickable="true"
         android:layout_gravity="right"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"

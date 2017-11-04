@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseActivity;
+import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
@@ -241,7 +242,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         if (adapter == null){
             mFlowLayout.setVisibility(View.GONE);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            footView = getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
+            footView = getLayoutInflater().inflate(R.layout.item_video_detail_foot, null, false);
             adapter = new SearchAdapter(R.layout.item_video_search,mSearchResult);
             mRecyclerView.setAdapter(adapter);
             adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -260,7 +261,9 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         if (StringUtils.isEmpty(list)&&adapter!=null){
             if (!isLoadMore)
                 tvTip.setText("「"+editTextSearch.getText().toString()+"」"+"搜索结果共"+total+"个");
-            adapter.addFooterView(footView);
+            if (adapter.getFooterLayoutCount()<1){
+                adapter.addFooterView(footView);
+            }
             adapter.setEnableLoadMore(false);
             return;
         }

@@ -9,8 +9,10 @@ public class Constants {
     public static final String HOME = "home";
     public static final String SPLASH = "splash";
     public static final String VIDEO = "video";
+    public static final String FULL_VIDEO = "full_video";
     public static final String TEST = "test";
     public static final String MAIN = "main";
+    public static final String SETTINGS = "settings";
     public static final String SEARCH = "search";
     public static final String CATEGORY = "category";
     public static final String LOGIN = "login";
@@ -25,6 +27,7 @@ public class Constants {
     public static final String CATEGORY_DATA = "category_data";
     public static final String CATEGORY_DATA_POSITION = "category_data_position";
     public static final String VIDEO_INFO = "video_info";
+    public static final String VIDEO_URL = "video_url";
     public static final String RELATE_VIDEO_INFO = "relate_video_info";
     public static final String TRANSLATE_VIEW = "share_img";
 

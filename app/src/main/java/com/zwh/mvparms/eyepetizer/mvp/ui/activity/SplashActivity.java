@@ -60,7 +60,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        mPresenter.requestCategories();
+//        mPresenter.requestCategories();
     }
 
     @Override

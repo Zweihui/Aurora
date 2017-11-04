@@ -84,8 +84,8 @@ public abstract class BaseLazyLoadFragment<P extends IPresenter> extends RxFragm
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        if (mPresenter != null) mPresenter.onDestroy();//释放资源
-//        this.mPresenter = null;
+        if (mPresenter != null) mPresenter.onDestroy();//释放资源
+        this.mPresenter = null;
     }
 
 

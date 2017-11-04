@@ -3,7 +3,7 @@
     <color name="colorPrimary">#FFC107</color>
     <color name="colorPrimaryDark">#FFA000</color>
     <color name="colorPrimaryLght">#FFECB3</color>
-    <color name="colorAccent">#cddc39</color>
+    <color name="colorAccent">#FFC107</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="secondary_text">#757575</color>
     <color name="icons">#212121</color>

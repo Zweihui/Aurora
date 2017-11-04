@@ -12,9 +12,16 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.mvp.IView;
 import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.CacheFragmentAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfoDao;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CacheFragment;
+import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +31,12 @@ import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
+import static android.R.attr.type;
+
 @Router(Constants.CACHE)
 public class CacheActivity extends BaseActivity implements IView{
 
+    public final static String FROM_NOTIFICATION = "from_notification";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -37,8 +47,11 @@ public class CacheActivity extends BaseActivity implements IView{
     @BindView(R.id.viewpager)
     ViewPager mViewpager;
 
+    private boolean isFromNotification = false;
+
     private AppComponent mAppComponent;
     private List<CacheFragment> fragments = new ArrayList<>();
+    private int size = 0;
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -52,10 +65,17 @@ public class CacheActivity extends BaseActivity implements IView{
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        isFromNotification = getIntent().getBooleanExtra(FROM_NOTIFICATION,false);
         initToolBar();
+        VideoDownLoadInfo entity = new VideoDownLoadInfo();
+        List<VideoDownLoadInfo> infos = GreenDaoHelper.getInstance().create(entity.getDbName())
+                .getMaster().newSession()
+                .getVideoDownLoadInfoDao().queryBuilder()
+                .where(VideoDownLoadInfoDao.Properties.Finish.eq(false ))
+                .list();
         List<String> list = new ArrayList<>();
         list.add("已缓存");
-        list.add("正在缓存");
+        list.add("正在缓存"+"("+(infos==null?0:infos.size())+")");
         Observable.fromIterable(list)
                 .map(new Function<String, CacheFragment>() {
                     @Override
@@ -69,7 +89,12 @@ public class CacheActivity extends BaseActivity implements IView{
                 .map(fragments -> CacheFragmentAdapter.newInstance(getSupportFragmentManager(), fragments, list))
                 .subscribe(mFragmentAdapter -> mViewpager.setAdapter(mFragmentAdapter));
         mTlTabs.setupWithViewPager(mViewpager);
-        mViewpager.setCurrentItem(0);
+        if (isFromNotification){
+            mViewpager.setCurrentItem(1);
+        }else {
+            mViewpager.setCurrentItem(0);
+        }
+
     }
 
     private void initToolBar() {
@@ -82,6 +107,24 @@ public class CacheActivity extends BaseActivity implements IView{
             }
         });
     }
+    @Subscriber(tag = EventBusTags.CACHE_DOWNLOAD_FINISH)
+    private void downloadFinish(String tag) {
+        VideoDownLoadInfo entity = new VideoDownLoadInfo();
+        List<VideoDownLoadInfo> infos = GreenDaoHelper.getInstance().create(entity.getDbName())
+                .getMaster().newSession()
+                .getVideoDownLoadInfoDao().queryBuilder()
+                .where(VideoDownLoadInfoDao.Properties.Finish.eq(false ))
+                .list();
+        mTlTabs.getTabAt(1).setText("正在缓存"+"("+(infos==null?0:infos.size())+")");
+        size = infos.size();
+    }
+    @Subscriber(tag = EventBusTags.CACHE_DOWNLOAD_DELETE)
+    private void downloadDelete(String tag) {
+        size = size - 1;
+        mTlTabs.getTabAt(1).setText("正在缓存"+"("+size+")");
+
+    }
+
 
     @Override
     public void showLoading() {

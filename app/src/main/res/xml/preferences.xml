@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="基本设置">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="autoRun"
+            android:summaryOff="使用流量时提醒"
+            android:summaryOn="使用流量时提醒"
+            android:title="流量提醒" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="autoRun"
+            android:summaryOff="关"
+            android:summaryOn="开"
+            android:title="Wi-Fi下自动播放" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="autoRun"
+            android:summaryOff="关"
+            android:summaryOn="开"
+            android:title="跳过启动页动画" />
+        <Preference
+            android:key="clear_cache"
+            android:singleLine="true"
+            android:summary="包括图片和视频缓存"
+            android:title="清除缓存" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="关于与帮助">
+
+        <Preference
+            android:key="about"
+            android:singleLine="true"
+            android:title="关于作者" />
+
+        <Preference
+            android:key="rate"
+            android:singleLine="true"
+            android:title="去评价" />
+
+        <Preference
+            android:key="rate"
+            android:singleLine="true"
+            android:title="开源许可" />
+
+        <Preference
+            android:key="update"
+            android:singleLine="true"
+            android:summary="当前版本 1.0.0"
+            android:title="检查更新" />
+    </PreferenceCategory>
+</PreferenceScreen>

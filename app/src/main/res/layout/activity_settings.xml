@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context="com.zwh.mvparms.eyepetizer.mvp.ui.activity.HistoryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:layout_marginBottom="10dp"
+        android:orientation="vertical"
         android:theme="@style/AppTheme.AppBarOverlay"
         >
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -24,6 +26,10 @@
             android:theme="@style/AppTheme.AppBarOverlay"
             />
     </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/common_recyclerview" />
+    <FrameLayout
+        android:id="@+id/fl_container"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>
