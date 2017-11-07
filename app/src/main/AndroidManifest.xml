@@ -110,6 +110,9 @@
             android:label="缓存管理"
             android:launchMode="singleTop" />
         <activity
+            android:name=".mvp.ui.activity.AboutMimeActivity"
+            android:label="关于作者" />
+        <activity
             android:name=".mvp.ui.activity.VideoFullCreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
@@ -117,6 +120,12 @@
         <activity
             android:name=".mvp.ui.activity.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
+
+        <receiver android:name="com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

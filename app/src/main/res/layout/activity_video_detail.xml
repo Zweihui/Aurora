@@ -28,8 +28,7 @@
         <com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo
             android:id="@+id/detail_player"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <FrameLayout
@@ -38,7 +37,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        android:id="@+id/frameLayout">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -53,7 +53,7 @@
             android:clickable="false"
             android:orientation="vertical"
             android:visibility="invisible">
-            <android.support.v7.widget.RecyclerView
+            <com.zwh.mvparms.eyepetizer.mvp.ui.widget.MultiRecyclerView
                 android:id="@+id/second_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -66,12 +66,36 @@
             android:clickable="false"
             android:orientation="vertical"
             android:visibility="invisible">
-            <android.support.v7.widget.RecyclerView
+
+            <com.zwh.mvparms.eyepetizer.mvp.ui.widget.MultiRecyclerView
                 android:id="@+id/reply_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white" />
         </com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_loading"
+        android:layout_width="0dp"
+        android:clickable="true"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        >
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/indicator_loading"
+            app:indicatorName="BallPulseIndicator"
+            app:indicatorColor="@color/colorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="visible" />
+
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

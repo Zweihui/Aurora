@@ -1,10 +1,13 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -60,6 +63,9 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        if ((Boolean) SharedPreferencesUtils.getParam(SplashActivity.this,Constants.SETTING_SPLASH,false)){
+            findViewById(R.id.root).setBackgroundResource(R.color.white);
+        }
 //        mPresenter.requestCategories();
     }
 
@@ -67,19 +73,29 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     protected void onResume() {
         super.onResume();
         if (isInit){
-            weatherView.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    weatherView.startAnim();
-                    weatherView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            isAnimated = true;
-                            EventBus.getDefault().post("gotomain",EventBusTags.JUMP_TO_HOME);
+                weatherView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if ((Boolean) SharedPreferencesUtils.getParam(SplashActivity.this,Constants.SETTING_SPLASH,false)){
+                            weatherView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    isAnimated = true;
+                                    EventBus.getDefault().post("gotomain",EventBusTags.JUMP_TO_HOME);
+                                }
+                            },500);
+                        }else {
+                            weatherView.startAnim();
+                            weatherView.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    isAnimated = true;
+                                    EventBus.getDefault().post("gotomain",EventBusTags.JUMP_TO_HOME);
+                                }
+                            }, 3000);
                         }
-                    }, 3000);
-                }
-            }, 200);
+                    }
+                }, 200);
             isInit = false;
         }
     }

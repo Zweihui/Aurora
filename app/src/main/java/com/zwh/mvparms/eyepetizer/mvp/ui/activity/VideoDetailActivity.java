@@ -1,6 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
 import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.PermissionUtil;
+import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
@@ -28,6 +30,7 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.wang.avi.AVLoadingIndicatorView;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
@@ -41,6 +44,7 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.Person;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
@@ -52,13 +56,16 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.ReplyAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
+import com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MultiRecyclerView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 
+import org.greenrobot.greendao.annotation.Unique;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
@@ -67,9 +74,12 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
@@ -91,13 +101,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.second_recyclerView)
-    RecyclerView recyclerView2;
+    MultiRecyclerView recyclerView2;
     @BindView(R.id.dbv_drag)
     DragBottomView dragBottomView;
     @BindView(R.id.reply_recyclerView)
-    RecyclerView replyRecyclerView2;
+    MultiRecyclerView replyRecyclerView2;
     @BindView(R.id.dbv_drag_reply)
     DragBottomView replyDragBottomView;
+    @BindView(R.id.fl_loading)
+    FrameLayout flLoading;
+    @BindView(R.id.indicator_loading)
+    AVLoadingIndicatorView indicatorView;
 
     private ImageView mIvVideoBg; //视频封面
     private View headView;
@@ -123,6 +137,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     private Gson gson;
     private RxPermissions mRxPermissions;
     private DownLoadService downloadService;
+    private NetBroadcastReceiver receiver;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
@@ -153,6 +168,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         initRecyclerView();
         mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
         mPresenter.getShareInfo(videoInfo.getData().getId());
+        indicatorView.show();
+        flLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -163,9 +180,9 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     private void initRecyclerView() {
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView2.getRecyclerView().setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        replyRecyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        replyRecyclerView2.getRecyclerView().setLayoutManager(new LinearLayoutManager(this));
         adapter = new RelateVideoAdapter(R.layout.item_video_detail_group_content,
                 R.layout.item_video_detail_group_head, datas);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -178,6 +195,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                                 (datas.get(position).t.getData().getActionUrl()).split("\\?");
                         path = arr[0];
                         id = Integer.parseInt(arr[1].split("=")[1]);
+                        secondDatas.clear();
                         if (StringUtils.isEmpty(secondDatas)){
                             mPresenter.getSecondRelaRelateVideoInfo(path, id, secondDatas.size());
                         }
@@ -186,6 +204,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
                     }
                 } else {
+                    flLoading.setVisibility(View.VISIBLE);
                     saveVideoHistory(videoInfo.clone());
                     videoInfo = datas.get(position).t;
                     mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
@@ -404,7 +423,9 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 }
             }
         });
-        detailPlayer.startPlayLogic();
+        if ((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_WIFI,true)){
+            detailPlayer.startPlayLogic();
+        }
     }
 
 
@@ -433,12 +454,19 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     protected void onPause() {
         super.onPause();
         detailPlayer.onVideoPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         detailPlayer.onVideoResume();
+        if (receiver == null){
+            receiver = new NetBroadcastReceiver();
+        }
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(receiver,filter);
     }
 
     @Override
@@ -537,8 +565,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                             }
                         }, 500);
                     }
-                }, recyclerView2);
-                recyclerView2.setAdapter(secondAdapter);
+                }, recyclerView2.getRecyclerView());
+                recyclerView2.getRecyclerView().setAdapter(secondAdapter);
             }
             List<RelateVideoSection> newData = new ArrayList<>();
             for (VideoListInfo.Video item : info.getItemList()) {
@@ -562,6 +590,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             }
             refreshHeadView(headView);
             adapter.setNewData(datas);
+            flLoading.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    flLoading.setVisibility(View.GONE);
+                }
+            }, 600);
         }
     }
 
@@ -572,9 +606,9 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         }
         if (replyAdapter == null) {
             replyAdapter = new ReplyAdapter(R.layout.item_reply_content, R.layout.item_video_detail_group_head, replyDatas);
-            replyAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            replyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
-                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     if (view.getId() == R.id.iv_arrow_right){
                         startAnimate(dragBottomView,false);
                     }
@@ -588,13 +622,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                     if (!StringUtils.isEmpty(replyDatas))
                         mPresenter.getMoreReplyInfo(replyDatas.get(replyDatas.size() - 1).t.getData().getSequence(), videoInfo.getData().getId());
                 }
-            }, replyRecyclerView2);
+            }, replyRecyclerView2.getRecyclerView());
         } else {
             View footView2 = getLayoutInflater().inflate(R.layout.item_video_detail_foot, replyRecyclerView2, false);
             if (replyAdapter.getFooterLayoutCount() == 0) {
                 replyAdapter.addFooterView(footView2);
             }
-            replyAdapter.setOnLoadMoreListener(null, replyRecyclerView2);
+            replyAdapter.setOnLoadMoreListener(null, replyRecyclerView2.getRecyclerView());
         }
         if (isLoadmore) {
             List<ReplySection> replies = new ArrayList<>();
@@ -612,7 +646,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             replyAdapter.loadMoreComplete();
         } else {
             replyDatas.clear();
-            replyRecyclerView2.setAdapter(replyAdapter);
+            replyRecyclerView2.getRecyclerView().setAdapter(replyAdapter);
 
             for (ReplyInfo.Reply item : info.getItemList()) {
                 ReplySection section = new ReplySection(item);
@@ -644,12 +678,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void showLoading() {
-
+        recyclerView2.setLoading(true);
+        replyRecyclerView2.setLoading(true);
     }
 
     @Override
     public void hideLoading() {
-
+        recyclerView2.setLoading(false);
+        replyRecyclerView2.setLoading(false);
     }
 
     @Subscriber(tag = EventBusTags.HIDE_RECYCLERVIEW)
@@ -660,6 +696,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         } else {
             AnimationUtils.startTranslate(view, 0, 0
                     , 0, dragBottomView.getHeight(), 200, false);
+        }
+    }
+
+    @Subscriber(tag = EventBusTags.NET_CHANGE_FLOW)
+    private void netChangeToFlow(String tag){
+        if ((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_FLOW,true)){
+            detailPlayer.onVideoPause();
+            UiUtils.makeText(this,"当前正在使用流量");
         }
     }
 
@@ -696,13 +740,13 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @SingleClick
     private void checkDownload(View view,VideoListInfo.Video videoInfo){
         Observable.create((ObservableOnSubscribe<Boolean>) e -> {
-                DaoMaster master = GreenDaoHelper.getInstance().create("DOWNLOAD").getMaster();
-                VideoDownLoadInfo video = master.newSession().getVideoDownLoadInfoDao().loadByRowId(videoInfo.getData().getId());
-                if(video==null){
-                    e.onNext(false);
-                }else {
-                    e.onNext(true);
-                }
+            DaoMaster master = GreenDaoHelper.getInstance().create("DOWNLOAD").getMaster();
+            VideoDownLoadInfo video = master.newSession().getVideoDownLoadInfoDao().loadByRowId(videoInfo.getData().getId());
+            if(video==null){
+                e.onNext(false);
+            }else {
+                e.onNext(true);
+            }
             e.onComplete();
         }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
                 .subscribe(new Consumer<Boolean>() {
@@ -741,9 +785,29 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         }
         Observable.create((ObservableOnSubscribe<Boolean>) e -> {
             if (user != null){
-                daoEntity.save(new SaveListener<String>() {
+                BmobQuery<VideoDaoEntity> bmobQuery = new BmobQuery<VideoDaoEntity>();
+                bmobQuery.addWhereEqualTo("id",daoEntity.getId());
+                bmobQuery.findObjects(new FindListener<VideoDaoEntity>() {
                     @Override
-                    public void done(String s, BmobException e) {
+                    public void done(List<VideoDaoEntity> list, BmobException e) {
+                        if (StringUtils.isEmpty(list)){
+                            daoEntity.save(new SaveListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                    if (e != null){
+                                        if (e.getMessage().contains("unique")){
+                                        }
+                                    }
+                                }
+                            });
+                        }else {
+                            daoEntity.update(list.get(0).getObjectId(),new UpdateListener() {
+                                @Override
+                                public void done(BmobException e) {
+
+                                }
+                            });
+                        }
                     }
                 });
             }else{
@@ -760,17 +824,17 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 }
             }
         }).compose(RxUtils.applySchedulersWithLifeCycle(VideoDetailActivity.this))
-                        .subscribe(new Consumer<Boolean>() {
-                                       @Override
-                                       public void accept(@NonNull Boolean aBoolean) throws Exception {
-                                       }
-                                   }
-                                , new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@NonNull Throwable throwable) throws Exception {
-                                    }
-                                }
-                        );
+                .subscribe(new Consumer<Boolean>() {
+                               @Override
+                               public void accept(@NonNull Boolean aBoolean) throws Exception {
+                               }
+                           }
+                        , new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@NonNull Throwable throwable) throws Exception {
+                            }
+                        }
+                );
     }
 
     @Override

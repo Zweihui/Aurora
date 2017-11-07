@@ -119,6 +119,7 @@ dependencies {
     compile rootProject.ext.dependencies["bmob-sms"]
     compile rootProject.ext.dependencies["ucrop"]
     compile rootProject.ext.dependencies["greendao"]
+    compile rootProject.ext.dependencies["AVLoadingIndicatorView"]
     compile(name: 'matisse_ucrop_1.0.0', ext: 'aar')
     compile(name: 'progress-release', ext: 'aar')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

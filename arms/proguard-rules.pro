@@ -227,6 +227,10 @@
 ################Timber#################
 -dontwarn org.jetbrains.annotations.**
 
+################AVLoadingIndicatorView#################
+-keep class com.wang.avi.** { *; }
+-keep class com.wang.avi.indicators.** { *; }
+
 
 ################Canary#################
 -dontwarn com.squareup.haha.guava.**

@@ -13,10 +13,12 @@ public interface EventBusTags {
     String MINE_FRAGMENT_PERMISSION_BACK = "mine_fragment_permission_back";
     String HOT_FRAGMENT_SET_VIEWPAGER = "hot_fragment_set_viewpager";
     String MINE_FRAGMENT_SET_FACE_PIC = "mine_fragment_set_face_pic";
+    String SETTING_ACTIVITY_LOG_OUT = "setting_activity_log_out";
     String HISTORY_BACK_REFRESH = "history_back_refresh";
     String CACHE_DOWNLOAD_FINISH = "cache_download_finish";
     String CACHE_DOWNLOAD_DELETE = "cache_download_delete";
     String CACHE_DOWNLOAD_PROGRESS = "cache_download_progress";
     String CACHE_DOWNLOAD_BEGIN = "cache_download_begin";
     String CACHE_DOWNLOAD_CACNCEL = "cache_download_cacncel";
+    String NET_CHANGE_FLOW = "net_change_flow";
 }

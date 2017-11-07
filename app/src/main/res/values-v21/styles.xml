@@ -33,7 +33,7 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
-        <item name="android:windowBackground">@color/light_blue</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowAnimationStyle">@style/FadeAnimaActivity</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>

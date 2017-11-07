@@ -54,6 +54,12 @@ public class RxUtils {
             public Observable<T> apply(Observable<T> observable) {
                 return observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .doAfterTerminate(new Action() {
+                            @Override
+                            public void run() {
+                                view.hideLoading();//隐藏进度条
+                            }
+                        })
                         .compose(RxUtils.bindToLifecycle(view));
             }
         };

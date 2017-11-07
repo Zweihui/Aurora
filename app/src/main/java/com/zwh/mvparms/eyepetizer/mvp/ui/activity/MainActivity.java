@@ -2,6 +2,7 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -46,6 +47,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HomeFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotContainerFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment;
+import com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.BottomNavigationViewHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
@@ -276,7 +278,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.nav_login) {
-            TRouter.go(Constants.LOGIN);
         }
         if (item.getItemId() == R.id.nav_attention){
 
@@ -397,6 +398,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             .build());
         }
 
+    }
+    @Subscriber(tag = EventBusTags.SETTING_ACTIVITY_LOG_OUT)
+    public void logoutReset(String tag) {
+        CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
+        TextView name = (TextView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.tv_name);
+        name.setText("点击头像登录");
+        appComponent.imageLoader().loadImage(this,
+                GlideImageConfig
+                        .builder()
+                        .transformation(new GlideCircleTransform(this))
+                        .load(R.drawable.ic_noface)
+                        .placeholder(R.drawable.ic_noface)
+                        .errorPic(R.drawable.ic_noface)
+                        .imageView(img)
+                        .build());
     }
 
     @Subscriber(tag = EventBusTags.MAIN_ACTIVITY_PERMISSION)

@@ -5,8 +5,8 @@
 
         <item
             android:id="@+id/nav_login"
-            android:icon="@drawable/ic_user"
-            android:title="登录" />
+            android:icon="@drawable/bottom_home"
+            android:title="首页" />
 
         <item
             android:id="@+id/nav_attention"

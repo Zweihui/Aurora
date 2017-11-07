@@ -44,12 +44,6 @@ public class ReplyAdapter extends BaseSectionQuickAdapter<ReplySection,BaseViewH
         if (helper.getLayoutPosition() == 0){
             helper.getView(R.id.iv_arrow_right).setVisibility(View.VISIBLE);
             helper.getView(R.id.view).setVisibility(View.VISIBLE);
-            helper.getView(R.id.iv_arrow_right).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    EventBus.getDefault().post(false, EventBusTags.HIDE_RECYCLERVIEW);
-                }
-            });
         }else {
             helper.getView(R.id.view).setVisibility(View.GONE);
             helper.getView(R.id.iv_arrow_right).setVisibility(View.GONE);

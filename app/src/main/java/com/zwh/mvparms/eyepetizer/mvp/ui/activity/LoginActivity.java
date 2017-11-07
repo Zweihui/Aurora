@@ -110,7 +110,7 @@ public class LoginActivity extends BaseActivity {
                             dialog.dismiss();
                             finish();
                         }else{
-                            UiUtils.snackbarText(e.getMessage());
+                            UiUtils.makeText(LoginActivity.this,e.getMessage());
                             dialog.dismiss();
                         }
                     }

@@ -27,6 +27,9 @@ import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +38,11 @@ import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.exception.BmobException;
 import cn.bmob.sms.listener.RequestSMSCodeListener;
 import cn.bmob.sms.listener.VerifySMSCodeListener;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import static com.zwh.mvparms.eyepetizer.R.id.edt_password1;
@@ -338,26 +345,39 @@ public class RegistActivity extends BaseActivity {
             public void onRequestPermissionSuccess() {
                 ProgressDialog dialog = ProgressDialog.show(RegistActivity.this, "", "正在获取验证码...",
                         false, true);
-                BmobSMS.requestSMSCode(RegistActivity.this, evPhoneNum.getText().toString(), "regist", new RequestSMSCodeListener() {
-
+                BmobQuery<User> bmobQuery = new BmobQuery<User>();
+                bmobQuery.addWhereEqualTo("username",evPhoneNum.getText().toString());
+                bmobQuery.findObjects(new FindListener<User>() {
                     @Override
-                    public void done(Integer smsId, BmobException ex) {
-                        // TODO Auto-generated method stub
-                        if (ex == null) {//验证码发送成功
-                            mSmsId = smsId;
-                            UiUtils.makeText(RegistActivity.this,"验证码发送成功");
-                            if (shouldGoNext){
-                                gotoStep(2,false);
-                            }
-                        } else {
-                            UiUtils.makeText(RegistActivity.this,"验证码发送失败");
-                        }
-                        if (!RegistActivity.this.isFinishing())
+                    public void done(List<User> list, cn.bmob.v3.exception.BmobException e) {
+                        if (StringUtils.isEmpty(list)){
+                            BmobSMS.requestSMSCode(RegistActivity.this, evPhoneNum.getText().toString(), "regist", new RequestSMSCodeListener() {
+
+                                @Override
+                                public void done(Integer smsId, BmobException ex) {
+                                    // TODO Auto-generated method stub
+                                    if (ex == null) {//验证码发送成功
+                                        mSmsId = smsId;
+                                        UiUtils.makeText(RegistActivity.this,"验证码发送成功");
+                                        if (shouldGoNext){
+                                            gotoStep(2,false);
+                                        }
+                                    } else {
+                                        UiUtils.makeText(RegistActivity.this,"验证码发送失败");
+                                    }
+                                    if (!RegistActivity.this.isFinishing())
+                                        dialog.dismiss();
+                                }
+                            });
+                            btnRegetCode.setEnabled(false);
+                            timer.start();
+                        }else {
                             dialog.dismiss();
+                            tvPwdError.setTextColor(Color.RED);
+                            tvErrorMsg.setText("帐号已存在，请不要重复注册！");
+                        }
                     }
                 });
-                btnRegetCode.setEnabled(false);
-                timer.start();
             }
 
             @Override

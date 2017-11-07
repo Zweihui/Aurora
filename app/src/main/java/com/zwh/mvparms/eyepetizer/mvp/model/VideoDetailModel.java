@@ -51,7 +51,7 @@ public class VideoDetailModel extends BaseModel implements VideoDetailContract.M
     @Override
     public Observable<VideoListInfo> getSecondRelateVideoInfo(String path, int id,int startCount) {
         Observable<VideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoDetailService.class)
-                .getSecondRelateVideoInfo(path,id,startCount,20);
+                .getSecondRelateVideoInfo(path,id,startCount,10);
         return observable;
     }
 

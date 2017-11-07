@@ -204,4 +204,15 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                     .build());
         }
     }
+    @Subscriber(tag = EventBusTags.SETTING_ACTIVITY_LOG_OUT)
+    public void logoutReset(String tag) {
+        mTvName.setText("未登录");
+        appComponent.imageLoader().loadImage(getActivity(), GlideImageConfig
+                    .builder()
+                    .load(R.drawable.ic_noface)
+                    .placeholder(R.drawable.ic_noface)
+                    .errorPic(R.drawable.ic_noface)
+                    .imageView(mCivFace)
+                    .build());
+    }
 }

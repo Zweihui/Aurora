@@ -94,14 +94,14 @@ public class HistoryModel extends BaseModel implements HistoryContract.Model {
             query.findObjects(new FindListener<VideoDaoEntity>() {
                 @Override
                 public void done(List<VideoDaoEntity> list, BmobException e) {
+                    List<VideoDaoEntity> infolist = new ArrayList<VideoDaoEntity>();
                     if (!StringUtils.isEmpty(list)) {
-                        List<VideoDaoEntity> infolist = new ArrayList<VideoDaoEntity>();
                         for (VideoDaoEntity entity1 : list) {
                             entity1.setVideo(mGson.fromJson(entity1.getBody(), VideoListInfo.Video.VideoData.class));
                             infolist.add(entity1);
                         }
-                        emitter.onNext(infolist);
                     }
+                    emitter.onNext(infolist);
                 }
             });
         });

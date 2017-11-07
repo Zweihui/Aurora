@@ -19,6 +19,7 @@ public class Constants {
     public static final String REGIST = "regist";
     public static final String HISTORY = "history";
     public static final String CACHE = "cache";
+    public static final String AUTHOR = "author";
 
     //==================intent============//
     public static final String TYPE = "type";
@@ -43,10 +44,16 @@ public class Constants {
     public static final String USER_SESSION_TOKEN = "user_session_token";
     public static final String USER_FACE_PIC_URL = "user_face_pic_url";
     public static final String USER_NICK_NAME = "user_nick_name";
+    public static final String SETTING_FLOW = "setting_flow";
+    public static final String SETTING_WIFI = "setting_wifi";
+    public static final String SETTING_SPLASH = "setting_splash";
 
 
     //==================SDKScrete============//
     public static final String BMOB_APP_ID  = "53b5764378874032bfcf0167923861d8";
     public static final String BMOB_API_KEY = "fc0da456f24bca186119d70f64c07700";
+
+    //==================github============//
+    public static final String GITHUB_URL  = "https://github.com/Zweihui";
 
 }

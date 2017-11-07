@@ -249,6 +249,29 @@ public class DataHelper {
         }
         return true;
     }
+    /**
+     * 使用递归查找是否存在文件
+     *
+     * @param dir
+     * @return
+     */
+    public static boolean findFile(File dir) {
+        if (dir == null) {
+            return false;
+        }
+        if (!dir.isDirectory()) {
+            return true;
+        }
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                return true;
+            } else if (file.isDirectory()) {
+                findFile(file); // 递归调用继续删除
+            }
+        }
+        return false;
+    }
 
 
     public static String bytyToString(InputStream in) throws IOException {
