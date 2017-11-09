@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
+import com.zwh.mvparms.eyepetizer.R;
+
 /**
  * Created by Administrator on 2017/9/30 0030.
  */
@@ -63,7 +65,7 @@ public class DragBottomView extends LinearLayout {
             @Override
             public void scrollComplete() {
                 if (!mInit)
-                DragBottomView.this.setVisibility(GONE);
+                    DragBottomView.this.setVisibility(GONE);
             }
 
             @Override
@@ -72,11 +74,11 @@ public class DragBottomView extends LinearLayout {
                 final int childHeight = releasedChild.getHeight();
                 int dy = (mCurrentPos.y - mAutoBackOriginPos.y);
                 mMoveHeight = childHeight;
-                if (((float)dy/childHeight)>0.3f) {
+                if (((float) dy / childHeight) > 0.3f) {
                     mInit = false;
                     mDragger.settleCapturedViewAt(mAutoBackOriginPos.x, childHeight);
                     invalidate();
-                }else {
+                } else {
                     mDragger.settleCapturedViewAt(mAutoBackOriginPos.x, mAutoBackOriginPos.y);
                     invalidate();
                 }
@@ -93,7 +95,7 @@ public class DragBottomView extends LinearLayout {
                 mDragger.processTouchEvent(ev);
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (ev.getY() - touchDownY > 0 && !getChildAt(0).canScrollVertically(-1)) {
+                if (ev.getY() - touchDownY > 0 && !getChildAt(0).findViewById(R.id.recyclerView).canScrollVertically(-1)) {
                     mScrolling = true;
                 } else {
                     mScrolling = false;
@@ -111,6 +113,7 @@ public class DragBottomView extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         mDragger.processTouchEvent(event);
         return true;
+
     }
 
     @Override
@@ -121,10 +124,10 @@ public class DragBottomView extends LinearLayout {
     }
 
     @Override
-    protected void onVisibilityChanged(@NonNull View changedView,int visibility) {
+    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        if (visibility==VISIBLE){
-            mInit=true;
+        if (visibility == VISIBLE) {
+            mInit = true;
         }
     }
 

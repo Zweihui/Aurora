@@ -44,7 +44,6 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.Person;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
@@ -65,7 +64,6 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 
-import org.greenrobot.greendao.annotation.Unique;
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
@@ -85,8 +83,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import timber.log.Timber;
-
-import static com.zwh.mvparms.eyepetizer.R.id.view;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -606,6 +602,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         }
         if (replyAdapter == null) {
             replyAdapter = new ReplyAdapter(R.layout.item_reply_content, R.layout.item_video_detail_group_head, replyDatas);
+            replyAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+                @Override
+                public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                    if (view.getId() == R.id.iv_arrow_right){
+                        startAnimate(replyDragBottomView,false);
+                    }
+                }
+            });
             replyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
