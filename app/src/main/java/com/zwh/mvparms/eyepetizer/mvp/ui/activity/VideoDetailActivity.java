@@ -565,14 +565,25 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 recyclerView2.getRecyclerView().setAdapter(secondAdapter);
             }
             List<RelateVideoSection> newData = new ArrayList<>();
+            boolean isrefresh = true;
+            if(StringUtils.isEmpty(secondDatas)){
+                isrefresh = true;
+            }else {
+                isrefresh = false;
+            }
             for (VideoListInfo.Video item : info.getItemList()) {
                 RelateVideoSection section = new RelateVideoSection(item);
                 section.isHeader = false;
                 newData.add(section);
                 secondDatas.add(section);
             }
-            secondAdapter.addData(newData);
-            secondAdapter.loadMoreComplete();
+            if (isrefresh){
+                secondAdapter.setNewData(newData);
+                ((TextView)secondAdapter.getHeaderLayout().findViewById(R.id.tv_name)).setText(datas.get(selectPosition).t.getData().getText());
+            }else {
+                secondAdapter.addData(newData);
+                secondAdapter.loadMoreComplete();
+            }
         } else {
             datas.clear();
             for (VideoListInfo.Video item : info.getItemList()) {

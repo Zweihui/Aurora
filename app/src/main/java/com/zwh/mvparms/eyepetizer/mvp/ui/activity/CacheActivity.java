@@ -21,6 +21,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfoDao;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CacheFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
@@ -149,5 +150,11 @@ public class CacheActivity extends BaseActivity implements IView{
     @Override
     public void killMyself() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().removeStickyEvent(VideoDownLoadInfo.class,EventBusTags.CACHE_DOWNLOAD_BEGIN);
     }
 }

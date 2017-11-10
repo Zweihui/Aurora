@@ -89,7 +89,7 @@ public class SettingsActivity extends BaseActivity {
         initToolBar();
         switchFlow.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_FLOW,true));
         switchWifi.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_WIFI,true));
-        switchSplash.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_SPLASH,true));
+        switchSplash.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_SPLASH,false));
         if (BmobUser.getCurrentUser()==null){
             ctlLogout.setVisibility(View.GONE);
         }

@@ -59,7 +59,7 @@ public class DownLoadService extends IntentService {
     private OkHttpClient mOkHttpClient;
     private Call call;
     private ProgressInfo info;
-    Long start = 0L;
+    long start = 0l;
 
 
     public DownLoadService() {
@@ -135,6 +135,7 @@ public class DownLoadService extends IntentService {
         if (file.exists()) {
             //如果文件存在的话，得到文件的大小
             start = file.length();
+            Timber.e("start--------"+start);
         } else {
             start = 0L;
         }
@@ -229,6 +230,7 @@ public class DownLoadService extends IntentService {
                 ProgressInfo _info = new ProgressInfo(currentVideo.getId());
                 _info.setContentLength(progressInfo.getContentLength() + start);
                 _info.setCurrentbytes(progressInfo.getCurrentbytes() + start);
+
 //                currentVideo.setPath(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + info.getId() + ".mp4").getAbsolutePath());
                 getNotificationManager().notify(1, getNotification("正在下载视频" + currentVideo.getId(), _info.getPercent()));
                 if (progressInfo.isFinish()) {
