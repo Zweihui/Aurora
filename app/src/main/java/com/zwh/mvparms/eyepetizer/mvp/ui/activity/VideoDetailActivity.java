@@ -206,6 +206,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                     mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
                     setVideoInfo();
                     detailPlayer.startPlayLogic();
+                    recyclerView.scrollToPosition(0);
                 }
             }
         });
