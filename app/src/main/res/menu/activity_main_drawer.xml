@@ -5,7 +5,7 @@
 
         <item
             android:id="@+id/nav_login"
-            android:icon="@drawable/bottom_home"
+            android:icon="@drawable/ve_home_grey"
             android:title="首页" />
 
         <item

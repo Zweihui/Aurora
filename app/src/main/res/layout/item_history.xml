@@ -105,6 +105,7 @@
         android:progress="0"
         android:progressDrawable="@drawable/history_seek_progress"
         android:thumb="@null"
+        android:clickable="false"
         app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
         app:layout_constraintBottom_toBottomOf="@+id/iv_bg"
         android:layout_marginRight="0dp"

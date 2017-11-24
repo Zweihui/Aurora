@@ -38,6 +38,8 @@ public class HistoryAdapter extends BaseQuickAdapter<VideoDaoEntity,BaseViewHold
         helper.setText(R.id.tv_title,item.getVideo().getTitle());
         if (item.getVideo().getAuthor()!=null){
             helper.setText(R.id.tv_author,item.getVideo().getAuthor().getName());
+        }else {
+            helper.setText(R.id.tv_author,"");
         }
         helper.setText(R.id.tv_date, DateUtils.DateToString(item.getDate(),DateUtils.DATE_TO_STRING_DETAIAL_PATTERN)+"观看");
         helper.setText(R.id.tv_time, DateUtils.MsToString(item.getStartTime()/1000));

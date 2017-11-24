@@ -20,6 +20,7 @@ public class Constants {
     public static final String HISTORY = "history";
     public static final String CACHE = "cache";
     public static final String AUTHOR = "author";
+    public static final String AUTHORDETAIL = "authordetail";
 
     //==================intent============//
     public static final String TYPE = "type";
@@ -28,6 +29,7 @@ public class Constants {
     public static final String CATEGORY_DATA = "category_data";
     public static final String CATEGORY_DATA_POSITION = "category_data_position";
     public static final String VIDEO_INFO = "video_info";
+    public static final String AUTHOR_ID = "author_id";
     public static final String VIDEO_URL = "video_url";
     public static final String RELATE_VIDEO_INFO = "relate_video_info";
     public static final String TRANSLATE_VIEW = "share_img";
@@ -55,5 +57,13 @@ public class Constants {
 
     //==================github============//
     public static final String GITHUB_URL  = "https://github.com/Zweihui";
+
+    //==================MultipleAdapterType============//
+    public static final int VIDEOCOLLECTIONOFHORIZONTALSCROLLCARD  = 0;
+    public static final int TEXTCARD_CLICK  = 1;
+    public static final int TEXTCARD_UNCLICK  = 2;
+    public static final int VIDEOSMALLCARD  = 3;
+    public static final int VIDEOCOLLECTIONWITHBRIEF  = 4;
+    public static final int DYNAMICINFOCARD  = 5;
 
 }

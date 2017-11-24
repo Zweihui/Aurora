@@ -89,7 +89,7 @@ public class HistoryModel extends BaseModel implements HistoryContract.Model {
             BmobQuery<VideoDaoEntity> query = new BmobQuery<VideoDaoEntity>();
             query.addWhereEqualTo("userId", userid);
             query.setLimit(10);
-            query.order("-date");
+            query.order("-updatedAt");
             query.setSkip(start);
             query.findObjects(new FindListener<VideoDaoEntity>() {
                 @Override

@@ -18,6 +18,7 @@ public interface EventBusTags {
     String CACHE_DOWNLOAD_FINISH = "cache_download_finish";
     String CACHE_DOWNLOAD_DELETE = "cache_download_delete";
     String CACHE_DOWNLOAD_PROGRESS = "cache_download_progress";
+    String CACHE_DOWNLOAD_PENDING = "cache_download_pending";
     String CACHE_DOWNLOAD_BEGIN = "cache_download_begin";
     String CACHE_DOWNLOAD_CACNCEL = "cache_download_cacncel";
     String NET_CHANGE_FLOW = "net_change_flow";

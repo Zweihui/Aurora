@@ -14,13 +14,10 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:id="@+id/ll_comment"
-        app:layout_constraintRight_toLeftOf="@+id/guideline12"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline11"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_expand">
 
@@ -47,13 +44,10 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:id="@+id/ll_upload"
-        app:layout_constraintRight_toLeftOf="@+id/guideline11"
-        android:layout_marginRight="8dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/guideline10"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_expand">
 
@@ -82,11 +76,8 @@
         android:gravity="center_vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         android:id="@+id/ll_collection"
-        app:layout_constraintRight_toLeftOf="@+id/guideline10"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline13"
-        app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_expand">
 
@@ -280,13 +271,14 @@
         app:layout_constraintRight_toLeftOf="@+id/guideline12"
         android:layout_marginRight="8dp" />
 
-    <Button
+    <com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton
         android:id="@+id/btn_attention"
         android:layout_width="45dp"
         android:layout_height="20dp"
-        android:background="@drawable/rect_cornor_grey"
+        android:background="@drawable/selector_follow_bg"
         android:textColor="@color/colorPrimaryText"
         android:textSize="13sp"
+        android:gravity="center"
         android:text="+ 关注"
         app:layout_constraintLeft_toLeftOf="@+id/guideline12"
         android:layout_marginLeft="8dp"

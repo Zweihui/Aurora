@@ -11,6 +11,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +43,8 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
+import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AttentionContainerFragment;
+import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AttentionFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CategoryFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HomeFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotContainerFragment;
@@ -65,6 +68,7 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
+import static android.R.id.list;
 import static com.zwh.mvparms.eyepetizer.R.id.swipe;
 import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
 import static com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment.REQUEST_CODE_CHOOSE;
@@ -93,11 +97,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     CustomViewPager mViewpager;
     @BindView(R.id.search_view)
     MaterialSearchView searchView;
-    private HomeFragment mHomeFragment;
-    private CategoryFragment mCategoryFragment;
-    private MineFragment mMineFragment;
-    private HotContainerFragment mHotContainerFragment;
-    private HotFragment mHotFragment;
+//    private HomeFragment mHomeFragment;
+//    private CategoryFragment mCategoryFragment;
+//    private MineFragment mMineFragment;
+//    private HotContainerFragment mHotContainerFragment;
+//    private AttentionContainerFragment mAttentionFragment;
+//    private HotFragment mHotFragment;
 
     private SearchTransitioner searchTransitioner;
 
@@ -150,7 +155,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         break;
                     case R.id.item_attention:
                         mViewpager.setCurrentItem(2);
-                        setTitle("热门");
+                        setTitle("关注");
                         mTabLayout.setVisibility(View.VISIBLE);
                         break;
                     case R.id.item_mine:
@@ -165,7 +170,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         bottomNavigation.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
             @Override
             public void onNavigationItemReselected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.item_home && mHomeFragment.isVisible()) {
+                if (item.getItemId() == R.id.item_home && ((Fragment)mViewpager.getAdapter().instantiateItem(mViewpager,0)).isVisible()) {
                     EventBus.getDefault().post("showLoading", EventBusTags.REFRESH_HOME_DATA);
                 }
             }
@@ -223,16 +228,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void initFragment() {
-        mHomeFragment = HomeFragment.newInstance();
-        mCategoryFragment = CategoryFragment.newInstance();
-        mMineFragment = MineFragment.newInstance();
-        mHotContainerFragment = HotContainerFragment.newInstance();
+//        mHomeFragment = HomeFragment.newInstance();
+//        mCategoryFragment = CategoryFragment.newInstance();
+//        mMineFragment = MineFragment.newInstance();
+//        mHotContainerFragment = HotContainerFragment.newInstance();
+//        mAttentionFragment = AttentionContainerFragment.newInstance();
 //        mHotFragment = HotFragment.newInstance(new Category("weekly","周排行"));
-        List<BaseLazyLoadFragment> list = new ArrayList<>();
-        list.add(mHomeFragment);
-        list.add(mCategoryFragment);
-        list.add(mHotContainerFragment);
-        list.add(mMineFragment);
+        List<String> list = new ArrayList<>();
+        list.add("home");
+        list.add("category");
+//        list.add(mHotContainerFragment);
+        list.add("attention");
+        list.add("mine");
         mViewpager.setOffscreenPageLimit(4);
         mViewpager.setPagingEnabled(false);
         mViewpager.setAdapter(MainFragmentAdapter.newInstance(getSupportFragmentManager(), list));

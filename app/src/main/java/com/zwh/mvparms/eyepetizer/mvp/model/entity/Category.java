@@ -19,6 +19,7 @@ public class Category implements Serializable{
      */
 
     private int id;
+    private int authorId;
     private String name;
     private Object alias;
     private String description;
@@ -87,5 +88,13 @@ public class Category implements Serializable{
 
     public void setHeaderImage(String headerImage) {
         this.headerImage = headerImage;
+    }
+
+    public int getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 }

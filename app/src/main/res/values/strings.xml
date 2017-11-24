@@ -8,6 +8,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">设置</string>
+    <string name="action_share">分享</string>
+    <string name="action_unfollow">取消关注</string>
     <string name="action_search">Search</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_video_detail">VideoDetailActivity</string>

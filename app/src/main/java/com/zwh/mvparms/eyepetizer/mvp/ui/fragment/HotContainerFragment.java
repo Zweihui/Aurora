@@ -18,6 +18,7 @@ import com.zwh.mvparms.eyepetizer.app.utils.helper.FragmentAdapter;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.HotFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CategoryActivity;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
 
 import org.simple.eventbus.EventBus;
 
@@ -35,9 +36,7 @@ import io.reactivex.functions.Function;
 
 public class HotContainerFragment extends BaseLazyLoadFragment{
 
-    ViewPager mViewpager;
-
-    private List<HotFragment> fragments = new ArrayList<>();
+    CustomViewPager  mViewpager;
 
     @Override
     public void setupFragmentComponent(AppComponent appComponent) {
@@ -52,7 +51,8 @@ public class HotContainerFragment extends BaseLazyLoadFragment{
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hot_container, container, false);
-        mViewpager = (ViewPager) view.findViewById(R.id.viewpager);
+        mViewpager = (CustomViewPager ) view.findViewById(R.id.viewpager);
+        mViewpager.setPagingEnabled(true);
         mViewpager.setOffscreenPageLimit(4);
         return view;
     }
@@ -63,18 +63,7 @@ public class HotContainerFragment extends BaseLazyLoadFragment{
         list.add(new Category("weekly","周排行"));
         list.add(new Category("monthly","月排行"));
         list.add(new Category("historical","总排行"));
-        Observable.fromIterable(list)
-                .map(new Function<Category, HotFragment>() {
-                    @Override
-                    public HotFragment apply(@NonNull Category category) throws Exception {
-                        HotFragment fragment = HotFragment.newInstance(category);
-                        fragments.add(fragment);
-                        return fragment;
-                    }
-                })
-                .toList()
-                .map(fragments -> HotFragmentAdapter.newInstance(getChildFragmentManager(), fragments, list))
-                .subscribe(mFragmentAdapter -> mViewpager.setAdapter(mFragmentAdapter));
+        mViewpager.setAdapter(HotFragmentAdapter.newInstance(getChildFragmentManager(),list));
         EventBus.getDefault().post(mViewpager, EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER);
     }
 

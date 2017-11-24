@@ -56,6 +56,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.ReplyAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.RelateVideoSection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
 import com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver;
+import com.zwh.mvparms.eyepetizer.mvp.ui.service.CacheDownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
@@ -298,19 +299,28 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     private void downloadVideo() {
-        Intent intent = new Intent(this,DownLoadService.class);
+        Intent intent = new Intent(this,CacheDownLoadService.class);
         VideoDownLoadInfo info = new VideoDownLoadInfo();
         info.setVideo(videoInfo.getData());
         info.setBody(gson.toJson(videoInfo.getData()));
         info.setFinish(false);
         info.setCreatTime(new Date());
         info.setId(Long.parseLong(videoInfo.getData().getId()+""));
-        intent.putExtra(DownLoadService.VIDEOS_INFO,info);
-        if (DeviceUtils.isServiceRunning(this,"com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService")){
-            Timber.e("-------------PostSticky");
-            EventBus.getDefault().postSticky(info,EventBusTags.CACHE_DOWNLOAD_BEGIN);
-        }
+        intent.putExtra(CacheDownLoadService.VIDEOS_INFO,info);
         startService(intent);
+//        Intent intent = new Intent(this,DownLoadService.class);
+//        VideoDownLoadInfo info = new VideoDownLoadInfo();
+//        info.setVideo(videoInfo.getData());
+//        info.setBody(gson.toJson(videoInfo.getData()));
+//        info.setFinish(false);
+//        info.setCreatTime(new Date());
+//        info.setId(Long.parseLong(videoInfo.getData().getId()+""));
+//        intent.putExtra(DownLoadService.VIDEOS_INFO,info);
+//        if (DeviceUtils.isServiceRunning(this,"com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService")){
+//            Timber.e("-------------PostSticky");
+//            EventBus.getDefault().postSticky(info,EventBusTags.CACHE_DOWNLOAD_BEGIN);
+//        }
+//        startService(intent);
         Snackbar.make(rlScreen, "视频离线缓存中",Snackbar.LENGTH_LONG)
                 .setAction("查看任务", new View.OnClickListener() {
                     @Override

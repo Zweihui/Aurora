@@ -69,7 +69,6 @@
             android:layout_gravity="bottom"
             android:background="@color/white"
             app:elevation="5dp"
-            app:layout_behavior="com.zwh.mvparms.eyepetizer.mvp.ui.widget.behavior.BottomBehavior"
             app:menu="@menu/navigation_btn" />
     </android.support.design.widget.CoordinatorLayout>
 

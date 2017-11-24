@@ -22,6 +22,7 @@ import com.jess.arms.http.GlobalHttpHandler;
 import com.jess.arms.http.RequestInterceptor;
 import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.utils.UiUtils;
+import com.liulishuo.filedownloader.FileDownloader;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.zwh.mvparms.eyepetizer.BuildConfig;
@@ -177,6 +178,7 @@ public final class GlobalConfiguration implements ConfigModule {
                 }
                 //leakCanary内存泄露检查
                 ((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
+                FileDownloader.setupOnApplicationOnCreate(application);
             }
 
             @Override

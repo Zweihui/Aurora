@@ -41,6 +41,8 @@ public class VideoDownLoadInfo implements Serializable,DaoEntity{
     private boolean isDownLoading;
     @Transient
     private boolean isLineUp;
+    @Transient
+    private boolean isPending;
 
 
     @Generated(hash = 767729281)
@@ -145,6 +147,14 @@ public class VideoDownLoadInfo implements Serializable,DaoEntity{
 
     public void setLineUp(boolean lineUp) {
         isLineUp = lineUp;
+    }
+
+    public boolean isPending() {
+        return isPending;
+    }
+
+    public void setPending(boolean pending) {
+        isPending = pending;
     }
 
     @Override

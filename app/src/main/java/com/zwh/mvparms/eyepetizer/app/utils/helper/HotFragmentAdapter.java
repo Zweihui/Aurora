@@ -15,12 +15,10 @@ import java.util.List;
  */
 
 public class HotFragmentAdapter extends FragmentStatePagerAdapter {
-    private List<HotFragment> mFragments;
     private List<Category> mCategories;
 
-    public static HotFragmentAdapter newInstance(FragmentManager fm, List<HotFragment> fragments, List<Category> categories) {
+    public static HotFragmentAdapter newInstance(FragmentManager fm,List<Category> categories) {
         HotFragmentAdapter mFragmentAdapter = new HotFragmentAdapter(fm);
-        mFragmentAdapter.mFragments = fragments;
         mFragmentAdapter.mCategories = categories;
         return mFragmentAdapter;
     }
@@ -31,12 +29,12 @@ public class HotFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return mFragments.get(position);
+        return HotFragment.newInstance(mCategories.get(position));
     }
 
     @Override
     public int getCount() {
-        return mFragments.size();
+        return mCategories.size();
     }
 
     @Override

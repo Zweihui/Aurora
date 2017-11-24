@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
+import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.model.FileDownloadStatus;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
@@ -35,12 +38,14 @@ import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DownloadProgressInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfoDao;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CacheActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.HistoryActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.CacheAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.ui.service.CacheDownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 
 import org.simple.eventbus.EventBus;
@@ -147,35 +152,33 @@ public class CacheFragment extends BaseFragment {
     private void childClick(View view, int position) {
         if (view.getId() == R.id.ll_progress) {
             changePosition = position;
-            if (data.get(position).getDownLoading()){
+            String url = data.get(position).getVideo().getPlayUrl();
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + data.get(position).getId() + ".mp4";
+            if (FileDownloader.getImpl().getStatus(url, path) == FileDownloadStatus.progress) {
                 pauseVideo();
-            }else{
-                Intent intent = new Intent(getActivity(),DownLoadService.class);
-                intent.putExtra(DownLoadService.VIDEOS_INFO,data.get(position));
-                EventBus.getDefault().post(data.get(position),EventBusTags.CACHE_DOWNLOAD_BEGIN);
+            } else {
+                Intent intent = new Intent(getActivity(), CacheDownLoadService.class);
+                intent.putExtra(CacheDownLoadService.VIDEOS_INFO, data.get(position));
+                EventBus.getDefault().post(data.get(position), EventBusTags.CACHE_DOWNLOAD_BEGIN);
                 getActivity().startService(intent);
             }
         }
         if (view.getId() == R.id.ll_detail) {
-            gotoDetail(((ConstraintLayout)view.getParent()).findViewById(R.id.iv_bg),position);
+            gotoDetail(((ConstraintLayout) view.getParent()).findViewById(R.id.iv_bg), position);
         }
         if (view.getId() == R.id.iv_more) {
-            initPopupWindow(view,position);
+            initPopupWindow(view, position);
         }
         if (view.getId() == R.id.ctl_layout) {
             if (!type.contains("正在")) {
                 String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + data.get(position).getId() + ".mp4";
-                File file =  new File(path);
-                if (!file.exists()){
-//                    GreenDaoHelper.getInstance().create(data.get(position).getDbName())
-//                            .getMaster().newSession()
-//                            .getVideoDownLoadInfoDao().delete(data.get(position));
-//                    adapter.notifyItemRemoved(position);
-                    UiUtils.makeText(getActivity(),"缓存文件不存在");
+                File file = new File(path);
+                if (!file.exists()) {
+                    UiUtils.makeText(getActivity(), "缓存文件不存在");
                     return;
                 }
                 HashMap map = new DataExtra(Constants.VIDEO_URL, path).build();
-                TRouter.go(Constants.FULL_VIDEO,map);
+                TRouter.go(Constants.FULL_VIDEO, map);
             } else {
 
             }
@@ -185,7 +188,7 @@ public class CacheFragment extends BaseFragment {
     private void gotoDetail(View view, int position) {
         VideoListInfo.Video video = new VideoListInfo.Video();
         video.setData(data.get(position).getVideo());
-        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, video).build(),view);
+        TRouter.go(Constants.VIDEO, new DataExtra(Constants.VIDEO_INFO, video).build(), view);
     }
 
 
@@ -241,7 +244,7 @@ public class CacheFragment extends BaseFragment {
                 );
     }
 
-    public void initPopupWindow(View view,int position){
+    public void initPopupWindow(View view, int position) {
         PopupWindow popupWindow = new PopupWindow(getActivity());
         popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -256,7 +259,7 @@ public class CacheFragment extends BaseFragment {
                         PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
                             @Override
                             public void onRequestPermissionSuccess() {
-                                deleteVideoCache(data.get(position),position);
+                                deleteVideoCache(data.get(position), position);
                             }
 
                             @Override
@@ -275,8 +278,8 @@ public class CacheFragment extends BaseFragment {
             GreenDaoHelper.getInstance().create(videoDownLoadInfo.getDbName())
                     .getMaster().newSession()
                     .getVideoDownLoadInfoDao().delete(videoDownLoadInfo);
-            File file =  new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + videoDownLoadInfo.getId() + ".mp4");
-            if (file.exists()){
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Sunny_Videos/" + videoDownLoadInfo.getId() + ".mp4");
+            if (file.exists()) {
                 file.delete();
             }
             e.onNext(true);
@@ -303,21 +306,18 @@ public class CacheFragment extends BaseFragment {
         VideoDownLoadInfo item = data.get(position);
         item.setDownLoading(true);
         adapter.setDownPosition(position);
-        SeekBar seekBar = (SeekBar) adapter.getViewByPosition(position, R.id.sb_progress);
+        ProgressBar seekBar = (ProgressBar) adapter.getViewByPosition(position, R.id.sb_progress);
         TextView size = (TextView) adapter.getViewByPosition(position, R.id.tv_pause);
-        if (item.getContentLength() == null) {
-            size.setText("连接中...");
-        } else {
-            size.setText(StringUtils.getPrintSize(item.getCurrentBytes() == null ? 0 : item.getCurrentBytes(), false) + "/" + StringUtils.getPrintSize(item.getContentLength() == null ? 0 : item.getContentLength(), true));
-        }
+        size.setText(StringUtils.getPrintSize(item.getCurrentBytes() == null ? 0 : item.getCurrentBytes(), false) + "/" + StringUtils.getPrintSize(item.getContentLength() == null ? 0 : item.getContentLength(), true));
         seekBar.setVisibility(View.VISIBLE);
+        seekBar.setIndeterminate(false);
         seekBar.setProgress(data.get(position).getPercent());
     }
 
     private void hideDownload(int position) {
         VideoDownLoadInfo item = data.get(position);
         item.setDownLoading(false);
-        SeekBar seekBar = (SeekBar) adapter.getViewByPosition(position, R.id.sb_progress);
+        ProgressBar seekBar = (ProgressBar) adapter.getViewByPosition(position, R.id.sb_progress);
         TextView size = (TextView) adapter.getViewByPosition(position, R.id.tv_pause);
         item.setLineUp(false);
         size.setText("已暂停");
@@ -325,8 +325,8 @@ public class CacheFragment extends BaseFragment {
     }
 
     private void pauseVideo() {
-        Intent intent = new Intent(getActivity(), DownLoadService.class);
-        intent.putExtra(DownLoadService.PAUSE_DOWNLOAD, true);
+        Intent intent = new Intent(getActivity(), CacheDownLoadService.class);
+        intent.putExtra(CacheDownLoadService.PAUSE_DOWNLOAD, true);
         getActivity().startService(intent);
     }
 
@@ -334,32 +334,42 @@ public class CacheFragment extends BaseFragment {
     private void downloadFinish(String tag) {
         getDataFromDb();
     }
+    @Subscriber(tag = EventBusTags.CACHE_DOWNLOAD_PENDING)
+    private void downloadPending(String id) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getId().toString().equals(id)) {
+                data.get(i).setPending(true);
+                adapter.notifyItemChanged(i);
+            }
+        }
+    }
 
     @Subscriber(tag = EventBusTags.CACHE_DOWNLOAD_PROGRESS)
-    private void downloadProgress(ProgressInfo progressInfo) {
+    private void downloadProgress(DownloadProgressInfo progressInfo) {
+        VideoDownLoadInfo item = data.get(currentPosition);
+        item.setDownLoading(true);
+        item.setPending(false);
+        item.setCurrentBytes((long)progressInfo.getCurrentBytes());
+        item.setContentLength((long)progressInfo.getContentLength());
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getId().equals(progressInfo.getId())) {
+            if (data.get(i).getId().toString().equals(progressInfo.getId())) {
                 currentPosition = i;
                 changePosition = i;
                 showDownload(i);
             }
         }
-        VideoDownLoadInfo item = data.get(currentPosition);
-        item.setDownLoading(true);
-        item.setCurrentBytes(progressInfo.getCurrentbytes());
-        item.setContentLength(progressInfo.getContentLength());
     }
 
     @Subscriber(tag = EventBusTags.CACHE_DOWNLOAD_CACNCEL)
     private void downloadCancel(Long id) {
 //        if (id.equals(-1L)){
         int position = -1;
-        for (int i=0;i<data.size();i++){
-            if (data.get(i).getId().equals(id)){
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getId().equals(id)) {
                 position = i;
             }
         }
-        if (position >=0){
+        if (position >= 0) {
             if (data.get(position).getDownLoading()) {
                 hideDownload(position);
             } else {

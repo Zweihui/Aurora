@@ -186,10 +186,11 @@
                 android:textColor="@color/secondary_text"
                 android:textSize="12sp" />
 
-            <SeekBar
+            <ProgressBar
                 android:id="@+id/sb_progress"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_below="@id/tv_pause"
                 android:layout_gravity="center_vertical"
                 android:layout_marginBottom="4dp"
@@ -197,7 +198,6 @@
                 android:layout_marginRight="16dp"
                 android:max="100"
                 android:progress="0"
-                android:progressDrawable="@drawable/history_seek_progress"
                 android:thumb="@null" />
         </RelativeLayout>
     </LinearLayout>

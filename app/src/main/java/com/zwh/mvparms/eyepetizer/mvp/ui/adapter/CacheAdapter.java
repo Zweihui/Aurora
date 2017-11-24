@@ -5,6 +5,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -42,8 +43,6 @@ public class CacheAdapter extends BaseQuickAdapter<VideoDownLoadInfo,BaseViewHol
                 .getAppComponent();
         ImageView imgMian = helper.getView(R.id.iv_bg);
         Context context = imgMian.getContext();
-        SeekBar seekBar = helper.getView(R.id.sb_progress);
-        seekBar.setPadding(0,0,0,0);
         helper.setText(R.id.tv_title,item.getVideo().getTitle());
         if (item.getVideo().getAuthor()!=null){
             helper.setText(R.id.tv_author,item.getVideo().getAuthor().getName());
@@ -70,6 +69,12 @@ public class CacheAdapter extends BaseQuickAdapter<VideoDownLoadInfo,BaseViewHol
 //                String size = StringUtils.getPrintSize(item.getCurrentBytes() == null ?0:item.getContentLength(),false) + "/" + StringUtils.getPrintSize(item.getContentLength() == null ?0:item.getContentLength(),true);
 //                helper.setText(R.id.tv_pause,size);
 //            }else {
+            if (item.isPending()){
+                helper.setText(R.id.tv_pause,"正在连接中...");
+                ((ProgressBar)helper.getView(R.id.sb_progress)).setIndeterminate(true);
+                helper.getView(R.id.ll_progress).setVisibility(View.VISIBLE);
+                helper.getView(R.id.sb_progress).setVisibility(View.VISIBLE);
+            }else {
                 if (item.isLineUp()){
                     helper.setText(R.id.tv_pause,"排队中");
                 }else {
@@ -77,6 +82,8 @@ public class CacheAdapter extends BaseQuickAdapter<VideoDownLoadInfo,BaseViewHol
                 }
                 helper.getView(R.id.ll_progress).setVisibility(View.VISIBLE);
                 helper.getView(R.id.sb_progress).setVisibility(View.GONE);
+            }
+
 //            }
         }
         mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null

@@ -119,13 +119,20 @@
             android:theme="@style/Video_FullScreen" />
         <activity
             android:name=".mvp.ui.activity.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
 
-        <receiver android:name="com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver">
+        <receiver android:name=".mvp.ui.receiver.NetBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".mvp.ui.service.CacheDownLoadService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".mvp.ui.activity.AuthorDetailActivity"></activity>
     </application>
 
 </manifest>
