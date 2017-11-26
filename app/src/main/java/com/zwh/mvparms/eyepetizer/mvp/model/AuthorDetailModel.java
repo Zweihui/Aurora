@@ -3,18 +3,16 @@ package com.zwh.mvparms.eyepetizer.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
-
-import com.jess.arms.di.scope.ActivityScope;
-
-import javax.inject.Inject;
-
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.api.service.AttentionService;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.AuthorDetailService;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
@@ -42,6 +40,12 @@ public class AuthorDetailModel extends BaseModel implements AuthorDetailContract
     public Observable<AuthorTabsInfo> getAuthorTabs(int id) {
         Observable<AuthorTabsInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
                 .getAuthorTabs(id, "PGC");
+        return observable;
+    }
+    @Override
+    public Observable<AuthorIndexInfo> getAuthorIndexInfo(int id) {
+        Observable<AuthorIndexInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
+                .getAuthorIndexInfo(id, "PGC");
         return observable;
     }
 

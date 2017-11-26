@@ -2,20 +2,20 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+
+import javax.inject.Inject;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -51,6 +51,15 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
                     @Override
                     public void onNext(AuthorTabsInfo info) {
                         mRootView.setTabs(info);
+                    }
+                });
+    }
+    public void getAuthorIndexInfo(int id) {
+        mModel.getAuthorIndexInfo(id).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<AuthorIndexInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(AuthorIndexInfo info) {
+                        mRootView.setIndexInfo(info);
                     }
                 });
     }

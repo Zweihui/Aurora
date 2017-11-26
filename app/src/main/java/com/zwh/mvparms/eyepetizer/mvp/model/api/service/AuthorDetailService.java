@@ -1,5 +1,6 @@
 package com.zwh.mvparms.eyepetizer.mvp.model.api.service;
 
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
@@ -16,4 +17,6 @@ public interface AuthorDetailService {
     Observable<VideoListInfo> getAuthorVideoList(@Query("start") int startCount, @Query("num") int num);
     @GET("v5/userInfo/tab")
     Observable<AuthorTabsInfo> getAuthorTabs(@Query("id") int startCount, @Query("userType") String type);
+    @GET("v5/userInfo/tab/index")
+    Observable<AuthorIndexInfo> getAuthorIndexInfo(@Query("id") int startCount, @Query("userType") String type);
 }

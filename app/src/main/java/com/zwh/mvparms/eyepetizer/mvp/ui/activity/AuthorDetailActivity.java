@@ -20,10 +20,10 @@ import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.AuthorFragmentAdapter;
-import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.AuthorDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -159,5 +158,10 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
         tlTabs.setupWithViewPager(mViewpager);
         mViewpager.setCurrentItem(0);
         setTitle(info.getPgcInfo().getName());
+    }
+
+    @Override
+    public void setIndexInfo(AuthorIndexInfo info) {
+
     }
 }

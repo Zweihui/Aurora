@@ -1,9 +1,12 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +15,28 @@ import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailIndexComponent;
+import com.zwh.mvparms.eyepetizer.di.module.AuthorDetailModule;
+import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
+import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorIndexAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017\11\23 0023.
  */
 
-public class AuthorIndexFragment extends BaseLazyLoadFragment {
+public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresenter> implements AuthorDetailContract.View{
 
     SwipeRefreshLayout mSwipeRefresh;
     RecyclerView mRecyclerView;
+    AuthorIndexAdapter adapter ;
+    List<AuthorIndexInfo.ItemListBeanX> data = new ArrayList<>();
 
 
     private int id;
@@ -51,7 +67,12 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment {
 
     @Override
     public void setupFragmentComponent(AppComponent appComponent) {
-
+        DaggerAuthorDetailIndexComponent //如找不到该类,请编译一下项目
+                .builder()
+                .appComponent(appComponent)
+                .authorDetailModule(new AuthorDetailModule(this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -59,6 +80,13 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment {
         View view =inflater.inflate(R.layout.common_recyclerview, container, false);
         mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.swipe_target);
+        mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        mSwipeRefresh.setProgressViewOffset(true, 0, (int) TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources()
+                        .getDisplayMetrics()));
+        adapter = new AuthorIndexAdapter(data);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -74,6 +102,48 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment {
 
     @Override
     protected void loadData() {
+        mPresenter.getAuthorIndexInfo(id);
+    }
 
+    @Override
+    public void showLoading() {
+        mSwipeRefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        mSwipeRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void launchActivity(Intent intent) {
+
+    }
+
+    @Override
+    public void killMyself() {
+
+    }
+
+    @Override
+    public void setVideosData(List<VideoListInfo.Video> videos, boolean isLoadMore) {
+
+    }
+
+    @Override
+    public void setTabs(AuthorTabsInfo info) {
+
+    }
+
+    @Override
+    public void setIndexInfo(AuthorIndexInfo info) {
+        List<AuthorIndexInfo.ItemListBeanX> list  = new ArrayList<>();
+        list.add(info.getItemList().get(0));
+        adapter.setNewData(list);
     }
 }
