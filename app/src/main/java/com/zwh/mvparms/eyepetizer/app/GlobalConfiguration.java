@@ -147,6 +147,7 @@ public final class GlobalConfiguration implements ConfigModule {
                 })
                 .rxCacheConfiguration((context1, rxCacheBuilder) -> {//这里可以自己自定义配置RxCache的参数
                     rxCacheBuilder.useExpiredDataIfLoaderNotAvailable(true);
+                    return null;
                 });
     }
 

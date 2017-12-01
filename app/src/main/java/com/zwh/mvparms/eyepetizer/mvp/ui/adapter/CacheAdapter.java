@@ -86,8 +86,7 @@ public class CacheAdapter extends BaseQuickAdapter<VideoDownLoadInfo,BaseViewHol
 
 //            }
         }
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(context,
                 GlideImageConfig
                         .builder()
                         .url(item.getVideo().getCover().getFeed())

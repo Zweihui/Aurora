@@ -33,8 +33,7 @@ public class CategoryAdapter extends BaseQuickAdapter<Category,BaseViewHolder> {
                 .getAppComponent();
         ImageView bg = helper.getView(R.id.iv_bg);
         helper.setText(R.id.tv_name,item.getName());
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(bg.getContext(),
                 GlideImageConfig
                         .builder()
                         .url(item.getBgPicture())

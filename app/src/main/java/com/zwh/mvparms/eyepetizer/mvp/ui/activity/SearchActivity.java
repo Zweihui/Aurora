@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;

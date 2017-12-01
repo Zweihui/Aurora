@@ -1,6 +1,7 @@
 package com.jess.arms.base;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,17 +9,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jess.arms.base.delegate.IFragment;
+import com.jess.arms.integration.cache.Cache;
+import com.jess.arms.integration.cache.CacheType;
+import com.jess.arms.integration.lifecycle.FragmentLifecycleable;
 import com.jess.arms.mvp.IPresenter;
+import com.jess.arms.utils.ArmsUtils;
+import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import javax.inject.Inject;
+
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 
 /**
  * Created by Administrator on 2017/8/24 0024.
  */
 
-public abstract class BaseLazyLoadFragment<P extends IPresenter> extends RxFragment implements IFragment {
+public abstract class BaseLazyLoadFragment<P extends IPresenter> extends RxFragment implements IFragment, FragmentLifecycleable {
     protected final String TAG = this.getClass().getSimpleName();
+    private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
+    private Cache<String, Object> mCache;
 
     //是否可见
     protected boolean mIsFirstVisible=true;
@@ -28,6 +39,21 @@ public abstract class BaseLazyLoadFragment<P extends IPresenter> extends RxFragm
 
     @Inject
     protected P mPresenter;
+
+    @NonNull
+    @Override
+    public synchronized Cache<String, Object> provideCache() {
+        if (mCache == null) {
+            mCache = ArmsUtils.obtainAppComponentFromContext(getActivity()).cacheFactory().build(CacheType.FRAGMENT_CACHE);
+        }
+        return mCache;
+    }
+
+    @NonNull
+    @Override
+    public final Subject<FragmentEvent> provideLifecycleSubject() {
+        return mLifecycleSubject;
+    }
 
 
     public BaseLazyLoadFragment() {

@@ -1,5 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.model.api.service;
 
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -14,9 +16,13 @@ import retrofit2.http.Query;
 
 public interface AuthorDetailService {
     @GET("v4/pgcs/videoList")
-    Observable<VideoListInfo> getAuthorVideoList(@Query("start") int startCount, @Query("num") int num);
+    Observable<VideoListInfo> getAuthorVideoList(@Query("id") int id,@Query("start") int startCount, @Query("num") int num);
+    @GET("v4/pgcs/detail/playlist")
+    Observable<AuthorAlbumInfo> getAuthorAlbumList(@Query("id") int id,@Query("start") int startCount, @Query("num") int num);
+    @GET("v5/userInfo/tab/dynamics")
+    Observable<AuthorDynamicInfo> getAuthorDynamicList(@Query("id") int id, @Query("start") int startCount, @Query("num") int num, @Query("userType") String type);
     @GET("v5/userInfo/tab")
-    Observable<AuthorTabsInfo> getAuthorTabs(@Query("id") int startCount, @Query("userType") String type);
+    Observable<AuthorTabsInfo> getAuthorTabs(@Query("id") int id, @Query("userType") String type);
     @GET("v5/userInfo/tab/index")
-    Observable<AuthorIndexInfo> getAuthorIndexInfo(@Query("id") int startCount, @Query("userType") String type);
+    Observable<AuthorIndexInfo> getAuthorIndexInfo(@Query("id") int id, @Query("userType") String type);
 }

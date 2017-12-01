@@ -70,21 +70,19 @@ public class AuthorIndexInfo {
 
         @Override
         public int getItemType() {
-            if ("videoCollectionOfHorizontalScrollCard".equals(getType())){
+            if ("videoCollectionOfHorizontalScrollCard".equals(getType())) {
                 return Constants.VIDEOCOLLECTIONOFHORIZONTALSCROLLCARD;
-            }else if ("textcard".equals(getType())){
-                if (getData().getActionUrl()!=null){
-                    return Constants.TEXTCARD_CLICK;
-                }else {
-                    return Constants.TEXTCARD_UNCLICK;
-                }
-            }else if ("videosmallcard".equals(getType())){
+            } else if ("textHeader".equals(getType())) {
+                return Constants.TEXTCARD_UNCLICK;
+            } else if ("textFooter".equals(getType())) {
+                return Constants.TEXTCARD_CLICK;
+            } else if ("video".equals(getType())||"videoSmallCard".equals(getType())) {
                 return Constants.VIDEOSMALLCARD;
-            }else if ("videocollectionwithbrief".equals(getType())){
+            } else if ("videoCollectionWithBrief".equals(getType())) {
                 return Constants.VIDEOCOLLECTIONWITHBRIEF;
-            }else if ("dynamicinfocard".equals(getType())){
+            } else if ("DynamicInfoCard".equals(getType())) {
                 return Constants.DYNAMICINFOCARD;
-            }else {
+            } else {
                 return -1;
             }
         }
@@ -122,21 +120,809 @@ public class AuthorIndexInfo {
         }
 
         public static class DataBeanX {
-            /**
-             * dataType : ItemCollection
-             * header : {"id":156,"title":"最近更新","font":"normal","cover":null,"label":null,"actionUrl":"eyepetizer://common/?title=%E6%9C%80%E8%BF%91%E6%9B%B4%E6%96%B0&url=http%3A%2F%2Fbaobab.kaiyanapp.com%2Fapi%2Fv4%2Fpgcs%2FvideoList%3Fid%3D156%26strategy%3Ddate","labelList":null}
-             * itemList : [{"type":"video","data":{"dataType":"VideoBeanForClient","id":24240,"title":"当你不在的时候，你家猫在干什么？","slogan":"铲屎的终于走啦，朕的天下！","description":"铲屎官不在的一天，猫咪们是如何统治这间屋子的？凡是养过喵星人的都会有这个疑问，也许这条短片能给你答案\u2026\u2026","provider":{"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"},"category":"萌宠","author":{"id":156,"icon":"http://img.kaiyanapp.com/26b9092df793460aa04bec2938e4eab0.jpeg","name":"BuzzFeed","description":"每日更新的日常趣事短视频，无论是好笑还是严肃的，你都会有共鸣。","link":"","latestReleaseTime":1511053202000,"videoNum":91,"adTrack":null,"follow":{"itemType":"author","itemId":156,"followed":false},"shield":{"itemType":"author","itemId":156,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/564f2eb5044a98819d0b68a544c61c69.png?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/564f2eb5044a98819d0b68a544c61c69.png?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/aa51437f8081031c5679693ae55cefd8.png?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":"http://img.kaiyanapp.com/564f2eb5044a98819d0b68a544c61c69.png?imageView2/1/w/720/h/560/format/jpg/q/75|watermark/1/image/aHR0cDovL2ltZy5rYWl5YW5hcHAuY29tL2JsYWNrXzMwLnBuZw==/dissolve/100/gravity/Center/dx/0/dy/0|imageslim"},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=default&source=qcloud","thumbPlayUrl":"","duration":101,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=24240","forWeibo":"http://wandou.im/3ngqfu"},"releaseTime":1511053202000,"library":"DAILY","playInfo":[{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=normal&source=qcloud","size":3018330},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=normal&source=ucloud","size":3018330}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=high&source=qcloud","size":7391363},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=high&source=ucloud","size":7391363}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=24240&editionType=high&source=qcloud"}],"consumption":{"collectionCount":221,"shareCount":317,"replyCount":8},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":538,"name":"喵星人","actionUrl":"eyepetizer://tag/538/?title=%E5%96%B5%E6%98%9F%E4%BA%BA","adTrack":null,"desc":"喵皇万岁万岁万万岁","bgPicture":"http://img.kaiyanapp.com/e2b82549f60051d85ffb552d2efe8c07.jpeg?imageMogr2/quality/60/format/jpg","headerImage":"http://img.kaiyanapp.com/e2b82549f60051d85ffb552d2efe8c07.jpeg?imageMogr2/quality/60/format/jpg","tagRecType":"IMPORTANT"},{"id":140,"name":"搞笑","actionUrl":"eyepetizer://tag/140/?title=%E6%90%9E%E7%AC%91","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/f787d5053443499e8d787911cd8b3876.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/f2b803d3c383bba5a3888b2709160b6e.jpeg?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":44,"name":"科普","actionUrl":"eyepetizer://tag/44/?title=%E7%A7%91%E6%99%AE","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/f2e7359e81e217782f32cc3d482b3284.jpeg?imageMogr2/quality/60/format/jpg","headerImage":"http://img.kaiyanapp.com/f2e7359e81e217782f32cc3d482b3284.jpeg?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":32,"name":"萌宠","actionUrl":"eyepetizer://tag/32/?title=%E8%90%8C%E5%AE%A0","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/9eb744f260986b0eb5608595596425c5.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/27f9f96a319acacb32daed7b694ccb59.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"}],"type":"NORMAL","titlePgc":"","descriptionPgc":"","remark":"*当你不在家的时候你猫在干什么","idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1511053202000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"铲屎官不在的一天，猫咪们是如何统治这间屋子的？凡是养过喵星人的都会有这个疑问，也许这条短片能给你答案\u2026\u2026","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null,"id":0},{"type":"video","data":{"dataType":"VideoBeanForClient","id":18824,"title":"$1 冰淇淋 Vs. $1000 冰淇淋，谁更好吃","slogan":"冷饮界小霸王，能做到多极致？","description":"世上有谁能抗拒冰淇淋的诱惑呢？所以我们去了 Foster's Freeze，Scooter，Serendipity 三家不同档位的冰淇淋店，替大家「考察」一下这份甜点到底能做到多极致\u2026\u2026","provider":{"name":"定制来源","alias":"CustomSrc","icon":""},"category":"综艺","author":{"id":156,"icon":"http://img.kaiyanapp.com/26b9092df793460aa04bec2938e4eab0.jpeg","name":"BuzzFeed","description":"每日更新的日常趣事短视频，无论是好笑还是严肃的，你都会有共鸣。","link":"","latestReleaseTime":1511053202000,"videoNum":91,"adTrack":null,"follow":{"itemType":"author","itemId":156,"followed":false},"shield":{"itemType":"author","itemId":156,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/19ab6ab8f6b417c8be263faf4493a88d.jpeg?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/19ab6ab8f6b417c8be263faf4493a88d.jpeg?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/83772bd739a846be88930627568c262f.jpeg?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":"http://img.kaiyanapp.com/19ab6ab8f6b417c8be263faf4493a88d.jpeg?imageView2/1/w/720/h/560/format/jpg/q/75|watermark/1/image/aHR0cDovL2ltZy5rYWl5YW5hcHAuY29tL2JsYWNrXzMwLnBuZw==/dissolve/100/gravity/Center/dx/0/dy/0|imageslim"},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":787,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=18824","forWeibo":"http://wandou.im/3mq93t"},"releaseTime":1511053201000,"library":"DAILY","playInfo":[{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=normal&source=qcloud","size":72202144},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=normal&source=ucloud","size":72202144}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=high&source=qcloud","size":129469333},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=high&source=ucloud","size":129469333}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=18824&editionType=high&source=qcloud"}],"consumption":{"collectionCount":276,"shareCount":231,"replyCount":15},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":140,"name":"搞笑","actionUrl":"eyepetizer://tag/140/?title=%E6%90%9E%E7%AC%91","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/f787d5053443499e8d787911cd8b3876.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/f2b803d3c383bba5a3888b2709160b6e.jpeg?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":246,"name":"甜品","actionUrl":"eyepetizer://tag/246/?title=%E7%94%9C%E5%93%81","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/3bb6d824d29603b81400b9fdc229485d.png?imageMogr2/quality/60/format/jpg","headerImage":"http://img.kaiyanapp.com/3bb6d824d29603b81400b9fdc229485d.png?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":20,"name":"开胃","actionUrl":"eyepetizer://tag/20/?title=%E5%BC%80%E8%83%83","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"},{"id":28,"name":"综艺","actionUrl":"eyepetizer://tag/28/?title=%E7%BB%BC%E8%89%BA","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/d67f739fba330099b515c3b92fccfd91.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/d67f739fba330099b515c3b92fccfd91.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"}],"type":"NORMAL","titlePgc":"","descriptionPgc":"","remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1511053201000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"世上有谁能抗拒冰淇淋的诱惑呢？所以我们去了 Foster's Freeze，Scooter，Serendipity 三家不同档位的冰淇淋店，替大家「考察」一下这份甜点到底能做到多极致\u2026\u2026","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null,"id":0},{"type":"video","data":{"dataType":"VideoBeanForClient","id":59746,"title":"我们去品尝了传说中的「芝加哥最赞热狗」","slogan":null,"description":"你有兴趣吗？","provider":{"name":"定制来源","alias":"CustomSrc","icon":""},"category":"开胃","author":{"id":156,"icon":"http://img.kaiyanapp.com/26b9092df793460aa04bec2938e4eab0.jpeg","name":"BuzzFeed","description":"每日更新的日常趣事短视频，无论是好笑还是严肃的，你都会有共鸣。","link":"","latestReleaseTime":1511053202000,"videoNum":91,"adTrack":null,"follow":{"itemType":"author","itemId":156,"followed":false},"shield":{"itemType":"author","itemId":156,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/77ed12dab4e173dfe289a65e7bd0628c.jpeg?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/77ed12dab4e173dfe289a65e7bd0628c.jpeg?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/878862ac0f8b39be2501c01258010207.jpeg?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":261,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=59746","forWeibo":"http://www.eyepetizer.net/detail.html?vid=59746"},"releaseTime":1509888308000,"library":"DEFAULT","playInfo":[{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=normal&source=qcloud","size":30689492},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=normal&source=ucloud","size":30689492}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=high&source=qcloud","size":47723569},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=high&source=ucloud","size":47723569}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59746&editionType=high&source=qcloud"}],"consumption":{"collectionCount":42,"shareCount":6,"replyCount":3},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":20,"name":"开胃","actionUrl":"eyepetizer://tag/20/?title=%E5%BC%80%E8%83%83","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"}],"type":"NORMAL","titlePgc":"我们去品尝了传说中的「芝加哥最赞热狗」","descriptionPgc":"你有兴趣吗？","remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1509888308000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null,"id":0},{"type":"video","data":{"dataType":"VideoBeanForClient","id":59744,"title":"网红美食评测：真有看上去那么赞吗？","slogan":null,"description":"当心虚假安利哦2333","provider":{"name":"定制来源","alias":"CustomSrc","icon":""},"category":"开胃","author":{"id":156,"icon":"http://img.kaiyanapp.com/26b9092df793460aa04bec2938e4eab0.jpeg","name":"BuzzFeed","description":"每日更新的日常趣事短视频，无论是好笑还是严肃的，你都会有共鸣。","link":"","latestReleaseTime":1511053202000,"videoNum":91,"adTrack":null,"follow":{"itemType":"author","itemId":156,"followed":false},"shield":{"itemType":"author","itemId":156,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/81b079529c7e14631a762d9ef62f7462.jpeg?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/81b079529c7e14631a762d9ef62f7462.jpeg?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/fa5ad0c8148e498ea3bf0016170729b4.jpeg?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":null},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":242,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=59744","forWeibo":"http://www.eyepetizer.net/detail.html?vid=59744"},"releaseTime":1509887469000,"library":"DEFAULT","playInfo":[{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=normal&source=qcloud","size":19353868},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=normal&source=ucloud","size":19353868}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=high&source=qcloud","size":30046330},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=high&source=ucloud","size":30046330}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59744&editionType=high&source=qcloud"}],"consumption":{"collectionCount":39,"shareCount":20,"replyCount":1},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":20,"name":"开胃","actionUrl":"eyepetizer://tag/20/?title=%E5%BC%80%E8%83%83","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"}],"type":"NORMAL","titlePgc":"网红美食评测：真有看上去那么赞吗？","descriptionPgc":"当心虚假安利哦2333","remark":null,"idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1509887469000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null,"id":0},{"type":"video","data":{"dataType":"VideoBeanForClient","id":23881,"title":"日本美食之花：「和菓子」","slogan":"听百年老店讲述他们的甜点匠心","description":"日式糕点在古代日本被称为菓子，是主食外的果腹食品。现在和菓子的原型起源自唐朝传入的「唐菓子」 ，之后为了与欧洲流传过来的「洋菓子」区分，便将日本传统的菓子改称为「和菓子」。短片主人公福岛家族就经营着一家 170 年的和菓子老店。我们找到了现在的店长，听他们讲述与这一经典日式甜品的渊源与坚持。","provider":{"name":"YouTube","alias":"youtube","icon":"http://img.kaiyanapp.com/fa20228bc5b921e837156923a58713f6.png"},"category":"记录","author":{"id":156,"icon":"http://img.kaiyanapp.com/26b9092df793460aa04bec2938e4eab0.jpeg","name":"BuzzFeed","description":"每日更新的日常趣事短视频，无论是好笑还是严肃的，你都会有共鸣。","link":"","latestReleaseTime":1511053202000,"videoNum":91,"adTrack":null,"follow":{"itemType":"author","itemId":156,"followed":false},"shield":{"itemType":"author","itemId":156,"shielded":false},"approvedNotReadyVideoCount":0,"ifPgc":true},"cover":{"feed":"http://img.kaiyanapp.com/dabbab4445ee19d21dac23b65bccbd64.jpeg?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/dabbab4445ee19d21dac23b65bccbd64.jpeg?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/676bf7e41e522d5639e7112e59d81a99.jpeg?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":"http://img.kaiyanapp.com/dabbab4445ee19d21dac23b65bccbd64.jpeg?imageView2/1/w/720/h/560/format/jpg/q/75|watermark/1/image/aHR0cDovL2ltZy5rYWl5YW5hcHAuY29tL2JsYWNrXzMwLnBuZw==/dissolve/100/gravity/Center/dx/0/dy/0|imageslim"},"playUrl":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=default&source=qcloud","thumbPlayUrl":null,"duration":181,"webUrl":{"raw":"http://www.eyepetizer.net/detail.html?vid=23881","forWeibo":"http://wandou.im/3nagg0"},"releaseTime":1509757202000,"library":"DAILY","playInfo":[{"height":480,"width":854,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=normal&source=qcloud","size":13484972},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=normal&source=ucloud","size":13484972}],"name":"标清","type":"normal","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=normal&source=qcloud"},{"height":720,"width":1280,"urlList":[{"name":"qcloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=high&source=qcloud","size":26263964},{"name":"ucloud","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=high&source=ucloud","size":26263964}],"name":"高清","type":"high","url":"http://baobab.kaiyanapp.com/api/v1/playUrl?vid=23881&editionType=high&source=qcloud"}],"consumption":{"collectionCount":702,"shareCount":352,"replyCount":10},"campaign":null,"waterMarks":null,"adTrack":null,"tags":[{"id":204,"name":"精致","actionUrl":"eyepetizer://tag/204/?title=%E7%B2%BE%E8%87%B4","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/ee3a04688868510772ca7c30fdc7fce6.jpeg?imageMogr2/quality/60/format/jpg","headerImage":"http://img.kaiyanapp.com/ee3a04688868510772ca7c30fdc7fce6.jpeg?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":248,"name":"日料","actionUrl":"eyepetizer://tag/248/?title=%E6%97%A5%E6%96%99","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/5748d218d1cd048d48b79f99b0249710.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/abe61bc0d299a7630ef25178d308b33b.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"},{"id":246,"name":"甜品","actionUrl":"eyepetizer://tag/246/?title=%E7%94%9C%E5%93%81","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/3bb6d824d29603b81400b9fdc229485d.png?imageMogr2/quality/60/format/jpg","headerImage":"http://img.kaiyanapp.com/3bb6d824d29603b81400b9fdc229485d.png?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":350,"name":"日本","actionUrl":"eyepetizer://tag/350/?title=%E6%97%A5%E6%9C%AC","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/0e118c56a85899055348d15120841ecf.jpeg?imageMogr2/quality/60/format/jpg","headerImage":"http://img.kaiyanapp.com/0e118c56a85899055348d15120841ecf.jpeg?imageMogr2/quality/60/format/jpg","tagRecType":"NORMAL"},{"id":20,"name":"开胃","actionUrl":"eyepetizer://tag/20/?title=%E5%BC%80%E8%83%83","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/afffaebe827656b0bb24e534ab35275c.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"},{"id":24,"name":"记录","actionUrl":"eyepetizer://tag/24/?title=%E8%AE%B0%E5%BD%95","adTrack":null,"desc":null,"bgPicture":"http://img.kaiyanapp.com/c3984cad49455e01637347e0c8f6a37d.jpeg?imageMogr2/quality/100","headerImage":"http://img.kaiyanapp.com/fd76dab1411e07f0dcf45309720134f9.jpeg?imageMogr2/quality/100","tagRecType":"NORMAL"}],"type":"NORMAL","titlePgc":"","descriptionPgc":"","remark":"For the past six generations, the Fukushima family has mastered and preserved the intricate art of Japanese confectionery known as wagashi. These ornate sweets, meant to reflect the delicate beauty of nature, were traditionally created to accompany the Japanese tea ceremony. They are often shaped to resemble traditional flower motifs, and change with the shifting seasons. At Fukushimaya, approximately 200 different types of sweets are created throughout the year, with daffodils and camellia blossoms ushering in spring. Using designs that date back to Japan\u2019s Edo period, the Fukushima family is keeping a deeply-rooted Japanese art form alive.","idx":0,"shareAdTrack":null,"favoriteAdTrack":null,"webAdTrack":null,"date":1509757202000,"promotion":null,"label":null,"labelList":[],"descriptionEditor":"日式糕点在古代日本被称为菓子，是主食外的果腹食品。现在和菓子的原型起源自唐朝传入的「唐菓子」 ，之后为了与欧洲流传过来的「洋菓子」区分，便将日本传统的菓子改称为「和菓子」。短片主人公福岛家族就经营着一家 170 年的和菓子老店。我们找到了现在的店长，听他们讲述与这一经典日式甜品的渊源与坚持。","collected":false,"played":false,"subtitles":[],"lastViewTime":null,"playlists":null},"tag":null,"id":0}]
-             * count : 5
-             * adTrack : null
-             */
 
-            private String dataType;
             private HeaderBean header;
+            private int count;
+            private List<VideoListInfo.Video> itemList;
+            private int id;
+            private Object slogan;
+            private String description;
+            private VideoListInfo.Video.VideoData.ProviderBean provider;
+            private String category;
+            private VideoListInfo.Video.VideoData.AuthorBean author;
+            private VideoListInfo.Video.VideoData.CoverBean cover;
+            private String playUrl;
+            private Object thumbPlayUrl;
+            private int duration;
+            private VideoListInfo.Video.VideoData.WebUrlBean webUrl;
+            private long releaseTime;
+            private String library;
+            private VideoListInfo.Video.VideoData.ConsumptionBean consumption;
+            private Object campaign;
+            private Object waterMarks;
+            private Object adTrack;
+            private String type;
+            private String titlePgc;
+            private String descriptionPgc;
+            private String remark;
+            private int idx;
+            private Object shareAdTrack;
+            private Object favoriteAdTrack;
+            private Object webAdTrack;
+            private long date;
+            private Object promotion;
+            private Object label;
+            private String descriptionEditor;
+            private boolean collected;
+            private boolean played;
+            private Object lastViewTime;
+            private Object playlists;
+            private List<VideoListInfo.Video.VideoData.PlayInfoBean> playInfo;
+            private List<?> tags;
+            private List<?> labelList;
+            private List<?> subtitles;
+            private String title;
+            private SimpleVideoBean simpleVideo;
+            private String dataType;
+            private String dynamicType;
             private String text;
             private String actionUrl;
-            private int count;
-            private Object adTrack;
-            private List<VideoListInfo.Video> itemList;
+            private UserBean user;
+            private long createDate;
+            private BriefCardBean briefCard;
+
+
+            public BriefCardBean getBriefCard() {
+                return briefCard;
+            }
+
+            public void setBriefCard(BriefCardBean briefCard) {
+                this.briefCard = briefCard;
+            }
+
+            public static class UserBean {
+                /**
+                 * uid : 301141262
+                 * nickname : 王利娟
+                 * avatar : http://img.kaiyanapp.com/154b50bff3586cc6cd7ad126ed2e2ae9.png?imageMogr2/quality/60/format/jpg
+                 * userType : PGC
+                 * ifPgc : true
+                 * description : null
+                 * area : null
+                 * gender : null
+                 * registDate : 1508726408000
+                 * cover : null
+                 * actionUrl : eyepetizer://pgc/detail/301141262/?title=%E7%8E%8B%E5%88%A9%E5%A8%9F&userType=NORMAL&tabIndex=0
+                 */
+
+                private int uid;
+                private String nickname;
+                private String avatar;
+                private String userType;
+                private boolean ifPgc;
+                private Object description;
+                private Object area;
+                private Object gender;
+                private long registDate;
+                private Object cover;
+                private String actionUrl;
+
+                public int getUid() {
+                    return uid;
+                }
+
+                public void setUid(int uid) {
+                    this.uid = uid;
+                }
+
+                public String getNickname() {
+                    return nickname;
+                }
+
+                public void setNickname(String nickname) {
+                    this.nickname = nickname;
+                }
+
+                public String getAvatar() {
+                    return avatar;
+                }
+
+                public void setAvatar(String avatar) {
+                    this.avatar = avatar;
+                }
+
+                public String getUserType() {
+                    return userType;
+                }
+
+                public void setUserType(String userType) {
+                    this.userType = userType;
+                }
+
+                public boolean isIfPgc() {
+                    return ifPgc;
+                }
+
+                public void setIfPgc(boolean ifPgc) {
+                    this.ifPgc = ifPgc;
+                }
+
+                public Object getDescription() {
+                    return description;
+                }
+
+                public void setDescription(Object description) {
+                    this.description = description;
+                }
+
+                public Object getArea() {
+                    return area;
+                }
+
+                public void setArea(Object area) {
+                    this.area = area;
+                }
+
+                public Object getGender() {
+                    return gender;
+                }
+
+                public void setGender(Object gender) {
+                    this.gender = gender;
+                }
+
+                public long getRegistDate() {
+                    return registDate;
+                }
+
+                public void setRegistDate(long registDate) {
+                    this.registDate = registDate;
+                }
+
+                public Object getCover() {
+                    return cover;
+                }
+
+                public void setCover(Object cover) {
+                    this.cover = cover;
+                }
+
+                public String getActionUrl() {
+                    return actionUrl;
+                }
+
+                public void setActionUrl(String actionUrl) {
+                    this.actionUrl = actionUrl;
+                }
+            }
+
+            public static class BriefCardBean {
+                /**
+                 * dataType : BriefCard
+                 * id : 1220
+                 * icon : http://img.kaiyanapp.com/a4c943758c235b1054b3b7569c8381e8.png?imageMogr2/quality/60/format/jpg
+                 * iconType : round
+                 * title : 少女日常研究所
+                 * subTitle : null
+                 * description : 微博@少女日常研究所
+                 MissQ校花旗下精致短视频栏目。
+
+                 * actionUrl : eyepetizer://pgc/detail/1220/?title=%E5%B0%91%E5%A5%B3%E6%97%A5%E5%B8%B8%E7%A0%94%E7%A9%B6%E6%89%80&userType=PGC&tabIndex=0
+                 * adTrack : null
+                 * follow : {"itemType":"author","itemId":1220,"followed":false}
+                 * ifPgc : true
+                 */
+
+                private String dataType;
+                private int id;
+                private String icon;
+                private String iconType;
+                private String title;
+                private Object subTitle;
+                private String description;
+                private String actionUrl;
+                private Object adTrack;
+                private FollowBean follow;
+                private boolean ifPgc;
+
+                public String getDataType() {
+                    return dataType;
+                }
+
+                public void setDataType(String dataType) {
+                    this.dataType = dataType;
+                }
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getIcon() {
+                    return icon;
+                }
+
+                public void setIcon(String icon) {
+                    this.icon = icon;
+                }
+
+                public String getIconType() {
+                    return iconType;
+                }
+
+                public void setIconType(String iconType) {
+                    this.iconType = iconType;
+                }
+
+                public String getTitle() {
+                    return title;
+                }
+
+                public void setTitle(String title) {
+                    this.title = title;
+                }
+
+                public Object getSubTitle() {
+                    return subTitle;
+                }
+
+                public void setSubTitle(Object subTitle) {
+                    this.subTitle = subTitle;
+                }
+
+                public String getDescription() {
+                    return description;
+                }
+
+                public void setDescription(String description) {
+                    this.description = description;
+                }
+
+                public String getActionUrl() {
+                    return actionUrl;
+                }
+
+                public void setActionUrl(String actionUrl) {
+                    this.actionUrl = actionUrl;
+                }
+
+                public Object getAdTrack() {
+                    return adTrack;
+                }
+
+                public void setAdTrack(Object adTrack) {
+                    this.adTrack = adTrack;
+                }
+
+                public FollowBean getFollow() {
+                    return follow;
+                }
+
+                public void setFollow(FollowBean follow) {
+                    this.follow = follow;
+                }
+
+                public boolean isIfPgc() {
+                    return ifPgc;
+                }
+
+                public void setIfPgc(boolean ifPgc) {
+                    this.ifPgc = ifPgc;
+                }
+
+                public static class FollowBean {
+                    /**
+                     * itemType : author
+                     * itemId : 1220
+                     * followed : false
+                     */
+
+                    private String itemType;
+                    private int itemId;
+                    private boolean followed;
+
+                    public String getItemType() {
+                        return itemType;
+                    }
+
+                    public void setItemType(String itemType) {
+                        this.itemType = itemType;
+                    }
+
+                    public int getItemId() {
+                        return itemId;
+                    }
+
+                    public void setItemId(int itemId) {
+                        this.itemId = itemId;
+                    }
+
+                    public boolean isFollowed() {
+                        return followed;
+                    }
+
+                    public void setFollowed(boolean followed) {
+                        this.followed = followed;
+                    }
+                }
+            }
+
+
+            public String getDynamicType() {
+                return dynamicType;
+            }
+
+            public void setDynamicType(String dynamicType) {
+                this.dynamicType = dynamicType;
+            }
+
+
+
+            public UserBean getUser() {
+                return user;
+            }
+
+            public void setUser(UserBean user) {
+                this.user = user;
+            }
+
+            public long getCreateDate() {
+                return createDate;
+            }
+
+            public void setCreateDate(long createDate) {
+                this.createDate = createDate;
+            }
+
+            public SimpleVideoBean getSimpleVideo() {
+                return simpleVideo;
+            }
+
+            public void setSimpleVideo(SimpleVideoBean simpleVideo) {
+                this.simpleVideo = simpleVideo;
+            }
+
+
+            public static class SimpleVideoBean {
+                /**
+                 * id : 59512
+                 * title : Walk The Moon新单试听
+                 * description : 【Music】美国摇滚乐队Walk The Moon新单《Surrender》试听
+                 * cover : {"feed":"http://img.kaiyanapp.com/189b81d5f5dcc9e9d424f80e3dd71e00.png?imageMogr2/quality/60/format/jpg","detail":"http://img.kaiyanapp.com/189b81d5f5dcc9e9d424f80e3dd71e00.png?imageMogr2/quality/60/format/jpg","blurred":"http://img.kaiyanapp.com/4fde969fc38fd12e91b174fab9f21d63.jpeg?imageMogr2/quality/60/format/jpg","sharing":null,"homepage":null}
+                 * category : 音乐
+                 * playUrl : http://baobab.kaiyanapp.com/api/v1/playUrl?vid=59512&editionType=default&source=qcloud
+                 * duration : 302
+                 * releaseTime : 1509681117000
+                 */
+
+                private int id;
+                private String title;
+                private String description;
+                private CoverBean cover;
+                private String category;
+                private String playUrl;
+                private int duration;
+                private long releaseTime;
+
+                public int getId() {
+                    return id;
+                }
+
+                public void setId(int id) {
+                    this.id = id;
+                }
+
+                public String getTitle() {
+                    return title;
+                }
+
+                public void setTitle(String title) {
+                    this.title = title;
+                }
+
+                public String getDescription() {
+                    return description;
+                }
+
+                public void setDescription(String description) {
+                    this.description = description;
+                }
+
+                public CoverBean getCover() {
+                    return cover;
+                }
+
+                public void setCover(CoverBean cover) {
+                    this.cover = cover;
+                }
+
+                public String getCategory() {
+                    return category;
+                }
+
+                public void setCategory(String category) {
+                    this.category = category;
+                }
+
+                public String getPlayUrl() {
+                    return playUrl;
+                }
+
+                public void setPlayUrl(String playUrl) {
+                    this.playUrl = playUrl;
+                }
+
+                public int getDuration() {
+                    return duration;
+                }
+
+                public void setDuration(int duration) {
+                    this.duration = duration;
+                }
+
+                public long getReleaseTime() {
+                    return releaseTime;
+                }
+
+                public void setReleaseTime(long releaseTime) {
+                    this.releaseTime = releaseTime;
+                }
+
+                public static class CoverBean {
+                    /**
+                     * feed : http://img.kaiyanapp.com/189b81d5f5dcc9e9d424f80e3dd71e00.png?imageMogr2/quality/60/format/jpg
+                     * detail : http://img.kaiyanapp.com/189b81d5f5dcc9e9d424f80e3dd71e00.png?imageMogr2/quality/60/format/jpg
+                     * blurred : http://img.kaiyanapp.com/4fde969fc38fd12e91b174fab9f21d63.jpeg?imageMogr2/quality/60/format/jpg
+                     * sharing : null
+                     * homepage : null
+                     */
+
+                    private String feed;
+                    private String detail;
+                    private String blurred;
+                    private Object sharing;
+                    private Object homepage;
+
+                    public String getFeed() {
+                        return feed;
+                    }
+
+                    public void setFeed(String feed) {
+                        this.feed = feed;
+                    }
+
+                    public String getDetail() {
+                        return detail;
+                    }
+
+                    public void setDetail(String detail) {
+                        this.detail = detail;
+                    }
+
+                    public String getBlurred() {
+                        return blurred;
+                    }
+
+                    public void setBlurred(String blurred) {
+                        this.blurred = blurred;
+                    }
+
+                    public Object getSharing() {
+                        return sharing;
+                    }
+
+                    public void setSharing(Object sharing) {
+                        this.sharing = sharing;
+                    }
+
+                    public Object getHomepage() {
+                        return homepage;
+                    }
+
+                    public void setHomepage(Object homepage) {
+                        this.homepage = homepage;
+                    }
+                }
+            }
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public Object getSlogan() {
+                return slogan;
+            }
+
+            public void setSlogan(Object slogan) {
+                this.slogan = slogan;
+            }
+
+            public String getDescription() {
+                return description;
+            }
+
+            public void setDescription(String description) {
+                this.description = description;
+            }
+
+            public VideoListInfo.Video.VideoData.ProviderBean getProvider() {
+                return provider;
+            }
+
+            public void setProvider(VideoListInfo.Video.VideoData.ProviderBean provider) {
+                this.provider = provider;
+            }
+
+            public String getCategory() {
+                return category;
+            }
+
+            public void setCategory(String category) {
+                this.category = category;
+            }
+
+            public VideoListInfo.Video.VideoData.AuthorBean getAuthor() {
+                return author;
+            }
+
+            public void setAuthor(VideoListInfo.Video.VideoData.AuthorBean author) {
+                this.author = author;
+            }
+
+            public VideoListInfo.Video.VideoData.CoverBean getCover() {
+                return cover;
+            }
+
+            public void setCover(VideoListInfo.Video.VideoData.CoverBean cover) {
+                this.cover = cover;
+            }
+
+            public String getPlayUrl() {
+                return playUrl;
+            }
+
+            public void setPlayUrl(String playUrl) {
+                this.playUrl = playUrl;
+            }
+
+            public Object getThumbPlayUrl() {
+                return thumbPlayUrl;
+            }
+
+            public void setThumbPlayUrl(Object thumbPlayUrl) {
+                this.thumbPlayUrl = thumbPlayUrl;
+            }
+
+            public int getDuration() {
+                return duration;
+            }
+
+            public void setDuration(int duration) {
+                this.duration = duration;
+            }
+
+            public VideoListInfo.Video.VideoData.WebUrlBean getWebUrl() {
+                return webUrl;
+            }
+
+            public void setWebUrl(VideoListInfo.Video.VideoData.WebUrlBean webUrl) {
+                this.webUrl = webUrl;
+            }
+
+            public long getReleaseTime() {
+                return releaseTime;
+            }
+
+            public void setReleaseTime(long releaseTime) {
+                this.releaseTime = releaseTime;
+            }
+
+            public String getLibrary() {
+                return library;
+            }
+
+            public void setLibrary(String library) {
+                this.library = library;
+            }
+
+            public VideoListInfo.Video.VideoData.ConsumptionBean getConsumption() {
+                return consumption;
+            }
+
+            public void setConsumption(VideoListInfo.Video.VideoData.ConsumptionBean consumption) {
+                this.consumption = consumption;
+            }
+
+            public Object getCampaign() {
+                return campaign;
+            }
+
+            public void setCampaign(Object campaign) {
+                this.campaign = campaign;
+            }
+
+            public Object getWaterMarks() {
+                return waterMarks;
+            }
+
+            public void setWaterMarks(Object waterMarks) {
+                this.waterMarks = waterMarks;
+            }
+
+            public String getType() {
+                return type;
+            }
+
+            public void setType(String type) {
+                this.type = type;
+            }
+
+            public String getTitlePgc() {
+                return titlePgc;
+            }
+
+            public void setTitlePgc(String titlePgc) {
+                this.titlePgc = titlePgc;
+            }
+
+            public String getDescriptionPgc() {
+                return descriptionPgc;
+            }
+
+            public void setDescriptionPgc(String descriptionPgc) {
+                this.descriptionPgc = descriptionPgc;
+            }
+
+            public String getRemark() {
+                return remark;
+            }
+
+            public void setRemark(String remark) {
+                this.remark = remark;
+            }
+
+            public int getIdx() {
+                return idx;
+            }
+
+            public void setIdx(int idx) {
+                this.idx = idx;
+            }
+
+            public Object getShareAdTrack() {
+                return shareAdTrack;
+            }
+
+            public void setShareAdTrack(Object shareAdTrack) {
+                this.shareAdTrack = shareAdTrack;
+            }
+
+            public Object getFavoriteAdTrack() {
+                return favoriteAdTrack;
+            }
+
+            public void setFavoriteAdTrack(Object favoriteAdTrack) {
+                this.favoriteAdTrack = favoriteAdTrack;
+            }
+
+            public Object getWebAdTrack() {
+                return webAdTrack;
+            }
+
+            public void setWebAdTrack(Object webAdTrack) {
+                this.webAdTrack = webAdTrack;
+            }
+
+            public long getDate() {
+                return date;
+            }
+
+            public void setDate(long date) {
+                this.date = date;
+            }
+
+            public Object getPromotion() {
+                return promotion;
+            }
+
+            public void setPromotion(Object promotion) {
+                this.promotion = promotion;
+            }
+
+            public Object getLabel() {
+                return label;
+            }
+
+            public void setLabel(Object label) {
+                this.label = label;
+            }
+
+            public String getDescriptionEditor() {
+                return descriptionEditor;
+            }
+
+            public void setDescriptionEditor(String descriptionEditor) {
+                this.descriptionEditor = descriptionEditor;
+            }
+
+            public boolean isCollected() {
+                return collected;
+            }
+
+            public void setCollected(boolean collected) {
+                this.collected = collected;
+            }
+
+            public boolean isPlayed() {
+                return played;
+            }
+
+            public void setPlayed(boolean played) {
+                this.played = played;
+            }
+
+            public Object getLastViewTime() {
+                return lastViewTime;
+            }
+
+            public void setLastViewTime(Object lastViewTime) {
+                this.lastViewTime = lastViewTime;
+            }
+
+            public Object getPlaylists() {
+                return playlists;
+            }
+
+            public void setPlaylists(Object playlists) {
+                this.playlists = playlists;
+            }
+
+            public List<VideoListInfo.Video.VideoData.PlayInfoBean> getPlayInfo() {
+                return playInfo;
+            }
+
+            public void setPlayInfo(List<VideoListInfo.Video.VideoData.PlayInfoBean> playInfo) {
+                this.playInfo = playInfo;
+            }
+
+            public List<?> getTags() {
+                return tags;
+            }
+
+            public void setTags(List<?> tags) {
+                this.tags = tags;
+            }
+
+            public List<?> getLabelList() {
+                return labelList;
+            }
+
+            public void setLabelList(List<?> labelList) {
+                this.labelList = labelList;
+            }
+
+            public List<?> getSubtitles() {
+                return subtitles;
+            }
+
+            public void setSubtitles(List<?> subtitles) {
+                this.subtitles = subtitles;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
 
             public String getText() {
                 return text;
@@ -146,9 +932,6 @@ public class AuthorIndexInfo {
                 this.text = text;
             }
 
-            public String getActionUrl() {
-                return actionUrl;
-            }
 
             public void setActionUrl(String actionUrl) {
                 this.actionUrl = actionUrl;
@@ -207,11 +990,29 @@ public class AuthorIndexInfo {
 
                 private int id;
                 private String title;
+                private String icon;
+                private String description;
                 private String font;
                 private Object cover;
                 private Object label;
                 private String actionUrl;
                 private Object labelList;
+
+                public String getIcon() {
+                    return icon;
+                }
+
+                public void setIcon(String icon) {
+                    this.icon = icon;
+                }
+
+                public String getDescription() {
+                    return description;
+                }
+
+                public void setDescription(String description) {
+                    this.description = description;
+                }
 
                 public int getId() {
                     return id;

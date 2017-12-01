@@ -3,4 +3,9 @@
     <item name="click_time" type="id" />
     <item name="banner_pointContainerId" type="id" />
     <item name="banner_recycler" type="id" />
+    <item name="rl_text_card_foot_dynamic" type="id" />
+    <item name="rl_text_card_foot_album" type="id" />
+    <item name="rl_text_card_foot_popular" type="id" />
+    <item name="ctl_author_index_like" type="id" />
+    <item name="ctl_author_index_album" type="id" />
 </resources>

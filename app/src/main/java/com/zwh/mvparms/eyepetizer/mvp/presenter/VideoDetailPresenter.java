@@ -97,6 +97,15 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
                     }
                 });
     }
+    public void getVideoData(int videoId) {
+        mModel.getVideoData(videoId).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<VideoListInfo.Video.VideoData>(mErrorHandler) {
+                    @Override
+                    public void onNext(VideoListInfo.Video.VideoData data) {
+                        mRootView.setVideoData(data);
+                    }
+                });
+    }
 
     @Override
     public void onDestroy() {

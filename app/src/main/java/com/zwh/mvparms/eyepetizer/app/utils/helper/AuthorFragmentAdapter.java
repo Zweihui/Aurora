@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AuthorAlbumFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AuthorIndexFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AuthorTrendFragment;
+import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AuthorDynamicFragment;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AuthorVideoFragment;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class AuthorFragmentAdapter extends FragmentPagerAdapter{
             case 2:
                 return AuthorAlbumFragment.newInstance(mCategories.get(position).getAuthorId());
             case 3:
-                return AuthorTrendFragment.newInstance(mCategories.get(position).getAuthorId());
+                return AuthorDynamicFragment.newInstance(mCategories.get(position).getAuthorId());
             default:
                 return null;
         }

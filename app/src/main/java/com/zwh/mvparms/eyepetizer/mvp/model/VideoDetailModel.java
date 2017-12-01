@@ -12,6 +12,8 @@ import javax.inject.Inject;
 
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.VideoDetailService;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -73,6 +75,13 @@ public class VideoDetailModel extends BaseModel implements VideoDetailContract.M
     public Observable<ShareInfo> getShareInfo(int identity) {
         Observable<ShareInfo> observable = mRepositoryManager.obtainRetrofitService(VideoDetailService.class)
                 .getShareInfo("VIDEO","WEB_PAGE",identity);
+        return observable;
+    }
+
+    @Override
+    public Observable<VideoListInfo.Video.VideoData> getVideoData(int id) {
+        Observable<VideoListInfo.Video.VideoData> observable = mRepositoryManager.obtainRetrofitService(VideoDetailService.class)
+                .getVideoData(id);
         return observable;
     }
 }

@@ -30,8 +30,7 @@ public class SearchAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseView
                 .getAppComponent();
         ImageView imgbg = helper.getView(R.id.iv_bg);
         Context context = imgbg.getContext();
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(context,
                 GlideImageConfig
                         .builder()
                         .url(item.getData().getCover().getFeed())

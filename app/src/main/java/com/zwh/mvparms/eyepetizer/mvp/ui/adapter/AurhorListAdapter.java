@@ -33,8 +33,7 @@ public class AurhorListAdapter extends BaseQuickAdapter<MyAttentionEntity,BaseVi
         Context context = imgAutor.getContext();
         AppComponent mAppComponent = ((App)context.getApplicationContext())
                 .getAppComponent();
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(context,
                 GlideImageConfig
                         .builder()
                         .transformation(new GlideCircleTransform(context))

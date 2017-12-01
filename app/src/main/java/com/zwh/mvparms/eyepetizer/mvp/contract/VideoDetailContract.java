@@ -2,6 +2,8 @@ package com.zwh.mvparms.eyepetizer.mvp.contract;
 
 import com.jess.arms.mvp.IView;
 import com.jess.arms.mvp.IModel;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -16,6 +18,7 @@ public interface VideoDetailContract {
         void setData(VideoListInfo info,boolean isShowSecond);
         void setReplyData(ReplyInfo info, boolean isLoadmore);
         void setShareData(ShareInfo info);
+        void setVideoData(VideoListInfo.Video.VideoData data);
     }
 
     //Model层定义接口,外部只需关心model返回的数据,无需关心内部细节,及是否使用缓存
@@ -25,5 +28,6 @@ public interface VideoDetailContract {
         Observable<ReplyInfo> getAllReplyInfo(int videoId);
         Observable<ReplyInfo> getMoreReplyInfo(int lastId, int videoId);
         Observable<ShareInfo> getShareInfo(int identity);
+        Observable<VideoListInfo.Video.VideoData> getVideoData(int id);
     }
 }

@@ -5,12 +5,12 @@ apply plugin: 'me.tatarka.retrolambda'
 
 android {
     signingConfigs {
-//        release {
-//            keyAlias 'key0'
-//            keyPassword 'zwh12583258'
-//            storeFile file('C:/Users/Administrator/Desktop/Sunny_key.jks')
-//            storePassword 'zwh12583258'
-//        }
+        release {
+            keyAlias 'keystore'
+            keyPassword 'zwh12583258'
+            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
+            storePassword 'zwh12583258'
+        }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
@@ -48,7 +48,7 @@ android {
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             buildConfigField "boolean", "USE_CANARY", "false"
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -65,9 +65,9 @@ android {
         }
     }
     productFlavors {
-//        sunny {
-//            signingConfig signingConfigs.release
-//        }
+        sunny {
+            signingConfig signingConfigs.release
+        }
     }
 }
 
@@ -112,8 +112,8 @@ dependencies {
     compile rootProject.ext.dependencies["gsyVideoPlayer-x86"]
     compile rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
     compile(rootProject.ext.dependencies["bmob-sdk"]) {
-        exclude module: 'com.squareup.okhttp'
-        exclude module: 'com.squareup.okio'
+        exclude group: 'com.squareup.okhttp3'
+//        exclude module: 'com.squareup.okio'
     }
     compile rootProject.ext.dependencies["http-legacy"]
     compile rootProject.ext.dependencies["bmob-sms"]

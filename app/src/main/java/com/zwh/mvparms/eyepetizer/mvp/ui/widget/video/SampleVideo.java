@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,7 @@ public class SampleVideo extends StandardGSYVideoPlayer {
         mSwitchSize = (TextView) findViewById(R.id.switchSize);
         mChangeRotate = (TextView) findViewById(R.id.change_rotate);
         mChangeTransform = (TextView) findViewById(R.id.change_transform);
+        mLoadingProgressBar = (ProgressBar)findViewById(R.id.loading1);
 
         //切换清晰度
         mMoreScale.setOnClickListener(new OnClickListener() {

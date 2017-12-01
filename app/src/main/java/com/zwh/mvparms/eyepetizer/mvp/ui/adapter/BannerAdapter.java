@@ -9,11 +9,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.apt.TRouter;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MarginAdapterHelper;
 
@@ -61,7 +65,7 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
         holder.mLlRoot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                gotoDetail(view,fakePosition);
             }
         });
         holder.mTvTitle.setText(mList.get(fakePosition).getData().getTitle());
@@ -88,6 +92,11 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
         sb.append((temp<10)?"0"+temp:""+temp);
         String detail = "#"+item.getData().getCategory()+" / "+sb.toString();
         return detail;
+    }
+
+    @SingleClick
+    private void gotoDetail(View view,int position){
+        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, mList.get(position)).build(),view.findViewById(R.id.iv_bg));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

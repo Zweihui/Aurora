@@ -56,8 +56,7 @@ public class ReplyAdapter extends BaseSectionQuickAdapter<ReplySection,BaseViewH
         AppComponent mAppComponent = ((App)img.getContext().getApplicationContext())
                 .getAppComponent();
         if (item.t.getData().getUser()!=null){
-            mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                            ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+            mAppComponent.imageLoader().loadImage(img.getContext(),
                     GlideImageConfig
                             .builder()
                             .transformation(new GlideCircleTransform(img.getContext()))

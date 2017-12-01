@@ -2,13 +2,19 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.apt.TRouter;
 import com.jess.arms.base.delegate.IActivity;
+import com.jess.arms.integration.cache.Cache;
+import com.jess.arms.integration.cache.CacheType;
+import com.jess.arms.integration.lifecycle.ActivityLifecycleable;
 import com.jess.arms.mvp.IPresenter;
+import com.jess.arms.utils.ArmsUtils;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityBase;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityHelper;
@@ -19,6 +25,8 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 
 import static com.jess.arms.utils.ThirdViewUtil.convertAutoView;
 
@@ -26,13 +34,30 @@ import static com.jess.arms.utils.ThirdViewUtil.convertAutoView;
  * Created by mac on 2017/9/2.
  */
 
-public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActivity implements IActivity,SwipeBackActivityBase {
+public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActivity implements IActivity,SwipeBackActivityBase, ActivityLifecycleable {
     protected final String TAG = this.getClass().getSimpleName();
+    private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
+    private Cache<String, Object> mCache;
     private Unbinder mUnbinder;
     protected boolean canSwipeBack = false;
     private SwipeBackActivityHelper mHelper;
     @Inject
     protected P mPresenter;
+
+    @NonNull
+    @Override
+    public synchronized Cache<String, Object> provideCache() {
+        if (mCache == null) {
+            mCache = ArmsUtils.obtainAppComponentFromContext(this).cacheFactory().build(CacheType.ACTIVITY_CACHE);
+        }
+        return mCache;
+    }
+
+    @NonNull
+    @Override
+    public final Subject<ActivityEvent> provideLifecycleSubject() {
+        return mLifecycleSubject;
+    }
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {

@@ -11,7 +11,7 @@ import com.jess.arms.utils.UiUtils;
  * Created by jameson on 9/1/16.
  */
 public class MarginAdapterHelper {
-    private int mPagePadding = 5;
+    private int mPagePadding = 3;
     private int mShowLeftCardWidth = 15;
 
     public void onCreateViewHolder(ViewGroup parent, View itemView) {

@@ -1,6 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,7 +64,7 @@ public class CategoryActivity extends BaseActivity{
     NestedScrollView mNestedScrollView;
 
     @Extra(Constants.CATEGORY_DATA)
-    public List<Category> list;
+    public ArrayList<Category> list;
 
     @Extra(Constants.CATEGORY_DATA_POSITION)
     public int position;
@@ -74,6 +76,17 @@ public class CategoryActivity extends BaseActivity{
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(Constants.CATEGORY_DATA,list);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_home;
     }
@@ -82,6 +95,10 @@ public class CategoryActivity extends BaseActivity{
     public void initData(Bundle savedInstanceState) {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (savedInstanceState != null){
+            list = savedInstanceState.getParcelableArrayList(Constants.CATEGORY_DATA);
+            finish();
+        }
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

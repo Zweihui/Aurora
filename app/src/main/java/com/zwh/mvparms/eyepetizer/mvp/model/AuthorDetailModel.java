@@ -8,6 +8,8 @@ import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.AuthorDetailService;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -15,6 +17,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import retrofit2.http.Query;
 
 
 @ActivityScope
@@ -30,9 +33,9 @@ public class AuthorDetailModel extends BaseModel implements AuthorDetailContract
     }
 
     @Override
-    public Observable<VideoListInfo> getAuthorVideoList(int start) {
+    public Observable<VideoListInfo> getAuthorVideoList(int id, int start) {
         Observable<VideoListInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
-                .getAuthorVideoList(start, 10);
+                .getAuthorVideoList(id,start, 10);
         return observable;
     }
 
@@ -46,6 +49,20 @@ public class AuthorDetailModel extends BaseModel implements AuthorDetailContract
     public Observable<AuthorIndexInfo> getAuthorIndexInfo(int id) {
         Observable<AuthorIndexInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
                 .getAuthorIndexInfo(id, "PGC");
+        return observable;
+    }
+
+    @Override
+    public Observable<AuthorDynamicInfo> getAuthorDynamicList(int id, int startCount) {
+        Observable<AuthorDynamicInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
+                .getAuthorDynamicList(id, startCount,10,"PGC");
+        return observable;
+    }
+
+    @Override
+    public Observable<AuthorAlbumInfo> getAuthorAlbumList(int id, int startCount) {
+        Observable<AuthorAlbumInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
+                .getAuthorAlbumList(id,startCount,10);
         return observable;
     }
 

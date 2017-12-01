@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.apt.TRouter;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
@@ -34,6 +35,7 @@ import com.wang.avi.AVLoadingIndicatorView;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
+import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
@@ -44,6 +46,9 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
@@ -60,6 +65,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.service.CacheDownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.DragBottomView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.ExpandTextView;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MultiRecyclerView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.SampleVideo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.listener.SampleListener;
@@ -136,10 +142,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     private DownLoadService downloadService;
     private NetBroadcastReceiver receiver;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-    }
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -155,17 +157,31 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(Constants.VIDEO_INFO,videoInfo);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_video_detail;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        if (savedInstanceState != null){
+            videoInfo = (VideoListInfo.Video) savedInstanceState.getSerializable(Constants.VIDEO_INFO);
+        }
         initMedia();
-        initRecyclerView();
-        mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
-        mPresenter.getShareInfo(videoInfo.getData().getId());
-        indicatorView.show();
+        if (videoInfo.getData().getConsumption() !=null ){
+            initRecyclerView();
+            mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+            mPresenter.getShareInfo(videoInfo.getData().getId());
+            indicatorView.show();
+        }else {
+            mPresenter.getVideoData(videoInfo.getData().getId());
+        }
+
         flLoading.setVisibility(View.VISIBLE);
     }
 
@@ -252,14 +268,31 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         if (videoInfo.getData().getAuthor() != null) {
             ((TextView) headView.findViewById(R.id.tv_author_name)).setText(videoInfo.getData().getAuthor().getName());
             ((TextView) headView.findViewById(R.id.tv_author_des)).setText(videoInfo.getData().getAuthor().getDescription());
-            mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                            ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+            mAppComponent.imageLoader().loadImage(this,
                     GlideImageConfig
                             .builder()
                             .url(videoInfo.getData().getCover().getFeed())
                             .imageView(((ImageView) headView.findViewById(R.id.iv_author)))
                             .transformation(new GlideCircleTransform(VideoDetailActivity.this))
                             .build());
+            headView.findViewById(R.id.iv_author).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoAuthorDetail(view);
+                }
+            });
+            ((TextView) headView.findViewById(R.id.tv_author_name)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoAuthorDetail(view);
+                }
+            });
+            ((TextView) headView.findViewById(R.id.tv_author_des)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoAuthorDetail(view);
+                }
+            });
         }
         headView.findViewById(R.id.ll_comment).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -296,6 +329,38 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
             }
         });
+        FollowButton followButton = headView.findViewById(R.id.btn_attention);
+        if (videoInfo.getData().getAuthor() == null){
+            followButton.setVisibility(View.GONE);
+        }else {
+            MyAttentionEntity attention = new MyAttentionEntity();
+            attention.setId(videoInfo.getData().getAuthor().getId());
+            attention.setTitle((videoInfo.getData().getAuthor().getName()));
+            attention.setDescription((videoInfo.getData().getAuthor().getDescription()));
+            attention.setUserId(BmobUser.getCurrentUser().getObjectId());
+            attention.setIcon((videoInfo.getData().getAuthor().getIcon()));
+            followButton.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
+                @Override
+                public void onFollowed() {
+                }
+
+                @Override
+                public void onUnFollowed() {
+                }
+            },attention);
+        }
+
+//        followButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                follow(followButton);
+//            }
+//        });
+    }
+
+    @SingleClick
+    private void gotoAuthorDetail(View view){
+        TRouter.go(Constants.AUTHORDETAIL, new DataExtra(Constants.AUTHOR_ID, videoInfo.getData().getAuthor().getId()).build());
     }
 
     private void downloadVideo() {
@@ -350,7 +415,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             list.add(switchVideoModel);
             list.add(switchVideoModel2);
             detailPlayer.setUp(list, true, "");
-        } catch (IndexOutOfBoundsException e) {
+        } catch (Exception e) {
             String source1 = videoInfo.getData().getPlayUrl();
             String name = "标清";
             SwitchVideoModel switchVideoModel = new SwitchVideoModel(name, source1);
@@ -390,6 +455,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
                 //第一个true是否需要隐藏actionbar，第二个true是否需要隐藏statusbar
                 detailPlayer.startWindowFullscreen(VideoDetailActivity.this, true, true);
+                setSwipeBackEnable(false);
             }
         });
 
@@ -418,6 +484,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                 if (orientationUtils != null) {
                     orientationUtils.backToProtVideo();
                 }
+                setSwipeBackEnable(true);
             }
         });
 
@@ -432,6 +499,46 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         });
         if ((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_WIFI,true)){
             detailPlayer.startPlayLogic();
+        }
+    }
+
+    @SingleClick
+    @CheckLogin
+    private void follow(FollowButton button) {
+        MyAttentionEntity attention = new MyAttentionEntity();
+        attention.setId(videoInfo.getData().getAuthor().getId());
+        attention.setTitle((videoInfo.getData().getAuthor().getName()));
+        attention.setDescription((videoInfo.getData().getAuthor().getDescription()));
+        attention.setUserId(BmobUser.getCurrentUser().getObjectId());
+        attention.setIcon((videoInfo.getData().getAuthor().getIcon()));
+        int state = button.getState();
+        if (state == FollowButton.FOLLOWED) {
+            button.setState(FollowButton.PEDDING);
+            BmobQuery<MyAttentionEntity> query = new BmobQuery<MyAttentionEntity>();
+            query.addWhereEqualTo("id", videoInfo.getData().getAuthor().getId());
+            query.addWhereEqualTo("userId", BmobUser.getCurrentUser().getObjectId());
+            query.findObjects(new FindListener<MyAttentionEntity>() {
+                @Override
+                public void done(List<MyAttentionEntity> list, BmobException e) {
+                    list.get(0).delete(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            button.setState(FollowButton.UNFOLLOWED);
+                        }
+                    });
+                }
+            });
+
+        }
+        if (state == FollowButton.UNFOLLOWED) {
+            button.setState(FollowButton.PEDDING);
+            attention.setFollow(true);
+            attention.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    button.setState(FollowButton.FOLLOWED);
+                }
+            });
         }
     }
 
@@ -509,8 +616,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             list.add(switchVideoModel2);
             detailPlayer.setUp(list, true, "");
         }
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(this,
                 GlideImageConfig
                         .builder()
                         .url(videoInfo.getData().getCover().getFeed())
@@ -689,6 +795,14 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @Override
     public void setShareData(ShareInfo info) {
         shareInfo = info;
+    }
+
+    @Override
+    public void setVideoData(VideoListInfo.Video.VideoData data) {
+        this.videoInfo.setData(data);
+        initRecyclerView();
+        mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
+        mPresenter.getShareInfo(videoInfo.getData().getId());
     }
 
     private void gotoShare() {

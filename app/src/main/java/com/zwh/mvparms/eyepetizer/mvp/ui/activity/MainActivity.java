@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -41,6 +43,7 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AttentionContainerFragment;
@@ -54,6 +57,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.BottomNavigationViewHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MaterialSearchView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.transition.SearchTransitioner;
 
@@ -65,7 +69,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UpdateListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import static android.R.id.list;
@@ -122,6 +130,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_main;
     }
@@ -153,13 +166,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         setTitle("分类");
                         mTabLayout.setVisibility(View.GONE);
                         break;
-                    case R.id.item_attention:
+                    case R.id.item_hot:
                         mViewpager.setCurrentItem(2);
+                        setTitle("热门");
+                        mTabLayout.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.item_attention:
+                        mViewpager.setCurrentItem(3);
                         setTitle("关注");
                         mTabLayout.setVisibility(View.VISIBLE);
                         break;
                     case R.id.item_mine:
-                        mViewpager.setCurrentItem(3);
+                        mViewpager.setCurrentItem(4);
                         setTitle("我的");
                         mTabLayout.setVisibility(View.GONE);
                         break;
@@ -237,7 +255,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         List<String> list = new ArrayList<>();
         list.add("home");
         list.add("category");
-//        list.add(mHotContainerFragment);
+        list.add("hot");
         list.add("attention");
         list.add("mine");
         mViewpager.setOffscreenPageLimit(4);
@@ -380,6 +398,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         return false;
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

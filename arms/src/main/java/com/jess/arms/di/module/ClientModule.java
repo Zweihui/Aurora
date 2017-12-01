@@ -1,3 +1,18 @@
+/**
+ * Copyright 2017 JessYan
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.jess.arms.di.module;
 
 import android.app.Application;
@@ -32,7 +47,13 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by jessyan on 2016/3/14.
+ * ================================================
+ * 提供一些三方库客户端实例的 {@link Module}
+ * <p>
+ * Created by JessYan on 2016/3/14.
+ * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
+ * <a href="https://github.com/JessYanCoding">Follow me</a>
+ * ================================================
  */
 @Module
 public class ClientModule {
@@ -40,13 +61,14 @@ public class ClientModule {
 
 
     /**
+     * 提供 {@link Retrofit}
+     *
      * @param builder
      * @param client
      * @param httpUrl
      * @return
      * @author: jess
      * @date 8/30/16 1:15 PM
-     * @description:提供retrofit
      */
     @Singleton
     @Provides
@@ -60,13 +82,13 @@ public class ClientModule {
             configuration.configRetrofit(application, builder);
 
         builder
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用rxjava
-                .addConverterFactory(GsonConverterFactory.create(gson));//使用Gson
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())//使用 Rxjava
+                .addConverterFactory(GsonConverterFactory.create(gson));//使用 Gson
         return builder.build();
     }
 
     /**
-     * 提供OkhttpClient
+     * 提供 {@link OkHttpClient}
      *
      * @param builder
      * @return
@@ -122,7 +144,7 @@ public class ClientModule {
 
 
     /**
-     * 提供RXCache客户端
+     * 提供 {@link RxCache}
      *
      * @param cacheDirectory RxCache缓存路径
      * @return
@@ -131,16 +153,20 @@ public class ClientModule {
     @Provides
     RxCache provideRxCache(Application application, @Nullable RxCacheConfiguration configuration, @Named("RxCacheDirectory") File cacheDirectory) {
         RxCache.Builder builder = new RxCache.Builder();
-        if (configuration != null)
-            configuration.configRxCache(application, builder);
+        RxCache rxCache = null;
+        if (configuration != null) {
+            rxCache = configuration.configRxCache(application, builder);
+        }
+        if (rxCache != null) return rxCache;
         return builder
                 .persistence(cacheDirectory, new GsonSpeaker());
     }
 
-
     /**
-     * 需要单独给RxCache提供缓存路径
-     * 提供RxCache缓存地址
+     * 需要单独给 {@link RxCache} 提供缓存路径
+     *
+     * @param cacheDir
+     * @return
      */
     @Singleton
     @Provides
@@ -151,7 +177,7 @@ public class ClientModule {
     }
 
     /**
-     * 提供处理Rxjava错误的管理器
+     * 提供处理 RxJava 错误的管理器
      *
      * @return
      */
@@ -174,6 +200,14 @@ public class ClientModule {
     }
 
     public interface RxCacheConfiguration {
-        void configRxCache(Context context, RxCache.Builder builder);
+        /**
+         * 若想自定义 RxCache 的缓存文件夹或者解析方式, 如改成 fastjson
+         * 请 {@code return rxCacheBuilder.persistence(cacheDirectory, new FastJsonSpeaker());}, 否则请 {@code return null;}
+         *
+         * @param context
+         * @param builder
+         * @return
+         */
+        RxCache configRxCache(Context context, RxCache.Builder builder);
     }
 }

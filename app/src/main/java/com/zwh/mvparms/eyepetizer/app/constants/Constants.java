@@ -21,6 +21,7 @@ public class Constants {
     public static final String CACHE = "cache";
     public static final String AUTHOR = "author";
     public static final String AUTHORDETAIL = "authordetail";
+    public static final String VIDEOLIST = "videolist";
 
     //==================intent============//
     public static final String TYPE = "type";
@@ -29,10 +30,13 @@ public class Constants {
     public static final String CATEGORY_DATA = "category_data";
     public static final String CATEGORY_DATA_POSITION = "category_data_position";
     public static final String VIDEO_INFO = "video_info";
+    public static final String VIDEO_ID = "video_id";
     public static final String AUTHOR_ID = "author_id";
     public static final String VIDEO_URL = "video_url";
     public static final String RELATE_VIDEO_INFO = "relate_video_info";
     public static final String TRANSLATE_VIEW = "share_img";
+    public static final String COMMON_ID = "common_id";
+    public static final String COMMON_TYPE = "common_type";
 
     //==================api============//
     public static final int HOME_VIDEO_LIST_PAGE_SIZE = 10;

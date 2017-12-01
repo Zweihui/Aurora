@@ -3,8 +3,11 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.adapter;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.ImageView;
 
+import com.apt.TRouter;
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
@@ -13,12 +16,16 @@ import com.jess.arms.utils.StringUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import java.util.List;
 
 import static android.R.attr.data;
+import static android.R.attr.pointerIcon;
 
 /**
  * Created by Administrator on 2017/8/24 0024.
@@ -36,8 +43,9 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
         ImageView imgMian = helper.getView(R.id.img_main);
         ImageView imgAutor = helper.getView(R.id.img_author);
         Context context = imgMian.getContext();
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        Glide.with(context).load(item.getData().getCover().getFeed())
+                .into(imgMian);
+        mAppComponent.imageLoader().loadImage(context,
                 GlideImageConfig
                         .builder()
                         .url(item.getData().getCover().getFeed())
@@ -45,8 +53,7 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
                         .build());
         try {
             ((App)context.getApplicationContext())
-                    .getAppComponent().imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                            ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+                    .getAppComponent().imageLoader().loadImage(context,
                     GlideImageConfig
                             .builder()
                             .transformation(new GlideCircleTransform(context))
@@ -58,6 +65,19 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
         }
         helper.setText(R.id.title,item.getData().getTitle())
                 .setText(R.id.detail,getDetailStr(item));
+        if (item.getData().getAuthor()!=null){
+            helper.getView(R.id.img_author).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoAuthorDetail(view,helper.getLayoutPosition());
+                }
+            });
+        }
+    }
+
+    @SingleClick
+    private void gotoAuthorDetail(View view ,int position){
+        TRouter.go(Constants.AUTHORDETAIL, new DataExtra(Constants.AUTHOR_ID, this.getData().get(position).getData().getAuthor().getId()).build());
     }
 
     private String getDetailStr(VideoListInfo.Video item){

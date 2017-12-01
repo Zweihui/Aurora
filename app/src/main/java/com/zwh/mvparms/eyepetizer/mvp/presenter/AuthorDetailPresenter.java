@@ -8,6 +8,8 @@ import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -36,8 +38,8 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
         this.mAppManager = appManager;
     }
 
-    public void getAuthorVideoList(int start ,boolean isLoadMore) {
-        mModel.getAuthorVideoList(start).compose(RxUtils.applySchedulers(mRootView))
+    public void getAuthorVideoList(int id,int start ,boolean isLoadMore) {
+        mModel.getAuthorVideoList(id,start).compose(RxUtils.applySchedulers(mRootView))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {
@@ -60,6 +62,24 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
                     @Override
                     public void onNext(AuthorIndexInfo info) {
                         mRootView.setIndexInfo(info);
+                    }
+                });
+    }
+    public void getAuthorDynamicList(int id, int startCount, boolean isLoadMore) {
+        mModel.getAuthorDynamicList(id,startCount).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<AuthorDynamicInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(AuthorDynamicInfo info) {
+                        mRootView.setAuthorDynamicInfo(info.getItemList(),isLoadMore);
+                    }
+                });
+    }
+    public void getAuthorAlbumList(int id, int startCount, boolean isLoadMore) {
+        mModel.getAuthorAlbumList(id,startCount).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<AuthorAlbumInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(AuthorAlbumInfo info) {
+                        mRootView.setAuthorAlbumInfo(info.getItemList(),isLoadMore);
                     }
                 });
     }

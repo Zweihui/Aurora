@@ -4,17 +4,32 @@
     android:id="@+id/rl_text_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
     android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
+    android:clickable="false"
     android:orientation="horizontal">
-
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="@color/divider"
+        android:layout_alignParentTop="true"
+        />
+    <View
+        android:id="@+id/view_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/whiteF8"
+        android:layout_below="@id/view_divider"
+        />
     <TextView
         android:id="@+id/text_card_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp"
+        android:layout_margin="16dp"
+        android:layout_below="@id/view_divider2"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:layout_centerInParent="true"
         android:text="最近更新"
         />
@@ -23,6 +38,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:scaleType="fitXY"
+        android:visibility="gone"
         app:srcCompat="@drawable/ve_right_enter_arrow"
         android:layout_alignParentRight="true"
         />

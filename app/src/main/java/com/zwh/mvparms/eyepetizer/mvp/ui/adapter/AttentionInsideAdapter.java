@@ -30,8 +30,7 @@ public class AttentionInsideAdapter extends BaseQuickAdapter<VideoListInfo.Video
         ImageView imgBg = helper.getView(R.id.iv_bg);
         helper.setText(R.id.tv_title,item.getData().getTitle())
                 .setText(R.id.tv_detail,getDetailStr(item));
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(imgBg.getContext(),
                 GlideImageConfig
                         .builder()
                         .url(item.getData().getCover().getFeed())

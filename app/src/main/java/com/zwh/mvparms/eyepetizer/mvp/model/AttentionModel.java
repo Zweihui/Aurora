@@ -56,7 +56,7 @@ public class AttentionModel extends BaseModel implements AttentionContract.Model
 
             BmobQuery<MyAttentionEntity> query = new BmobQuery<MyAttentionEntity>();
             query.addWhereEqualTo("userId", userid);
-            query.order("-date");
+            query.order("-createdAt");
             query.findObjects(new FindListener<MyAttentionEntity>() {
                 @Override
                 public void done(List<MyAttentionEntity> list, BmobException e) {

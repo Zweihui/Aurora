@@ -1,12 +1,15 @@
 package com.zwh.mvparms.eyepetizer.mvp.model.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by Administrator on 2017/8/23 0023.
  */
 
-public class Category implements Serializable{
+public class Category implements Parcelable {
 
     /**
      * id : 20
@@ -21,17 +24,29 @@ public class Category implements Serializable{
     private int id;
     private int authorId;
     private String name;
-    private Object alias;
+    private String alias;
     private String description;
     private String bgPicture;
     private String bgColor;
     private String headerImage;
 
-    public Category(String description,String name){
+    public Category(String description, String name) {
         this.name = name;
         this.description = description;
     }
-    public Category(){
+
+    public Category(Parcel in) {
+        id = in.readInt();
+        authorId = in.readInt();
+        name = in.readString();
+        alias = in.readString();
+        description = in.readString();
+        bgPicture = in.readString();
+        bgColor = in.readString();
+        headerImage = in.readString();
+    }
+
+    public Category() {
     }
 
     public int getId() {
@@ -54,7 +69,7 @@ public class Category implements Serializable{
         return alias;
     }
 
-    public void setAlias(Object alias) {
+    public void setAlias(String alias) {
         this.alias = alias;
     }
 
@@ -97,4 +112,34 @@ public class Category implements Serializable{
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeInt(authorId);
+        parcel.writeString(name);
+        parcel.writeString(alias);
+        parcel.writeString(description);
+        parcel.writeString(bgPicture);
+        parcel.writeString(bgColor);
+        parcel.writeString(headerImage);
+    }
+
+    public static final Parcelable.Creator<Category> CREATOR = new Creator<Category>() {
+
+        @Override
+        public Category createFromParcel(Parcel source) {
+            return new Category(source);
+        }
+
+        @Override
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
 }

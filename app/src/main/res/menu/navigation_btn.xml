@@ -8,6 +8,11 @@
         android:icon="@drawable/ve_home_grey"
         />
     <item
+        android:id="@+id/item_hot"
+        android:title="热门"
+        android:icon="@drawable/ve_hot_grey"
+        />
+    <item
         android:id="@+id/item_category"
         android:title="分类"
         android:icon="@drawable/ve_category_grey"

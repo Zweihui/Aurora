@@ -78,13 +78,16 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.SearchActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme_normal" />
         <activity
             android:name=".mvp.ui.activity.LoginActivity"
-            android:label="登录" />
+            android:label="登录"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.RegistActivity"
-            android:label="注册帐号" />
+            android:label="注册帐号"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait" />
@@ -101,17 +104,22 @@
 
         <activity
             android:name=".mvp.ui.activity.HistoryActivity"
-            android:label="观看记录" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="观看记录"
+            android:screenOrientation="portrait" />
 
         <service android:name=".mvp.ui.service.DownLoadService" />
 
         <activity
             android:name=".mvp.ui.activity.CacheActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="缓存管理"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.AboutMimeActivity"
-            android:label="关于作者" />
+            android:label="关于作者"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.VideoFullCreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -119,7 +127,8 @@
             android:theme="@style/Video_FullScreen" />
         <activity
             android:name=".mvp.ui.activity.SettingsActivity"
-            android:label="@string/title_activity_settings" />
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" />
 
         <receiver android:name=".mvp.ui.receiver.NetBroadcastReceiver">
             <intent-filter>
@@ -132,7 +141,11 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".mvp.ui.activity.AuthorDetailActivity"></activity>
+        <activity
+            android:name=".mvp.ui.activity.AuthorDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait" />
+        <activity android:name=".mvp.ui.activity.VideoListActivity"></activity>
     </application>
 
 </manifest>

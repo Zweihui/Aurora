@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.integration.RepositoryManager;
+import com.jess.arms.integration.cache.Cache;
+import com.jess.arms.integration.cache.CacheType;
 
 import java.util.Map;
 
@@ -51,8 +53,8 @@ public class AppModule {
 
     @Singleton
     @Provides
-    public Map<String, Object> provideExtras(){
-        return new ArrayMap<>();
+    public Cache<String, Object> provideExtras(Cache.Factory cacheFactory) {
+        return cacheFactory.build(CacheType.EXTRAS);
     }
 
     public interface GsonConfiguration {

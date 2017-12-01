@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.apt.TRouter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.AttentionFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.HotFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
@@ -59,6 +61,29 @@ public class AttentionContainerFragment extends BaseLazyLoadFragment {
         list.add(new Category("all","热门关注"));
         list.add(new Category("mine","我的关注"));
         mViewpager.setAdapter(AttentionFragmentAdapter.newInstance(getChildFragmentManager(),list));
+        mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 1&& BmobUser.getCurrentUser()==null){
+                    TRouter.go(Constants.LOGIN);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onVisible() {
+        super.onVisible();
         EventBus.getDefault().post(mViewpager, EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER);
     }
 

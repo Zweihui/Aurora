@@ -47,8 +47,7 @@ public class HistoryAdapter extends BaseQuickAdapter<VideoDaoEntity,BaseViewHold
         DecimalFormat df=new DecimalFormat("0.00");
         int progress = (int) (((float)item.getStartTime()*0.1f)/item.getTotalTime());
         seekBar.setProgress(progress);
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(context,
                 GlideImageConfig
                         .builder()
                         .url(item.getVideo().getCover().getFeed())

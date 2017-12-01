@@ -16,7 +16,6 @@ import android.widget.PopupWindow;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jess.arms.base.BaseActivity;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
 import com.zwh.annotation.apt.Router;

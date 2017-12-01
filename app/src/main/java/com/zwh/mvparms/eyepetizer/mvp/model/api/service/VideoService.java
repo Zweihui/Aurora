@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -25,4 +26,9 @@ public interface VideoService {
     //获取排行信息
     @GET("v3/ranklist")
     Observable<VideoListInfo> getRankVideoList(@Query("strategy") String strategy);
+
+    @GET("v4/pgcs/videoList")
+    Observable<VideoListInfo> getPopularVideoList(@Query("id") int id,@Query("strategy") String strategy,@Query("start") int startCount,@Query("num") int num);
+    @GET("v4/playlists/{id}/videos")
+    Observable<VideoListInfo> getPlayListVideoList(@Path("id") int id,@Query("start") int startCount,@Query("num") int num);
 }

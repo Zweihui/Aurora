@@ -49,8 +49,7 @@ public class RelateVideoAdapter extends BaseSectionQuickAdapter<RelateVideoSecti
         AppComponent mAppComponent = ((App)img.getContext().getApplicationContext())
                 .getAppComponent();
         Context context = img.getContext();
-        mAppComponent.imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
-                        ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
+        mAppComponent.imageLoader().loadImage(context,
                 GlideImageConfig
                         .builder()
                         .url(item.t.getData().getCover().getFeed())

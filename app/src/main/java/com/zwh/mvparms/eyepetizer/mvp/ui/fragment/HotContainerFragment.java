@@ -64,6 +64,11 @@ public class HotContainerFragment extends BaseLazyLoadFragment{
         list.add(new Category("monthly","月排行"));
         list.add(new Category("historical","总排行"));
         mViewpager.setAdapter(HotFragmentAdapter.newInstance(getChildFragmentManager(),list));
+    }
+
+    @Override
+    public void onVisible() {
+        super.onVisible();
         EventBus.getDefault().post(mViewpager, EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER);
     }
 

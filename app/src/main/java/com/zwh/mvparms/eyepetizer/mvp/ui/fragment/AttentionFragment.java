@@ -12,15 +12,20 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
+import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerAttentionComponent;
 import com.zwh.mvparms.eyepetizer.di.module.AttentionModule;
@@ -29,10 +34,14 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AttentionPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AttentionAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AurhorListAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
+
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,20 +139,21 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
             adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                gotoDetail(view,position);
+                    gotoAuthorDetail(view, position);
                 }
             });
             adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
                 @Override
                 public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                     int id = view.getId();
-                    if (id == R.id.btn_attention) {
-                        FollowButton button = (FollowButton) view;
-                        follow(button, position);
-                    }
+//                    if (id == R.id.btn_attention) {
+//                        FollowButton button = (FollowButton) view;
+//                        follow(button, position);
+//                    }
                 }
             });
         } else {
+            mSwipeRefresh.setEnabled(false);
             adapter = new AurhorListAdapter(R.layout.item_author_list, authors);
             adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
@@ -182,7 +192,7 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
             if (itemList.size() < 1) {
                 adapter.setEnableLoadMore(false);
                 if (footView == null) {
-                    footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, null, false);
+                    footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
                 }
                 adapter.addFooterView(footView);
             } else {
@@ -204,6 +214,21 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
         authors.addAll(list);
         adapter.setNewData(list);
         mSwipeRefresh.setRefreshing(false);
+        if (footView == null) {
+            footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
+            adapter.addFooterView(footView);
+        }
+    }
+
+    @Override
+    public void onVisible() {
+        super.onVisible();
+        if (!"all".equals(type) && BmobUser.getCurrentUser() != null) {
+            if (mPresenter == null){
+                return;
+            }
+            mPresenter.getMyAttentionList(BmobUser.getCurrentUser().getObjectId());
+        }
     }
 
     @Override
@@ -257,43 +282,22 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
         }
     }
 
-    @SingleClick
-    @CheckLogin
-    private void follow(FollowButton button, int position) {
-        MyAttentionEntity attention = new MyAttentionEntity();
-        attention.setId(data.get(position).getData().getHeader().getId());
-        attention.setTitle(data.get(position).getData().getHeader().getTitle());
-        attention.setDescription(data.get(position).getData().getHeader().getDescription());
-        attention.setUserId(BmobUser.getCurrentUser().getObjectId());
-        attention.setIcon(data.get(position).getData().getHeader().getIcon());
-        int state = button.getState();
-        if (state == FollowButton.FOLLOWED) {
-            button.setState(FollowButton.PEDDING);
-            BmobQuery<MyAttentionEntity> query = new BmobQuery<MyAttentionEntity>();
-            query.addWhereEqualTo("id", data.get(position).getData().getHeader().getId());
-            query.findObjects(new FindListener<MyAttentionEntity>() {
-                @Override
-                public void done(List<MyAttentionEntity> list, BmobException e) {
-                    list.get(0).delete(new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            button.setState(FollowButton.UNFOLLOWED);
-                        }
-                    });
-                }
-            });
-
-        }
-        if (state == FollowButton.UNFOLLOWED) {
-            button.setState(FollowButton.PEDDING);
-            attention.setFollow(true);
-            attention.save(new SaveListener<String>() {
-                @Override
-                public void done(String s, BmobException e) {
-                    button.setState(FollowButton.FOLLOWED);
-                }
-            });
+    @Subscriber(tag = EventBusTags.SET_USER_INFO)
+    public void setUserInfo(User user) {
+        if (!"all".equals(type) && user != null) {
+            mPresenter.getMyAttentionList(user.getObjectId());
+            mSwipeRefresh.setEnabled(true);
         }
     }
 
+    @Subscriber(tag = EventBusTags.SETTING_ACTIVITY_LOG_OUT)
+    public void logoutReset(String tag) {
+        if (!"all".equals(type)){
+            if (!StringUtils.isEmpty(adapter.getData())){
+                adapter.getData().clear();
+                adapter.notifyDataSetChanged();
+            }
+
+        }
+    }
 }

@@ -23,10 +23,15 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo.ItemListBeanX;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo.ItemListBeanX.DataBeanX;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 
 import java.util.List;
+
+import cn.bmob.v3.BmobUser;
 
 import static android.R.attr.data;
 
@@ -59,7 +64,26 @@ public class AttentionAdapter extends BaseQuickAdapter<ItemListBeanX,BaseViewHol
         }catch (NullPointerException e){
 
         }
-        helper.addOnClickListener(R.id.btn_attention);
+        FollowButton button = helper.getView(R.id.btn_attention);
+        button.setState(MyFollowedInfo.getInstance().
+                checkFollowed(item.getData().getHeader().getId())?FollowButton.FOLLOWED:FollowButton.UNFOLLOWED);
+        MyAttentionEntity attention = new MyAttentionEntity();
+        attention.setId(item.getData().getHeader().getId());
+        attention.setTitle((item.getData().getHeader().getTitle()));
+        attention.setDescription((item.getData().getHeader().getDescription()));
+        attention.setUserId(BmobUser.getCurrentUser().getObjectId());
+        attention.setIcon((item.getData().getHeader().getIcon()));
+        button.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
+            @Override
+            public void onFollowed() {
+
+            }
+
+            @Override
+            public void onUnFollowed() {
+
+            }
+        },attention);
         helper.setText(R.id.tv_name,item.getData().getHeader().getTitle())
                 .setText(R.id.tv_desc,item.getData().getHeader().getDescription());
         RecyclerView recyclerView = helper.getView(R.id.inside_recyclerView);

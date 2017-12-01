@@ -88,7 +88,7 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/bottom_progressbar"
+        android:id="@+id/bottom_progressbar1"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
@@ -105,7 +105,7 @@
         android:visibility="gone" />
 
     <ProgressBar
-        android:id="@+id/loading"
+        android:id="@+id/loading1"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:indeterminateTintMode="src_atop"
@@ -160,7 +160,6 @@
             android:id="@+id/back"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:paddingLeft="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/video_back" />
 

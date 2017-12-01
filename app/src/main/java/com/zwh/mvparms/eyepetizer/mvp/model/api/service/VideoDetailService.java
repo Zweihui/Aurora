@@ -29,4 +29,7 @@ public interface VideoDetailService {
     //获取分享信息
     @GET("v2/share")
     Observable<ShareInfo> getShareInfo(@Query("sourceType") String sourceType, @Query("itemType") String itemType, @Query("identity") int identity);
+    //获取分享信息
+    @GET("v2/video/{videoId}")
+    Observable<VideoListInfo.Video.VideoData> getVideoData(@Path("videoId") int id);
 }
