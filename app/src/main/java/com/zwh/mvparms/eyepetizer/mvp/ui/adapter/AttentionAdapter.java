@@ -19,21 +19,14 @@ import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo.ItemListBeanX;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo.ItemListBeanX.DataBeanX;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 
 import java.util.List;
-
-import cn.bmob.v3.BmobUser;
-
-import static android.R.attr.data;
 
 /**
  * Created by Administrator on 2017/11/15 0015.
@@ -71,7 +64,6 @@ public class AttentionAdapter extends BaseQuickAdapter<ItemListBeanX,BaseViewHol
         attention.setId(item.getData().getHeader().getId());
         attention.setTitle((item.getData().getHeader().getTitle()));
         attention.setDescription((item.getData().getHeader().getDescription()));
-        attention.setUserId(BmobUser.getCurrentUser().getObjectId());
         attention.setIcon((item.getData().getHeader().getIcon()));
         button.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
             @Override

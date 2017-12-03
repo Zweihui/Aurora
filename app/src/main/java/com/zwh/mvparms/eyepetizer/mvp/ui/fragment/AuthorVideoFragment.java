@@ -17,9 +17,7 @@ import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
-import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
-import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailVideoComponent;
 import com.zwh.mvparms.eyepetizer.di.module.AuthorDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
@@ -28,13 +26,10 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorIndexAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorVideosAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.RelateVideoAdapter;
-
-import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +162,7 @@ public class AuthorVideoFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     public void setVideosData(List<VideoListInfo.Video> videos, boolean isLoadMore) {
         if (videos.size()<10){
             if (footView == null){
-                footView = getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
+                footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
             }
             if (adapter.getFooterLayoutCount()<=0){
                 adapter.addFooterView(footView);
@@ -188,6 +183,11 @@ public class AuthorVideoFragment extends BaseLazyLoadFragment<AuthorDetailPresen
 
     @Override
     public void setTabs(AuthorTabsInfo info) {
+
+    }
+
+    @Override
+    public void setShareInfo(ShareInfo info) {
 
     }
 

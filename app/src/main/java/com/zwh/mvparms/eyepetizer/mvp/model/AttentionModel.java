@@ -3,26 +3,17 @@ package com.zwh.mvparms.eyepetizer.mvp.model;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.jess.arms.di.scope.ActivityScope;
 import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
-
-import com.jess.arms.di.scope.ActivityScope;
-
-import javax.inject.Inject;
-
-import com.jess.arms.utils.StringUtils;
-import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AttentionContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.AttentionService;
-import com.zwh.mvparms.eyepetizer.mvp.model.api.service.VideoService;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
@@ -60,7 +51,8 @@ public class AttentionModel extends BaseModel implements AttentionContract.Model
             query.findObjects(new FindListener<MyAttentionEntity>() {
                 @Override
                 public void done(List<MyAttentionEntity> list, BmobException e) {
-                    emitter.onNext(list);
+                    if (list!=null)
+                        emitter.onNext(list);
                 }
             });
         });

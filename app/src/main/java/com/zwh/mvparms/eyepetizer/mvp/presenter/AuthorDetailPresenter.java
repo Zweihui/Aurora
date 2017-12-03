@@ -12,6 +12,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import javax.inject.Inject;
@@ -53,6 +54,15 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
                     @Override
                     public void onNext(AuthorTabsInfo info) {
                         mRootView.setTabs(info);
+                    }
+                });
+    }
+    public void getShareInfo(int id) {
+        mModel.getShareInfo(id).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+                .subscribe(new ErrorHandleSubscriber<ShareInfo>(mErrorHandler) {
+                    @Override
+                    public void onNext(ShareInfo info) {
+                        mRootView.setShareInfo(info);
                     }
                 });
     }

@@ -18,7 +18,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
@@ -34,6 +33,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorIndexAdapter;
@@ -283,8 +283,13 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
         initHeadView(info);
     }
 
+    @Override
+    public void setShareInfo(ShareInfo info) {
+
+    }
+
     private void initHeadView(AuthorTabsInfo info) {
-        View headView = getLayoutInflater().inflate(R.layout.view_head_author_detail, mRecyclerView, false);
+        View headView = getActivity().getLayoutInflater().inflate(R.layout.view_head_author_detail, mRecyclerView, false);
         ImageView bg = headView.findViewById(R.id.iv_bg);
         ImageView face = headView.findViewById(R.id.civ_face);
         TextView name = headView.findViewById(R.id.tv_author_name);
@@ -324,7 +329,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     public void setIndexInfo(AuthorIndexInfo info) {
         data.addAll(info.getItemList());
         adapter.setNewData(data);
-        View footView = getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
+        View footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
         adapter.addFooterView(footView);
     }
 

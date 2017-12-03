@@ -20,7 +20,6 @@ import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailDynamicComponent;
-import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailVideoComponent;
 import com.zwh.mvparms.eyepetizer.di.module.AuthorDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
@@ -28,10 +27,10 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorDynamicAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorVideosAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,6 +179,11 @@ public class AuthorDynamicFragment extends BaseLazyLoadFragment<AuthorDetailPres
     }
 
     @Override
+    public void setShareInfo(ShareInfo info) {
+
+    }
+
+    @Override
     public void setIndexInfo(AuthorIndexInfo info) {
 
     }
@@ -193,7 +197,7 @@ public class AuthorDynamicFragment extends BaseLazyLoadFragment<AuthorDetailPres
     public void setAuthorDynamicInfo(List<AuthorDynamicInfo.Dynamic> itemList, boolean isLoadMore) {
         if (itemList.size()<10){
             if (footView == null){
-                footView = getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
+                footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
             }
             if (adapter.getFooterLayoutCount()<=0){
                 adapter.addFooterView(footView);

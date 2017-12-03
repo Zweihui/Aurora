@@ -2,7 +2,6 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -28,7 +27,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.apt.TRouter;
-import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.UiUtils;
@@ -43,21 +41,10 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AttentionContainerFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.AttentionFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CategoryFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HomeFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotContainerFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.HotFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.receiver.NetBroadcastReceiver;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.BottomNavigationViewHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MaterialSearchView;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.transition.SearchTransitioner;
 
@@ -69,15 +56,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UpdateListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
-import static android.R.id.list;
-import static com.zwh.mvparms.eyepetizer.R.id.swipe;
 import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
 import static com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment.REQUEST_CODE_CHOOSE;
 
@@ -305,7 +286,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         if (item.getItemId() == R.id.nav_login) {
         }
         if (item.getItemId() == R.id.nav_attention){
-
+            gotoMyAttention();
         }
         if (item.getItemId() == R.id.nav_cache){
             TRouter.go(Constants.CACHE);
@@ -318,6 +299,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         mDlMainDrawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @CheckLogin
+    private void gotoMyAttention(){
+        TRouter.go(Constants.MYATTENTION);
     }
 
     @Override

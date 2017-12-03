@@ -74,6 +74,7 @@ public class SampleVideo extends StandardGSYVideoPlayer {
         mChangeRotate = (TextView) findViewById(R.id.change_rotate);
         mChangeTransform = (TextView) findViewById(R.id.change_transform);
         mLoadingProgressBar = (ProgressBar)findViewById(R.id.loading1);
+        mBottomProgressBar = (ProgressBar)findViewById(R.id.bottom_progressbar1);
 
         //切换清晰度
         mMoreScale.setOnClickListener(new OnClickListener() {

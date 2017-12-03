@@ -6,10 +6,10 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     signingConfigs {
         release {
-            keyAlias 'keystore'
-            keyPassword 'zwh12583258'
-            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
-            storePassword 'zwh12583258'
+//            keyAlias 'keystore'
+//            keyPassword 'zwh12583258'
+//            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
+//            storePassword 'zwh12583258'
         }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -45,14 +45,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
-        release {
-            buildConfigField "boolean", "LOG_DEBUG", "false"
-            buildConfigField "boolean", "USE_CANARY", "false"
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+//        release {
+//            buildConfigField "boolean", "LOG_DEBUG", "false"
+//            buildConfigField "boolean", "USE_CANARY", "false"
+//            minifyEnabled true
+//            shrinkResources true
+//            zipAlignEnabled true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -65,9 +65,9 @@ android {
         }
     }
     productFlavors {
-        sunny {
-            signingConfig signingConfigs.release
-        }
+//        sunny {
+//            signingConfig signingConfigs.release
+//        }
     }
 }
 
@@ -123,6 +123,7 @@ dependencies {
     compile rootProject.ext.dependencies["filedownloader"]
     compile(name: 'matisse_ucrop_1.0.0', ext: 'aar')
     compile(name: 'progress-release', ext: 'aar')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 apply plugin: AspectjPlugin
 apply plugin: 'com.android.application'

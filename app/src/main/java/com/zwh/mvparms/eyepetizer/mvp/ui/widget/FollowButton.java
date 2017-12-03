@@ -4,14 +4,12 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 
 import com.jess.arms.utils.UiUtils;
 import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.VideoDetailActivity;
 
 import java.util.List;
 
@@ -55,6 +53,7 @@ public class FollowButton extends android.support.v7.widget.AppCompatButton{
     @CheckLogin
     @SingleClick
     private void processClick(View view) {
+        attention.setUserId(BmobUser.getCurrentUser().getObjectId());
         if (MyFollowedInfo.getInstance().getList() == null){
             fetchFollowData(true);
         }else {

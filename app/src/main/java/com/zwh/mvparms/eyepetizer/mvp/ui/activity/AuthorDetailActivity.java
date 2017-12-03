@@ -2,7 +2,6 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -15,12 +14,10 @@ import android.view.View;
 
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.UiUtils;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.aspect.CheckLogin;
-import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -35,9 +32,9 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 
 import org.simple.eventbus.Subscriber;
 
@@ -70,6 +67,7 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
     @BindView(R.id.main_content)
     CoordinatorLayout mainContent;
     AuthorTabsInfo info;
+    private ShareInfo mShareInfo;
 
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
@@ -93,6 +91,7 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
         }
         initToolBar();
         mPresenter.getAuthorTabs(authorId);
+        mPresenter.getShareInfo(authorId);
     }
 
     @Override
@@ -116,6 +115,9 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
                 int menuItem = item.getItemId();
                 switch (menuItem) {
                     case R.id.action_share:
+                        if (mShareInfo != null){
+                            gotoShare();
+                        }
                         break;
                     case R.id.action_settings:
                         TRouter.go(Constants.SETTINGS);
@@ -141,6 +143,17 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
     @Override
     public void hideLoading() {
 
+    }
+
+    private void gotoShare() {
+        if (mShareInfo == null)
+            return;
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, mShareInfo.getWechat_friends().getLink());
+        intent.setType("text/plain");
+        //设置分享列表的标题，并且每次都显示分享列表
+        startActivity(Intent.createChooser(intent, "分享到"));
     }
 
 
@@ -196,6 +209,11 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
         mViewpager.setCurrentItem(0);
         setTitle(info.getPgcInfo().getName());
         this.info = info;
+    }
+
+    @Override
+    public void setShareInfo(ShareInfo info) {
+        this.mShareInfo = info;
     }
 
     @Override

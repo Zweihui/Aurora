@@ -12,7 +12,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -20,9 +19,6 @@ import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
-import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
@@ -38,20 +34,13 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AttentionPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AttentionAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AurhorListAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
@@ -166,6 +155,7 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
         mRecyclerView.setAdapter(adapter);
     }
 
+    @SingleClick
     private void gotoAuthorDetail(View view, int position) {
         if ("all".equals(type)) {
             TRouter.go(Constants.AUTHORDETAIL, new DataExtra(Constants.AUTHOR_ID, data.get(position).getData().getHeader().getId()).build());

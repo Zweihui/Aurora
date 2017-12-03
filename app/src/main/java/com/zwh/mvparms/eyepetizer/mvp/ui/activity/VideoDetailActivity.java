@@ -3,8 +3,6 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +17,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.AnimationUtils;
-import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
@@ -48,7 +45,6 @@ import com.zwh.mvparms.eyepetizer.mvp.contract.VideoDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ReplyInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
@@ -89,7 +85,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import timber.log.Timber;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -337,7 +332,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             attention.setId(videoInfo.getData().getAuthor().getId());
             attention.setTitle((videoInfo.getData().getAuthor().getName()));
             attention.setDescription((videoInfo.getData().getAuthor().getDescription()));
-            attention.setUserId(BmobUser.getCurrentUser().getObjectId());
             attention.setIcon((videoInfo.getData().getAuthor().getIcon()));
             followButton.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
                 @Override

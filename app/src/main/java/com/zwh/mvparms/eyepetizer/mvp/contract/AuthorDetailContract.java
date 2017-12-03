@@ -6,6 +6,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public interface AuthorDetailContract {
     interface View extends IView {
         void setVideosData(List<VideoListInfo.Video> videos, boolean isLoadMore);
         void setTabs(AuthorTabsInfo info);
+        void setShareInfo(ShareInfo info);
         void setIndexInfo(AuthorIndexInfo info);
 
         void setAuthorAlbumInfo(List<AuthorAlbumInfo.Album> itemList, boolean isLoadMore);
@@ -32,5 +34,6 @@ public interface AuthorDetailContract {
         Observable<AuthorIndexInfo> getAuthorIndexInfo(int id);
         Observable<AuthorDynamicInfo> getAuthorDynamicList(int id, int startCount);
         Observable<AuthorAlbumInfo> getAuthorAlbumList(int id, int startCount);
+        Observable<ShareInfo> getShareInfo(int identity);
     }
 }

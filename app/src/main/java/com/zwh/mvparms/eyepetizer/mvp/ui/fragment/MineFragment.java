@@ -115,10 +115,16 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                 TRouter.go(Constants.CACHE);
                 break;
             case R.id.ll_attention:
+                gotoMyAttention();
                 break;
             case R.id.ll_feedback:
                 break;
         }
+    }
+
+    @CheckLogin
+    private void gotoMyAttention(){
+        TRouter.go(Constants.MYATTENTION);
     }
     @CheckLogin
     private void requestSelectPic(){

@@ -30,8 +30,6 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MyBanner;
 import java.util.Date;
 import java.util.List;
 
-import cn.bmob.v3.BmobUser;
-
 /**
  * Created by Administrator on 2017\11\24 0024.
  */
@@ -130,7 +128,6 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                     attention.setId(item.getData().getHeader().getId());
                     attention.setTitle((item.getData().getHeader().getTitle()));
                     attention.setDescription((item.getData().getHeader().getDescription()));
-                    attention.setUserId(BmobUser.getCurrentUser().getObjectId());
                     attention.setIcon((item.getData().getHeader().getIcon()));
                     button.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
                         @Override

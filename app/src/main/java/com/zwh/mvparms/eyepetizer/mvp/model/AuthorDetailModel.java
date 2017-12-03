@@ -8,16 +8,17 @@ import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.service.AuthorDetailService;
+import com.zwh.mvparms.eyepetizer.mvp.model.api.service.VideoDetailService;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import retrofit2.http.Query;
 
 
 @ActivityScope
@@ -63,6 +64,13 @@ public class AuthorDetailModel extends BaseModel implements AuthorDetailContract
     public Observable<AuthorAlbumInfo> getAuthorAlbumList(int id, int startCount) {
         Observable<AuthorAlbumInfo> observable = mRepositoryManager.obtainRetrofitService(AuthorDetailService.class)
                 .getAuthorAlbumList(id,startCount,10);
+        return observable;
+    }
+
+    @Override
+    public Observable<ShareInfo> getShareInfo(int identity) {
+        Observable<ShareInfo> observable = mRepositoryManager.obtainRetrofitService(VideoDetailService.class)
+                .getShareInfo("PGC","WEB_PAGE",identity);
         return observable;
     }
 

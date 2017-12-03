@@ -20,6 +20,7 @@ public class Constants {
     public static final String HISTORY = "history";
     public static final String CACHE = "cache";
     public static final String AUTHOR = "author";
+    public static final String MYATTENTION = "myattention";
     public static final String AUTHORDETAIL = "authordetail";
     public static final String VIDEOLIST = "videolist";
 
