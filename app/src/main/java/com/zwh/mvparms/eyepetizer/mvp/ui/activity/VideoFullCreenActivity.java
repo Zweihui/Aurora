@@ -1,11 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.jess.arms.di.component.AppComponent;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
@@ -33,11 +29,6 @@ public class VideoFullCreenActivity extends BaseActivity {
     @Override
     public void setupActivityComponent(AppComponent appComponent) {
 
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
     }
 
     @Override

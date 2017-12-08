@@ -3,15 +3,11 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.widget;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.wang.avi.AVLoadingIndicatorView;
 import com.zwh.mvparms.eyepetizer.R;
-
-import static com.zwh.mvparms.eyepetizer.R.id.view;
 
 
 /**
@@ -24,6 +20,7 @@ public class MultiRecyclerView extends FrameLayout {
     private FrameLayout fl_emptyView;
     private FrameLayout fl_loadingView;
     private FrameLayout fl_errorView;
+    private AVLoadingIndicatorView indicatorView;
 
 
     public MultiRecyclerView(Context context) {
@@ -48,8 +45,8 @@ public class MultiRecyclerView extends FrameLayout {
         fl_loadingView = (FrameLayout) layout.findViewById(R.id.fl_loading_view);
         fl_errorView = (FrameLayout) layout.findViewById(R.id.fl_error_view);
         recyclerview = (RecyclerView) layout.findViewById(R.id.recyclerView);
-        AVLoadingIndicatorView view = (AVLoadingIndicatorView) fl_loadingView.findViewById(R.id.loading);
-        view.smoothToShow();
+        indicatorView = (AVLoadingIndicatorView) fl_loadingView.findViewById(R.id.loading);
+        indicatorView.smoothToShow();
     }
 
     public RecyclerView getRecyclerView(){
@@ -65,7 +62,7 @@ public class MultiRecyclerView extends FrameLayout {
                 public void run() {
                     fl_loadingView.setVisibility(GONE);
                 }
-            },700);
+            },500);
         }
     }
 }

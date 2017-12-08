@@ -41,18 +41,18 @@
                 android:paddingRight="3dp">
 
                 <android.support.v7.widget.CardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     app:cardCornerRadius="40dp">
 
                     <com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView
                         android:id="@+id/civ_face"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:src="@drawable/ic_noface"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:civ_border_color="@color/white"
-                        app:civ_border_width="3dp" />
+                        app:civ_border_width="2dp" />
                 </android.support.v7.widget.CardView>
 
                 <TextView

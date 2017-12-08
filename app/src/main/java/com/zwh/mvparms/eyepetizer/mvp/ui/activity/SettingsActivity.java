@@ -17,12 +17,13 @@ import android.widget.Toast;
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.DataHelper;
+import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.tencent.bugly.beta.Beta;
 import com.zwh.annotation.apt.Router;
-import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -30,7 +31,6 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import org.simple.eventbus.EventBus;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -53,6 +53,8 @@ public class SettingsActivity extends BaseActivity {
     ConstraintLayout ctlWifi;
     @BindView(R.id.tv_splash_open)
     TextView tvSplashOpen;
+    @BindView(R.id.tv_version_name)
+    TextView tvVersionName;
     @BindView(R.id.switch_splash)
     Switch switchSplash;
     @BindView(R.id.ctl_splash)
@@ -90,6 +92,7 @@ public class SettingsActivity extends BaseActivity {
         switchFlow.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_FLOW,true));
         switchWifi.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_WIFI,true));
         switchSplash.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_SPLASH,false));
+        tvVersionName.setText("当前版本"+DeviceUtils.getVersionName(this));
         if (BmobUser.getCurrentUser()==null){
             ctlLogout.setVisibility(View.GONE);
         }
@@ -173,7 +176,7 @@ public class SettingsActivity extends BaseActivity {
             case R.id.ctl_open_source:
                 break;
             case R.id.ctl_update:
-                UiUtils.makeText(this,"当前已是最新版本");
+                Beta.checkUpgrade();
                 break;
             case R.id.ctl_logout:
                 AlertDialog.Builder alert = new AlertDialog.Builder(this);

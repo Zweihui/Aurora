@@ -96,6 +96,23 @@
 -keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
 -keep class com.alipay.sdk.app.PayTask{ public *;}
 -keep class com.alipay.sdk.app.AuthTask{ public *;}
+################umeng###############
+
+-keepclassmembers class * {
+    public <init>(org.json.JSONObject);
+}
+
+-keep public class com.zwh.mvparms.eyepetizer.R$*{
+    public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+################bugly###############
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
 
 ################retrofit###############
 -dontwarn retrofit2.**

@@ -12,9 +12,6 @@ import android.widget.FrameLayout;
 import com.apt.TRouter;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MaterialSearchView;
-
-import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
 
 /**
  * Created by Administrator on 2017/9/22 0022.

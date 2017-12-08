@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sunny</string>
+    <string name="app_name">晨曦 Aurora</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
     <string name="title_activity_main">MainActivity</string>

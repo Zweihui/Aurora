@@ -23,7 +23,7 @@
 
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Settings">
         <menu>
             <item
                 android:id="@+id/nav_setting"

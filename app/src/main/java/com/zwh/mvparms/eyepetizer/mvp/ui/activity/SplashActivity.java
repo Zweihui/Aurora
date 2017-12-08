@@ -1,8 +1,6 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.apt.TRouter;
@@ -19,7 +17,6 @@ import com.zwh.mvparms.eyepetizer.di.component.DaggerSplashComponent;
 import com.zwh.mvparms.eyepetizer.di.module.SplashModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.SplashContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.SplashPresenter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.WeatherView;
 

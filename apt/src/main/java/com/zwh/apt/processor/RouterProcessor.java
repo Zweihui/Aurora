@@ -62,7 +62,7 @@ public class RouterProcessor implements IProcessor {
         List<ClassName> mList = new ArrayList<>();
         CodeBlock.Builder blockBuilderGo = CodeBlock.builder();
         CodeBlock.Builder blockBuilderBind = CodeBlock.builder();
-        ClassName appClassName = ClassName.get("com.jess.arms.base", "BaseApplication");
+        ClassName appClassName = ClassName.get("com.zwh.mvparms.eyepetizer.app", "BaseApplication");
         blockBuilderGo.addStatement("mCurActivityExtra=extra");
         blockBuilderGo.addStatement("Activity mContext=$T.getAppContext().getAppComponent().appManager().getCurrentActivity();", appClassName);
         blockBuilderGo.beginControlFlow(" switch (name)");//括号开始

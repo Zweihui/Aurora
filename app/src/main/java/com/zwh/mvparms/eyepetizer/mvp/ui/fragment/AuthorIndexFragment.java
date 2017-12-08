@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
-import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
@@ -33,6 +32,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
@@ -43,13 +43,6 @@ import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by Administrator on 2017\11\23 0023.
@@ -142,9 +135,6 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
                     case R.id.ctl_author_index_like:
                         gotoAuthorDetail(view,position);
                         break;
-                    case R.id.btn_attention:
-                        follow((FollowButton) view,position);
-                        break;
                 }
             }
 
@@ -189,47 +179,6 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     @SingleClick
     private void gotoAuthorDetail(View view, int position) {
         TRouter.go(Constants.AUTHORDETAIL, new DataExtra(Constants.AUTHOR_ID, data.get(position).getData().getHeader().getId()).build());
-    }
-
-    @SingleClick
-    @CheckLogin
-    private void follow(FollowButton button,int position) {
-        AuthorIndexInfo.ItemListBeanX.DataBeanX.HeaderBean header = data.get(position).getData().getHeader();
-        MyAttentionEntity attention = new MyAttentionEntity();
-        attention.setId(header.getId());
-        attention.setTitle((header.getTitle()));
-        attention.setDescription((header.getDescription()));
-        attention.setUserId(BmobUser.getCurrentUser().getObjectId());
-        attention.setIcon((header.getIcon()));
-        int state = button.getState();
-        if (state == FollowButton.FOLLOWED) {
-            button.setState(FollowButton.PEDDING);
-            BmobQuery<MyAttentionEntity> query = new BmobQuery<MyAttentionEntity>();
-            query.addWhereEqualTo("id", header.getId());
-            query.addWhereEqualTo("userId", BmobUser.getCurrentUser().getObjectId());
-            query.findObjects(new FindListener<MyAttentionEntity>() {
-                @Override
-                public void done(List<MyAttentionEntity> list, BmobException e) {
-                    list.get(0).delete(new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            button.setState(FollowButton.UNFOLLOWED);
-                        }
-                    });
-                }
-            });
-
-        }
-        if (state == FollowButton.UNFOLLOWED) {
-            button.setState(FollowButton.PEDDING);
-            attention.setFollow(true);
-            attention.save(new SaveListener<String>() {
-                @Override
-                public void done(String s, BmobException e) {
-                    button.setState(FollowButton.FOLLOWED);
-                }
-            });
-        }
     }
 
     @Override
@@ -290,6 +239,24 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
 
     private void initHeadView(AuthorTabsInfo info) {
         View headView = getActivity().getLayoutInflater().inflate(R.layout.view_head_author_detail, mRecyclerView, false);
+        MyAttentionEntity attention = new MyAttentionEntity();
+        attention.setId(info.getPgcInfo().getId());
+        attention.setTitle((info.getPgcInfo().getName()));
+        attention.setDescription((info.getPgcInfo().getDescription()));
+        attention.setIcon((info.getPgcInfo().getIcon()));
+        FollowButton button = headView.findViewById(R.id.btn_attention);
+        button.setState(MyFollowedInfo.getInstance().checkFollowed(id) ? FollowButton.FOLLOWED:FollowButton.UNFOLLOWED);
+        button.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
+            @Override
+            public void onFollowed() {
+
+            }
+
+            @Override
+            public void onUnFollowed() {
+
+            }
+        },attention);
         ImageView bg = headView.findViewById(R.id.iv_bg);
         ImageView face = headView.findViewById(R.id.civ_face);
         TextView name = headView.findViewById(R.id.tv_author_name);

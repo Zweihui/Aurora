@@ -2,14 +2,16 @@ import com.zwh.plugin.AspectjPlugin
 
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply from: 'tinkerpatch.gradle'
+apply from: 'tinkerpatch.gradle'
 
 android {
     signingConfigs {
         release {
-//            keyAlias 'keystore'
-//            keyPassword 'zwh12583258'
-//            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
-//            storePassword 'zwh12583258'
+            keyAlias 'keystore'
+            keyPassword 'zwh12583258'
+            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
+            storePassword 'zwh12583258'
         }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -42,17 +44,29 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "true"
             minifyEnabled false
+            multiDexKeepProguard file('multiDexKeep.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "armeabi-v7a"
+                abiFilters "armeabi"
+                abiFilters "x86"
+                abiFilters "x86_64"
+            }
         }
 
-//        release {
-//            buildConfigField "boolean", "LOG_DEBUG", "false"
-//            buildConfigField "boolean", "USE_CANARY", "false"
-//            minifyEnabled true
-//            shrinkResources true
-//            zipAlignEnabled true
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            multiDexKeepProguard file('multiDexKeep.pro')
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ndk {
+                abiFilters "armeabi-v7a"
+                abiFilters "armeabi"
+            }
+        }
     }
     lintOptions {
         disable 'InvalidPackage'
@@ -65,9 +79,9 @@ android {
         }
     }
     productFlavors {
-//        sunny {
-//            signingConfig signingConfigs.release
-//        }
+        sunny {
+            signingConfig signingConfigs.release
+        }
     }
 }
 
@@ -113,7 +127,7 @@ dependencies {
     compile rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
     compile(rootProject.ext.dependencies["bmob-sdk"]) {
         exclude group: 'com.squareup.okhttp3'
-//        exclude module: 'com.squareup.okio'
+        exclude module: 'com.squareup.okio'
     }
     compile rootProject.ext.dependencies["http-legacy"]
     compile rootProject.ext.dependencies["bmob-sms"]
@@ -121,10 +135,13 @@ dependencies {
     compile rootProject.ext.dependencies["greendao"]
     compile rootProject.ext.dependencies["AVLoadingIndicatorView"]
     compile rootProject.ext.dependencies["filedownloader"]
+    compile rootProject.ext.dependencies["crashreport_upgrade"]
+//    compile rootProject.ext.dependencies["tinkerpatch-android-sdk"]
+//    provided rootProject.ext.dependencies["tinker-android-anno"]
     compile(name: 'matisse_ucrop_1.0.0', ext: 'aar')
     compile(name: 'progress-release', ext: 'aar')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
+
 apply plugin: AspectjPlugin
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'

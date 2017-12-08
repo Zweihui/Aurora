@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -41,6 +40,8 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.BottomNavigationViewHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
@@ -56,7 +57,10 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 
 import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
@@ -111,8 +115,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -192,6 +196,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
             }
         },800);
+//        setTitle("首页");
     }
 
     private void initToolBar() {
@@ -351,7 +356,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             UiUtils.snackbarText("再按一次退出应用");
             firstTime = System.currentTimeMillis();
         } else {
-            appComponent.appManager().killAll();
+            appComponent.appManager().appExit();
         }
     }
 
@@ -410,6 +415,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             .imageView(img)
                             .build());
         }
+        BmobQuery<MyAttentionEntity> query = new BmobQuery<MyAttentionEntity>();
+        query.addWhereEqualTo("userId", BmobUser.getCurrentUser().getObjectId());
+        query.order("-createdAt");
+        query.findObjects(new FindListener<MyAttentionEntity>() {
+            @Override
+            public void done(List<MyAttentionEntity> list, BmobException e) {
+                MyFollowedInfo.getInstance().setList(list);
+            }
+        });
 
     }
     @Subscriber(tag = EventBusTags.SETTING_ACTIVITY_LOG_OUT)
@@ -426,6 +440,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         .errorPic(R.drawable.ic_noface)
                         .imageView(img)
                         .build());
+        MyFollowedInfo.getInstance().setList(null);
     }
 
     @Subscriber(tag = EventBusTags.MAIN_ACTIVITY_PERMISSION)

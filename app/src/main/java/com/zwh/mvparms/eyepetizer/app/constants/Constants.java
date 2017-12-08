@@ -59,6 +59,7 @@ public class Constants {
     //==================SDKScrete============//
     public static final String BMOB_APP_ID  = "53b5764378874032bfcf0167923861d8";
     public static final String BMOB_API_KEY = "fc0da456f24bca186119d70f64c07700";
+    public static final String BUGLY_APP_ID = "cfc492f0e3";
 
     //==================github============//
     public static final String GITHUB_URL  = "https://github.com/Zweihui";

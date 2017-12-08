@@ -21,6 +21,8 @@ buildscript {
         classpath 'com.zwh.plugin:gradleplugin:1.0.0'
         //greendao
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
+        // TinkerPatch 插件
+        classpath "com.tencent.bugly:tinker-support:1.1.1"
     }
 }
 

@@ -7,27 +7,23 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.os.Binder;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
-import com.jess.arms.base.BaseApplication;
-import com.jess.arms.utils.StringUtils;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.BaseApplication;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CacheActivity;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
 
 import org.simple.eventbus.EventBus;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;

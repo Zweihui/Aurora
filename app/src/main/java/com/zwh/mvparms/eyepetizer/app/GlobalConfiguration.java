@@ -4,14 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.ParseException;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
@@ -25,15 +20,14 @@ import com.jess.arms.utils.UiUtils;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.zwh.mvparms.eyepetizer.BuildConfig;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.api.Api;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CategoryActivity;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.MainActivity;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -159,6 +153,8 @@ public final class GlobalConfiguration implements ConfigModule {
             @Override
             public void attachBaseContext(Context base) {
 //                MultiDex.install(base);  //这里比 onCreate 先执行,常用于 MultiDex 初始化,插件化框架的初始化
+                // 安装tinker
+                Beta.installTinker();
             }
 
             @Override
@@ -180,6 +176,9 @@ public final class GlobalConfiguration implements ConfigModule {
                 //leakCanary内存泄露检查
                 ((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
                 FileDownloader.setupOnApplicationOnCreate(application);
+                Beta.upgradeDialogLayoutId = R.layout.view_update_dialog;
+                Bugly.init(application, Constants.BUGLY_APP_ID, false);
+//                CrashReport.initCrashReport(application, Constants.BUGLY_APP_ID, false);
             }
 
             @Override

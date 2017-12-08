@@ -1,34 +1,22 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.fragment;
 
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jess.arms.base.BaseApplication;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
-import com.zwh.mvparms.eyepetizer.app.utils.helper.FragmentAdapter;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.HotFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CategoryActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
 
 import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
 
 /**
  * Created by Administrator on 2017/10/17 0017.

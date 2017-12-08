@@ -10,6 +10,7 @@
     <color name="divider">#bdbdbd</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteF8">#F8F8F8</color>
+    <color name="tran_divider">#77000000</color>
     <color name="light_blue">#02A8F3</color>
     <color name="grey">#DADADA</color>
     <color name="trans_black">#60000000</color>

@@ -59,8 +59,12 @@
         android:layout_marginStart="16dp" />
     <com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton
         android:id="@+id/btn_attention"
-        android:layout_width="45dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:background="@drawable/selector_follow_bg"
         android:textColor="@color/colorPrimaryText"
         android:textSize="13sp"

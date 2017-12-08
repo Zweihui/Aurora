@@ -37,7 +37,6 @@ import org.simple.eventbus.Subscriber;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zwh.mvparms.eyepetizer.R.id.view;
 import static com.zwh.mvparms.eyepetizer.app.constants.Constants.SP_LAST_START_ID;
 
 /**
@@ -198,7 +197,9 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
                 },1000);
                 return;
             }else {
-                adapter.addData(0,list);
+                data.clear();
+                data.addAll(list);
+                adapter.setNewData(list);
                 mRecyclerView.scrollToPosition(0);
                 adapter.setEnableLoadMore(true);
                 UiUtils.makeText(getActivity(),"更新了"+list.size()+"条内容");

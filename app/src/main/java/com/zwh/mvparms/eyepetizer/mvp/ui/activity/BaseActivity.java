@@ -150,4 +150,14 @@ public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActi
     public boolean useFragment() {
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
