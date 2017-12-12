@@ -196,7 +196,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 }
             }
         },800);
-//        setTitle("首页");
+        setTitle("首页");
     }
 
     private void initToolBar() {

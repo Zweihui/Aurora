@@ -29,6 +29,7 @@ import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
 
@@ -118,6 +119,7 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                 gotoMyAttention();
                 break;
             case R.id.ll_feedback:
+                TRouter.go(Constants.AUTHOR,new DataExtra(Constants.AUTHOR_TYPE,1).build());
                 break;
         }
     }

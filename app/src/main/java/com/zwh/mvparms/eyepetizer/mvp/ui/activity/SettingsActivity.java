@@ -27,6 +27,7 @@ import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 
 import org.simple.eventbus.EventBus;
 
@@ -160,7 +161,7 @@ public class SettingsActivity extends BaseActivity {
                 }, mRxPermissions, mErrorHandler);
                 break;
             case R.id.ctl_author:
-                TRouter.go(Constants.AUTHOR);
+                TRouter.go(Constants.AUTHOR,new DataExtra(Constants.AUTHOR_TYPE,0).build());
                 break;
             case R.id.ctl_rate:
                 try{

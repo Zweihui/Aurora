@@ -31,6 +31,7 @@ public class Constants {
     public static final String CATEGORY_DATA = "category_data";
     public static final String CATEGORY_DATA_POSITION = "category_data_position";
     public static final String VIDEO_INFO = "video_info";
+    public static final String AUTHOR_TYPE = "author_type";
     public static final String VIDEO_ID = "video_id";
     public static final String AUTHOR_ID = "author_id";
     public static final String VIDEO_URL = "video_url";
@@ -63,6 +64,7 @@ public class Constants {
 
     //==================github============//
     public static final String GITHUB_URL  = "https://github.com/Zweihui";
+    public static final String GITHUB_URL_ISSUES  = "https://github.com/Zweihui/Seraphim/issues";
 
     //==================MultipleAdapterType============//
     public static final int VIDEOCOLLECTIONOFHORIZONTALSCROLLCARD  = 0;

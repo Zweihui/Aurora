@@ -30,6 +30,7 @@ android {
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         vectorDrawables.useSupportLibrary = true
+        manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"other"]
     }
     packagingOptions {
         //打包时的相关配置
@@ -60,6 +61,7 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
+            signingConfig signingConfigs.release
             multiDexKeepProguard file('multiDexKeep.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
@@ -68,6 +70,25 @@ android {
             }
         }
     }
+    productFlavors {
+        baidu {manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"baidu"]}
+        fir {manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"fir"]}
+        xiaomi {manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"xiaomi"]}
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (variant.buildType.name.equals('release')) {
+                //生成apk名字的格式：Channel1.0.0_2016-06-22_baidu.apk
+                //可自定义自己想要生成的格式
+                def fileName = "Channel${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                output.outputFile = new File(outputFile.parent, fileName)
+            }
+        }
+    }
+
+
     lintOptions {
         disable 'InvalidPackage'
         disable "ResourceType"
@@ -89,6 +110,10 @@ buildscript {
     repositories {
         jcenter()
     }
+}
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 
