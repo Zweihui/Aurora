@@ -34,7 +34,6 @@ Fir.im: https://fir.im/chenxi
 * [appbarlayout-spring-behavior](https://github.com/ToDou/appbarlayout-spring-behavior)
 * Tinker热修复
 * [Wheather 炫酷动画](https://github.com/fengivy/Weather)
-* [Bmob 后台快速搭建](https://www.bmob.cn)
 
 ### 声明
 
