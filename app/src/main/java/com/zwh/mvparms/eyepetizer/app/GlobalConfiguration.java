@@ -177,7 +177,8 @@ public final class GlobalConfiguration implements ConfigModule {
                 ((App) application).getAppComponent().extras().put(RefWatcher.class.getName(), BuildConfig.USE_CANARY ? LeakCanary.install(application) : RefWatcher.DISABLED);
                 FileDownloader.setupOnApplicationOnCreate(application);
                 Beta.upgradeDialogLayoutId = R.layout.view_update_dialog;
-                Bugly.init(application, Constants.BUGLY_APP_ID, false);
+                Bugly.init(application, Constants.BUGLY_APP_ID, BuildConfig.DEBUG);
+//                UUIDS.buidleID(application).check();
 //                CrashReport.initCrashReport(application, Constants.BUGLY_APP_ID, false);
             }
 

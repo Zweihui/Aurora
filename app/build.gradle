@@ -137,6 +137,10 @@ dependencies {
     //    compile 'me.jessyan:arms:2.1.5'
     compile rootProject.ext.dependencies["multidex"]
     testCompile rootProject.ext.dependencies["junit"]
+    testCompile rootProject.ext.dependencies["mockito-core"]
+    testCompile rootProject.ext.dependencies["robolectric"]
+    testCompile rootProject.ext.dependencies["DaggerMock"]
+    androidTestCompile  rootProject.ext.dependencies["robolectric"]
     debugCompile rootProject.ext.dependencies["canary-debug"]
     releaseCompile rootProject.ext.dependencies["canary-release"]
     testCompile rootProject.ext.dependencies["canary-release"]

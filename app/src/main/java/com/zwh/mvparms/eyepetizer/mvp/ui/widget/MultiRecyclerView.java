@@ -57,12 +57,12 @@ public class MultiRecyclerView extends FrameLayout {
         if (show){
             fl_loadingView.setVisibility(VISIBLE);
         }else {
-            fl_loadingView.postDelayed(new Runnable() {
+            fl_loadingView.post(new Runnable() {
                 @Override
                 public void run() {
                     fl_loadingView.setVisibility(GONE);
                 }
-            },500);
+            });
         }
     }
 }

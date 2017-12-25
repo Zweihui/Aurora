@@ -153,7 +153,7 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
 
     @SingleClick
     private void gotoDetail(View view,int position){
-        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, data.get(position)).build(),view.findViewById(R.id.img_main));
+        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, adapter.getData().get(position)).build(),view.findViewById(R.id.img_main));
     }
 
     @Override

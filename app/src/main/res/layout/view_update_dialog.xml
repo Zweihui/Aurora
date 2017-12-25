@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/beta_upgrade_info"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="版本：1.0.1"
             android:textSize="14sp"
@@ -57,19 +57,23 @@
             android:layout_marginLeft="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/view6" />
+            app:layout_constraintTop_toBottomOf="@+id/view6"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
         <TextView
             android:id="@+id/beta_upgrade_feature"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="版本：1.0.1"
+            android:text="版本：1.0.1版本"
             android:textSize="14sp"
             android:textColor="@color/secondary_text"
             android:tag="beta_upgrade_feature"
             android:layout_marginLeft="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="17dp"
-            app:layout_constraintTop_toBottomOf="@+id/beta_upgrade_info" />
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@+id/beta_upgrade_info"
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <Button
             android:id="@+id/beta_cancel_button"
