@@ -13,7 +13,6 @@ import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.AttentionFragmentAdapter;
-import com.zwh.mvparms.eyepetizer.app.utils.helper.HotFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CustomViewPager;
 
@@ -57,6 +56,21 @@ public class AttentionContainerFragment extends BaseLazyLoadFragment {
 
     @Override
     public void initData(Bundle savedInstanceState) {
+
+    }
+
+    @Override
+    public void onVisible() {
+        super.onVisible();
+    }
+
+    @Override
+    public void setData(Object data) {
+
+    }
+
+    @Override
+    protected void loadData() {
         List<Category> list = new ArrayList<>();
         list.add(new Category("all","热门关注"));
         list.add(new Category("mine","我的关注"));
@@ -79,21 +93,6 @@ public class AttentionContainerFragment extends BaseLazyLoadFragment {
 
             }
         });
-    }
-
-    @Override
-    public void onVisible() {
-        super.onVisible();
         EventBus.getDefault().post(mViewpager, EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER);
-    }
-
-    @Override
-    public void setData(Object data) {
-
-    }
-
-    @Override
-    protected void loadData() {
-
     }
 }

@@ -2,19 +2,18 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoListActivityContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+
+import javax.inject.Inject;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -36,7 +35,7 @@ public class VideoListActivityPresenter extends BasePresenter<VideoListActivityC
     }
 
     public void getPlayListVideoList(int id,int start,boolean isLoadMore) {
-        mModel.getPlayListVideoList(id,start).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getPlayListVideoList(id,start).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {
@@ -45,7 +44,7 @@ public class VideoListActivityPresenter extends BasePresenter<VideoListActivityC
                 });
     }
     public void getPopularVideoList(int id,int start,boolean isLoadMore) {
-        mModel.getPopularVideoList(id,"mostPopular",start).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getPopularVideoList(id,"mostPopular",start).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {

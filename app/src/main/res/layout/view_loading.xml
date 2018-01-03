@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <com.wang.avi.AVLoadingIndicatorView
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
         android:id="@+id/loading"
-        app:indicatorName="BallPulseIndicator"
-        app:indicatorColor="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:indeterminate="true"
         android:layout_gravity="center"
-        android:visibility="visible" />
-
+        app:mpb_indeterminateTint="@color/colorPrimary"
+        style="@style/Widget.MaterialProgressBar.ProgressBar"
+        />
 </FrameLayout>

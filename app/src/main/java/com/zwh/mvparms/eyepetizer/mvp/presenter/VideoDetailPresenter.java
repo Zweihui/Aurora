@@ -20,9 +20,6 @@ import io.reactivex.functions.Consumer;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
-import static android.R.attr.id;
-import static android.R.attr.path;
-
 
 @ActivityScope
 public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Model, VideoDetailContract.View> {
@@ -43,7 +40,7 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
     }
 
     public void getRelaRelateVideoInfo(int id) {
-        mModel.getRelateVideoInfo(id).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getRelateVideoInfo(id).compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {
@@ -71,7 +68,7 @@ public class VideoDetailPresenter extends BasePresenter<VideoDetailContract.Mode
     }
 
     public void getReplyInfo(int videoId) {
-        mModel.getAllReplyInfo(videoId).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getAllReplyInfo(videoId).compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<ReplyInfo>(mErrorHandler) {
                     @Override
                     public void onNext(ReplyInfo info) {

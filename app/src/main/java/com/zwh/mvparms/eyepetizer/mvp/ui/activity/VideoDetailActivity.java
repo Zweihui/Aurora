@@ -28,7 +28,6 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.wang.avi.AVLoadingIndicatorView;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
@@ -85,6 +84,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 @Router(Constants.VIDEO)
 public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
@@ -108,8 +108,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     DragBottomView replyDragBottomView;
     @BindView(R.id.fl_loading)
     FrameLayout flLoading;
-    @BindView(R.id.indicator_loading)
-    AVLoadingIndicatorView indicatorView;
+    @BindView(R.id.detail_loading)
+    MaterialProgressBar indicatorView;
 
     private ImageView mIvVideoBg; //视频封面
     private View headView;
@@ -172,7 +172,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             initRecyclerView();
             mPresenter.getRelaRelateVideoInfo(videoInfo.getData().getId());
             mPresenter.getShareInfo(videoInfo.getData().getId());
-            indicatorView.show();
         }else {
             mPresenter.getVideoData(videoInfo.getData().getId());
         }

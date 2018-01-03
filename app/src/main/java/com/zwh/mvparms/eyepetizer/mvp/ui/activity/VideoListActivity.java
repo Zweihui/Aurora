@@ -13,11 +13,11 @@ import android.view.View;
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
-
 import com.jess.arms.utils.UiUtils;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.aspect.SingleClick;
+import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerVideoListActivityComponent;
 import com.zwh.mvparms.eyepetizer.di.module.VideoListActivityModule;
@@ -25,11 +25,7 @@ import com.zwh.mvparms.eyepetizer.mvp.contract.VideoListActivityContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.VideoListActivityPresenter;
-
-import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorVideosAdapter;
-import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.HistoryAdapter;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +111,7 @@ public class VideoListActivity extends BaseActivity<VideoListActivityPresenter> 
 
     @SingleClick
     private void gotoDetail(View view,int position){
-        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, adapter.getData().get(position)).build(),view.findViewById(R.id.iv_bg));
+        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, adapter.getData().get(position)).build(),view.findViewById(R.id.iv_left));
     }
 
 

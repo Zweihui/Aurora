@@ -47,12 +47,11 @@
         <Button
             android:id="@+id/btn_verification"
             android:layout_width="0dp"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/selector_login_in"
             android:enabled="false"
             android:text="获取验证码"
             android:textColor="@color/white"

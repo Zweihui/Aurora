@@ -2,24 +2,21 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
-import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AttentionContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -41,7 +38,7 @@ public class AttentionPresenter extends BasePresenter<AttentionContract.Model, A
     }
 
     public void getAttentionVideoList(int start ,boolean isLoadMore) {
-        mModel.getAttentionVideoList(start).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getAttentionVideoList(start).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .subscribe(new ErrorHandleSubscriber<AttentionInfo>(mErrorHandler) {
                     @Override
                     public void onNext(AttentionInfo info) {
@@ -50,7 +47,7 @@ public class AttentionPresenter extends BasePresenter<AttentionContract.Model, A
                 });
     }
     public void getMyAttentionList(String userid) {
-        mModel.getMyAttentionList(userid).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getMyAttentionList(userid).compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<List<MyAttentionEntity>>(mErrorHandler) {
                     @Override
                     public void onNext(List<MyAttentionEntity> list) {

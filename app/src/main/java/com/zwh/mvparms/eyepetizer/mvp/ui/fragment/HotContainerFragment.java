@@ -47,11 +47,7 @@ public class HotContainerFragment extends BaseLazyLoadFragment{
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        List<Category> list = new ArrayList<>();
-        list.add(new Category("weekly","周排行"));
-        list.add(new Category("monthly","月排行"));
-        list.add(new Category("historical","总排行"));
-        mViewpager.setAdapter(HotFragmentAdapter.newInstance(getChildFragmentManager(),list));
+
     }
 
     @Override
@@ -67,6 +63,11 @@ public class HotContainerFragment extends BaseLazyLoadFragment{
 
     @Override
     protected void loadData() {
-
+        List<Category> list = new ArrayList<>();
+        list.add(new Category("weekly","周排行"));
+        list.add(new Category("monthly","月排行"));
+        list.add(new Category("historical","总排行"));
+        mViewpager.setAdapter(HotFragmentAdapter.newInstance(getChildFragmentManager(),list));
+        EventBus.getDefault().post(mViewpager, EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER);
     }
 }

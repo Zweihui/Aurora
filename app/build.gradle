@@ -162,7 +162,7 @@ dependencies {
     compile rootProject.ext.dependencies["bmob-sms"]
     compile rootProject.ext.dependencies["ucrop"]
     compile rootProject.ext.dependencies["greendao"]
-    compile rootProject.ext.dependencies["AVLoadingIndicatorView"]
+    compile rootProject.ext.dependencies["materialprogressbar"]
     compile rootProject.ext.dependencies["filedownloader"]
     compile rootProject.ext.dependencies["crashreport_upgrade"]
 //    compile rootProject.ext.dependencies["tinkerpatch-android-sdk"]

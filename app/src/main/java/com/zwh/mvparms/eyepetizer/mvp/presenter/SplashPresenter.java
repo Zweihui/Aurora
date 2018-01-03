@@ -2,23 +2,21 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
 import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.utils.UiUtils;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.SplashContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 
 import java.util.List;
+
+import javax.inject.Inject;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -51,7 +49,7 @@ public class SplashPresenter extends BasePresenter<SplashContract.Model, SplashC
                 mRootView.showMessage("Request permissons failure");
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
-        mModel.getCategories().compose(RxUtils.applySchedulers(mRootView))
+        mModel.getCategories().compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<List<Category>>(mErrorHandler) {
                     @Override
                     public void onNext(List<Category> categories) {

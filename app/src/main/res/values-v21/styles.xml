@@ -10,6 +10,7 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+        <item name="android:buttonStyle">@style/style_button</item>
     </style>
     <style name="AppTheme_Transparent" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -51,5 +52,8 @@
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="style_button" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:stateListAnimator">@drawable/button_state_list_anim_material</item>
     </style>
 </resources>

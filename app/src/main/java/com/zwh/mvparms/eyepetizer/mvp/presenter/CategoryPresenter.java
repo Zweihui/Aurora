@@ -41,7 +41,7 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.Model, Cat
         PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                mModel.getCategories().compose(RxUtils.applySchedulers(mRootView))
+                mModel.getCategories().compose(RxUtils.applySchedulers(mRootView,false))
                         .subscribe(new ErrorHandleSubscriber<List<Category>>(mErrorHandler) {
                             @Override
                             public void onNext(List<Category> categories) {
@@ -52,7 +52,7 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.Model, Cat
 
             @Override
             public void onRequestPermissionFailure() {
-                mModel.getCategories().compose(RxUtils.applySchedulers(mRootView))
+                mModel.getCategories().compose(RxUtils.applySchedulers(mRootView,false))
                         .subscribe(new ErrorHandleSubscriber<List<Category>>(mErrorHandler) {
                             @Override
                             public void onNext(List<Category> categories) {

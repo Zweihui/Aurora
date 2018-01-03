@@ -40,7 +40,7 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
     }
 
     public void getAuthorVideoList(int id,int start ,boolean isLoadMore) {
-        mModel.getAuthorVideoList(id,start).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getAuthorVideoList(id,start).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {

@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:windowAnimationStyle">@style/AnimaActivity</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
     </style>
 
     <style name="AppTheme_FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
@@ -106,5 +107,4 @@
         <item name="shadow_right">@drawable/shadow_right</item>
         <item name="shadow_bottom">@drawable/shadow_bottom</item>
     </style>
-
 </resources>

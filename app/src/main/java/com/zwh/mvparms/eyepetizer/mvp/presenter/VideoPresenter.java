@@ -2,17 +2,9 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
@@ -23,6 +15,13 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.inject.Inject;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -64,7 +63,7 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
             cache =false;
             isFirst = false;
         }
-        mModel.getVideoList(type,type+lastId,startCount,cache).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getVideoList(type,type+lastId,startCount,cache).compose(RxUtils.applySchedulers(mRootView,!pullToRefresh))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
@@ -81,7 +80,7 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
     }
     public void getIndexVideoList(int lastStartId,Boolean isPullRefresh,int page) {
         if (isPullRefresh){
-            mModel.getIndexVideoList(lastStartId).compose(RxUtils.applySchedulers(mRootView))
+            mModel.getIndexVideoList(lastStartId).compose(RxUtils.applySchedulers(mRootView,!isPullRefresh))
                     .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
@@ -94,7 +93,7 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                         }
                     });
         }else {
-            mModel.getMoreIndexVideoList(page).compose(RxUtils.applySchedulers(mRootView))
+            mModel.getMoreIndexVideoList(page).compose(RxUtils.applySchedulers(mRootView,!isPullRefresh ))
                     .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {

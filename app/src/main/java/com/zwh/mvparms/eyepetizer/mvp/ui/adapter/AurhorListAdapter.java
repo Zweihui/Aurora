@@ -12,7 +12,6 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.AttentionInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 
@@ -44,5 +43,6 @@ public class AurhorListAdapter extends BaseQuickAdapter<MyAttentionEntity,BaseVi
                 .setText(R.id.tv_desc,item.getDescription());
         FollowButton button = helper.getView(R.id.btn_attention);
         button.setState(FollowButton.FOLLOWED);
+        button.setCanClick(false);
     }
 }

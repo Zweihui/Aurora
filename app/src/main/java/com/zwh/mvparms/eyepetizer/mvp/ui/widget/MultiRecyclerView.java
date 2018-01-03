@@ -6,8 +6,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.wang.avi.AVLoadingIndicatorView;
 import com.zwh.mvparms.eyepetizer.R;
+
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
 /**
@@ -20,7 +21,7 @@ public class MultiRecyclerView extends FrameLayout {
     private FrameLayout fl_emptyView;
     private FrameLayout fl_loadingView;
     private FrameLayout fl_errorView;
-    private AVLoadingIndicatorView indicatorView;
+    private MaterialProgressBar indicatorView;
 
 
     public MultiRecyclerView(Context context) {
@@ -45,8 +46,7 @@ public class MultiRecyclerView extends FrameLayout {
         fl_loadingView = (FrameLayout) layout.findViewById(R.id.fl_loading_view);
         fl_errorView = (FrameLayout) layout.findViewById(R.id.fl_error_view);
         recyclerview = (RecyclerView) layout.findViewById(R.id.recyclerView);
-        indicatorView = (AVLoadingIndicatorView) fl_loadingView.findViewById(R.id.loading);
-        indicatorView.smoothToShow();
+        indicatorView = (MaterialProgressBar) fl_loadingView.findViewById(R.id.loading);
     }
 
     public RecyclerView getRecyclerView(){
@@ -57,12 +57,12 @@ public class MultiRecyclerView extends FrameLayout {
         if (show){
             fl_loadingView.setVisibility(VISIBLE);
         }else {
-            fl_loadingView.post(new Runnable() {
+            fl_loadingView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fl_loadingView.setVisibility(GONE);
                 }
-            });
+            },300);
         }
     }
 }

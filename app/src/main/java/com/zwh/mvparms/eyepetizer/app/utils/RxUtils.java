@@ -13,8 +13,6 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.zwh.mvparms.eyepetizer.R.id.view;
-
 /**
  * Created by jess on 11/10/2016 16:39
  * Contact with jess.yan.effort@gmail.com
@@ -26,7 +24,7 @@ public class RxUtils {
 
     }
 
-    public static <T> ObservableTransformer<T, T> applySchedulers(final IView view) {
+    public static <T> ObservableTransformer<T, T> applySchedulers(final IView view,final boolean isLoadMore) {
         return new ObservableTransformer<T, T>() {
             @Override
             public Observable<T> apply(Observable<T> observable) {
@@ -34,7 +32,9 @@ public class RxUtils {
                         .doOnSubscribe(new Consumer<Disposable>() {
                             @Override
                             public void accept(@NonNull Disposable disposable) throws Exception {
-                                view.showLoading();
+                                if (!isLoadMore){
+                                    view.showLoading();
+                                }
                             }
                         })
                         .subscribeOn(AndroidSchedulers.mainThread())

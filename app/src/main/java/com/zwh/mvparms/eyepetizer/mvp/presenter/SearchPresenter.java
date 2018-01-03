@@ -2,27 +2,25 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
+import com.jess.arms.utils.PermissionUtil;
+import com.jess.arms.widget.imageloader.ImageLoader;
+import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
+import com.zwh.mvparms.eyepetizer.mvp.contract.SearchContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
 import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
-import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.widget.imageloader.ImageLoader;
-import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
-import com.zwh.mvparms.eyepetizer.mvp.contract.SearchContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @ActivityScope
@@ -55,7 +53,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.Model, SearchC
                 mRootView.showMessage("Request permissons failure");
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
-        mModel.getHotWord().compose(RxUtils.applySchedulers(mRootView))
+        mModel.getHotWord().compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<List<String>>(mErrorHandler) {
                     @Override
                     public void onNext(List<String> list) {
@@ -64,7 +62,7 @@ public class SearchPresenter extends BasePresenter<SearchContract.Model, SearchC
                 });
     }
     public void getSearchList(String start,String query,boolean isLoadMore) {
-        mModel.getSearchList(start,query).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getSearchList(start,query).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .doFinally(new Action() {
                     @Override
                     public void run() throws Exception {

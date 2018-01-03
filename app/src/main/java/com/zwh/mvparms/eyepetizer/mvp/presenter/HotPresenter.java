@@ -2,17 +2,9 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 
 import android.app.Application;
 
-import com.jess.arms.integration.AppManager;
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
-
-import javax.inject.Inject;
-
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
@@ -22,7 +14,10 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import java.util.Iterator;
 import java.util.List;
 
-import static android.R.attr.type;
+import javax.inject.Inject;
+
+import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import me.jessyan.rxerrorhandler.handler.ErrorHandleSubscriber;
 
 
 @ActivityScope
@@ -55,7 +50,7 @@ public class HotPresenter extends BasePresenter<HotContract.Model, HotContract.V
                 mRootView.showMessage("Request permissons failure");
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
-        mModel.getRankVideoList(strate).compose(RxUtils.applySchedulers(mRootView))
+        mModel.getRankVideoList(strate).compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {
                     @Override
                     public void onNext(VideoListInfo info) {

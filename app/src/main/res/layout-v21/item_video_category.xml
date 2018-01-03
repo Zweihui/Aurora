@@ -10,7 +10,7 @@
     android:clickable="true"
     android:layout_marginRight="8dp"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="1.5dp"
+    android:stateListAnimator="@drawable/button_state_list_anim_material"
     >
 
     <ImageView

@@ -44,9 +44,8 @@
         <Button
             android:id="@+id/btn_reget_code"
             android:layout_width="70dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/selector_login_in"
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:singleLine="true"
