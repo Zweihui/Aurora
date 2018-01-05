@@ -62,6 +62,7 @@ public class AttentionContainerFragment extends BaseLazyLoadFragment {
     @Override
     public void onVisible() {
         super.onVisible();
+        EventBus.getDefault().post(mViewpager, EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER);
     }
 
     @Override

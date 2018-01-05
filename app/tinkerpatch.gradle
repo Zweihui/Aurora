@@ -1,7 +1,7 @@
 apply plugin: 'com.tencent.bugly.tinker-support'
 
 def bakPath = file("${buildDir}/bakApk/")
-def baseInfo = "app-1207-16-07-03"
+def baseInfo = "app-0103-16-17-30"
 def variantName = "sunny-release"
 
 /**
@@ -14,7 +14,7 @@ tinkerSupport {
     tinkerEnable = true
 
     // 自动生成tinkerId, 你无须关注tinkerId，默认为false
-    autoGenerateTinkerId = false
+    autoGenerateTinkerId = true
 
     // 指定归档目录，默认值当前module的子目录tinker
     autoBackupApkDir = "${bakPath}"
@@ -41,7 +41,7 @@ tinkerSupport {
 //    baseApkResourceMapping = "${bakPath}/${baseApkDir}/app-debug-R.txt"
 
     // 构建基准包跟补丁包都要修改tinkerId，主要用于区分
-    tinkerId = "1.0.2-base"
+//    tinkerId = "1.0.2-base"
 
     // 打多渠道补丁时指定目录
     // buildAllFlavorsDir = "${bakPath}/${baseApkDir}"
