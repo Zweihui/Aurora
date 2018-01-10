@@ -3,10 +3,10 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 import android.app.Application;
 
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.HotContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -46,9 +46,15 @@ public class HotPresenter extends BasePresenter<HotContract.Model, HotContract.V
             }
 
             @Override
-            public void onRequestPermissionFailure() {
+            public void onRequestPermissionFailure(List<String> permissions) {
                 mRootView.showMessage("Request permissons failure");
             }
+
+            @Override
+            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                mRootView.showMessage("Request permissons failure");
+            }
+
         }, mRootView.getRxPermissions(), mErrorHandler);
         mModel.getRankVideoList(strate).compose(RxUtils.applySchedulers(mRootView,false))
                 .subscribe(new ErrorHandleSubscriber<VideoListInfo>(mErrorHandler) {

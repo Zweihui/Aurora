@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.apt.TRouter;
@@ -23,7 +21,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.base.BaseFragment;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.DeviceUtils;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
@@ -36,14 +33,12 @@ import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.GreenDaoHelper;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.DaoMaster;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DownloadProgressInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfoDao;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.activity.CacheActivity;
-import com.zwh.mvparms.eyepetizer.mvp.ui.activity.HistoryActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.CacheAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.CacheDownLoadService;
 import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
@@ -53,8 +48,6 @@ import org.simple.eventbus.Subscriber;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,12 +55,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import me.jessyan.progressmanager.ProgressListener;
-import me.jessyan.progressmanager.ProgressManager;
-import me.jessyan.progressmanager.body.ProgressInfo;
 import timber.log.Timber;
-
-import static com.zwh.mvparms.eyepetizer.R.id.view;
 
 /**
  * Created by mac on 2017/10/28.
@@ -263,9 +251,15 @@ public class CacheFragment extends BaseFragment {
                             }
 
                             @Override
-                            public void onRequestPermissionFailure() {
+                            public void onRequestPermissionFailure(List<String> permissions) {
                                 UiUtils.snackbarText("Request permissons failure");
                             }
+
+                            @Override
+                            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                                UiUtils.snackbarText("Request permissons failure");
+                            }
+
                         }, mRxPermissions, mAppComponent.rxErrorHandler());
                         popupWindow.dismiss();
                     }

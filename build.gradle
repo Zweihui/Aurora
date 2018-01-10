@@ -7,15 +7,14 @@ buildscript {
         maven{
             url uri('repo')
         }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         //Gradle Android Maven plugin
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         //Gradle Bintray Plugin
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        //lambda
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
         //aspectj
         classpath 'org.aspectj:aspectjtools:1.8.9'
         classpath 'com.zwh.plugin:gradleplugin:1.0.0'
@@ -32,6 +31,7 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://maven.google.com" }
         maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+        google()
     }
 }
 

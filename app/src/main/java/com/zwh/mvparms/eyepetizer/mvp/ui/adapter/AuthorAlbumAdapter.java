@@ -13,19 +13,16 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.utils.DateUtils;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorAlbumInfo;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorDynamicInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,9 +43,9 @@ public class AuthorAlbumAdapter extends BaseQuickAdapter<AuthorAlbumInfo.Album,B
         ImageView imgAutor = helper.getView(R.id.iv_avatar);
         try {
             mAppComponent.imageLoader().loadImage(imgAutor.getContext(),
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
-                            .transformation(new GlideCircleTransform(context))
+                            .transformation(new GlideCircleTransform())
                             .url(StringUtils.replaceNull(item.getData().getHeader().getIcon()))
                             .imageView(helper.getView(R.id.iv_avatar))
                             .build());

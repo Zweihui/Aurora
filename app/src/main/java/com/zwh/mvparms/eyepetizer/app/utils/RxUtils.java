@@ -1,7 +1,7 @@
 package com.zwh.mvparms.eyepetizer.app.utils;
 
 import com.jess.arms.mvp.IView;
-import com.trello.rxlifecycle2.LifecycleProvider;
+import com.jess.arms.utils.RxLifecycleUtils;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import io.reactivex.Observable;
@@ -44,7 +44,7 @@ public class RxUtils {
                             public void run() {
                                 view.hideLoading();//隐藏进度条
                             }
-                        }).compose(RxUtils.bindToLifecycle(view));
+                        }).compose(RxLifecycleUtils.bindToLifecycle(view));
             }
         };
     }
@@ -60,7 +60,7 @@ public class RxUtils {
                                 view.hideLoading();//隐藏进度条
                             }
                         })
-                        .compose(RxUtils.bindToLifecycle(view));
+                        .compose(RxLifecycleUtils.bindToLifecycle(view));
             }
         };
     }
@@ -76,11 +76,7 @@ public class RxUtils {
 
 
     public static <T> LifecycleTransformer<T> bindToLifecycle(IView view) {
-        if (view instanceof LifecycleProvider){
-            return ((LifecycleProvider)view).bindToLifecycle();
-        }else {
-            throw new IllegalArgumentException("view isn't activity or fragment");
-        }
+        return RxLifecycleUtils.bindToLifecycle(view);
 
     }
 

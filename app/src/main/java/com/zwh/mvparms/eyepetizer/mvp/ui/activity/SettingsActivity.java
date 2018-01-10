@@ -31,6 +31,8 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 
 import org.simple.eventbus.EventBus;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
@@ -155,9 +157,15 @@ public class SettingsActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onRequestPermissionFailure() {
-                       UiUtils.snackbarText("Request permissons failure");
+                    public void onRequestPermissionFailure(List<String> permissions) {
+                        UiUtils.snackbarText("Request permissons failure");
                     }
+
+                    @Override
+                    public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                        UiUtils.snackbarText("Request permissons failure");
+                    }
+
                 }, mRxPermissions, mErrorHandler);
                 break;
             case R.id.ctl_author:

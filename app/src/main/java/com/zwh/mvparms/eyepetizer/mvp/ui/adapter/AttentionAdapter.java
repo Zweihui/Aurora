@@ -13,9 +13,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -48,9 +48,9 @@ public class AttentionAdapter extends BaseQuickAdapter<ItemListBeanX,BaseViewHol
             ((App)context.getApplicationContext())
                     .getAppComponent().imageLoader().loadImage(mAppComponent.appManager().getCurrentActivity() == null
                             ? mAppComponent.application() : mAppComponent.appManager().getCurrentActivity(),
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
-                            .transformation(new GlideCircleTransform(context))
+                            .transformation(new GlideCircleTransform())
                             .url(StringUtils.replaceNull(item.getData().getHeader().getIcon()))
                             .imageView(helper.getView(R.id.iv_avatar))
                             .build());

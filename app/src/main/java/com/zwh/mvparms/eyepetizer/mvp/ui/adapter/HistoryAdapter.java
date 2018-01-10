@@ -10,8 +10,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.DateUtils;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
 
@@ -48,7 +48,7 @@ public class HistoryAdapter extends BaseQuickAdapter<VideoDaoEntity,BaseViewHold
         int progress = (int) (((float)item.getStartTime()*0.1f)/item.getTotalTime());
         seekBar.setProgress(progress);
         mAppComponent.imageLoader().loadImage(context,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getVideo().getCover().getFeed())
                         .imageView(imgMian)

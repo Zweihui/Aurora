@@ -3,10 +3,10 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 import android.app.Application;
 
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.CategoryContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
@@ -41,27 +41,29 @@ public class CategoryPresenter extends BasePresenter<CategoryContract.Model, Cat
         PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                mModel.getCategories().compose(RxUtils.applySchedulers(mRootView,false))
-                        .subscribe(new ErrorHandleSubscriber<List<Category>>(mErrorHandler) {
-                            @Override
-                            public void onNext(List<Category> categories) {
-                                mRootView.setData(categories);
-                            }
-                        });
+                getData();
             }
 
             @Override
-            public void onRequestPermissionFailure() {
-                mModel.getCategories().compose(RxUtils.applySchedulers(mRootView,false))
-                        .subscribe(new ErrorHandleSubscriber<List<Category>>(mErrorHandler) {
-                            @Override
-                            public void onNext(List<Category> categories) {
-                                mRootView.setData(categories);
-                            }
-                        });
-                mRootView.showMessage("Request permissons failure");
+            public void onRequestPermissionFailure(List<String> permissions) {
+                getData();
+            }
+
+            @Override
+            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                getData();
             }
         }, mRootView.getRxPermissions(), mErrorHandler);
+    }
+
+    private void getData(){
+        mModel.getCategories().compose(RxUtils.applySchedulers(mRootView,false))
+                .subscribe(new ErrorHandleSubscriber<List<Category>>(mErrorHandler) {
+                    @Override
+                    public void onNext(List<Category> categories) {
+                        mRootView.setData(categories);
+                    }
+                });
     }
 
     @Override

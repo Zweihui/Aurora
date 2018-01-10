@@ -1,7 +1,6 @@
 import com.zwh.plugin.AspectjPlugin
 
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply from: 'tinkerpatch.gradle'
 apply from: 'tinkerpatch.gradle'
 
@@ -28,6 +27,7 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
+        flavorDimensions "versionCode"
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"other"]
@@ -45,6 +45,7 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             buildConfigField "boolean", "USE_CANARY", "true"
             minifyEnabled false
+            multiDexEnabled true
             multiDexKeepProguard file('multiDexKeep.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
@@ -62,6 +63,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             signingConfig signingConfigs.release
+            multiDexEnabled true
             multiDexKeepProguard file('multiDexKeep.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
@@ -71,19 +73,31 @@ android {
         }
     }
     productFlavors {
-        baidu {manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"baidu"]}
-        fir {manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"fir"]}
-        xiaomi {manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"xiaomi"]}
+        baidu {
+
+            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"baidu"]
+
+        }
+        fir {
+
+            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"fir"]
+
+        }
+        xiaomi {
+
+            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"xiaomi"]
+
+        }
     }
 
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
+        variant.outputs.all { output ->
             def outputFile = output.outputFile
             if (variant.buildType.name.equals('release')) {
                 //生成apk名字的格式：Channel1.0.0_2016-06-22_baidu.apk
                 //可自定义自己想要生成的格式
                 def fileName = "Channel${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-                output.outputFile = new File(outputFile.parent, fileName)
+                outputFileName = new File(outputFile.parent, fileName)
             }
         }
     }
@@ -118,9 +132,9 @@ def releaseTime() {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     //support
-    compile(rootProject.ext.dependencies["cardview-v7"]) {
+    implementation(rootProject.ext.dependencies["cardview-v7"]) {
         exclude module: 'support-annotations'
     }
     //tools
@@ -129,46 +143,45 @@ dependencies {
     //view
     annotationProcessor(rootProject.ext.dependencies["butterknife-compiler"]) {
         exclude module: 'support-annotations'
-        exclude module: 'butterknife-annotations'
     }
-    compile rootProject.ext.dependencies["paginate"]
+    implementation rootProject.ext.dependencies["paginate"]
     //arms
-    compile project(':arms')
+    implementation project(':arms')
     //    compile 'me.jessyan:arms:2.1.5'
-    compile rootProject.ext.dependencies["multidex"]
-    testCompile rootProject.ext.dependencies["junit"]
-    testCompile rootProject.ext.dependencies["mockito-core"]
-    testCompile rootProject.ext.dependencies["robolectric"]
-    testCompile rootProject.ext.dependencies["DaggerMock"]
-    androidTestCompile  rootProject.ext.dependencies["robolectric"]
-    debugCompile rootProject.ext.dependencies["canary-debug"]
-    releaseCompile rootProject.ext.dependencies["canary-release"]
-    testCompile rootProject.ext.dependencies["canary-release"]
+    implementation rootProject.ext.dependencies["multidex"]
+    testImplementation rootProject.ext.dependencies["junit"]
+    testImplementation rootProject.ext.dependencies["mockito-core"]
+    testImplementation rootProject.ext.dependencies["robolectric"]
+    testImplementation rootProject.ext.dependencies["DaggerMock"]
+    androidTestImplementation  rootProject.ext.dependencies["robolectric"]
+    debugImplementation rootProject.ext.dependencies["canary-debug"]
+    releaseImplementation rootProject.ext.dependencies["canary-release"]
+    testImplementation rootProject.ext.dependencies["canary-release"]
     annotationProcessor project(':apt')
-    compile project(':apt-lib')
-    compile rootProject.ext.dependencies["constraint-layout"]
-    compile rootProject.ext.dependencies["aspectjrt"]
-    compile rootProject.ext.dependencies["appbarspring"]
-    compile rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
-    compile rootProject.ext.dependencies["gsyVideoPlayer-java"]
-    compile rootProject.ext.dependencies["gsyVideoPlayer-armv7a"]
-    compile rootProject.ext.dependencies["gsyVideoPlayer-x86"]
-    compile rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
-    compile(rootProject.ext.dependencies["bmob-sdk"]) {
+    implementation project(':apt-lib')
+    implementation rootProject.ext.dependencies["constraint-layout"]
+    implementation rootProject.ext.dependencies["aspectjrt"]
+    implementation rootProject.ext.dependencies["appbarspring"]
+    implementation rootProject.ext.dependencies["BaseRecyclerViewAdapterHelper"]
+    implementation rootProject.ext.dependencies["gsyVideoPlayer-java"]
+    implementation rootProject.ext.dependencies["gsyVideoPlayer-armv7a"]
+    implementation rootProject.ext.dependencies["gsyVideoPlayer-x86"]
+    implementation rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
+    implementation(rootProject.ext.dependencies["bmob-sdk"]) {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'com.squareup.okio'
     }
-    compile rootProject.ext.dependencies["http-legacy"]
-    compile rootProject.ext.dependencies["bmob-sms"]
-    compile rootProject.ext.dependencies["ucrop"]
-    compile rootProject.ext.dependencies["greendao"]
-    compile rootProject.ext.dependencies["materialprogressbar"]
-    compile rootProject.ext.dependencies["filedownloader"]
-    compile rootProject.ext.dependencies["crashreport_upgrade"]
+    implementation rootProject.ext.dependencies["http-legacy"]
+    implementation rootProject.ext.dependencies["bmob-sms"]
+    implementation rootProject.ext.dependencies["ucrop"]
+    implementation rootProject.ext.dependencies["greendao"]
+    implementation rootProject.ext.dependencies["materialprogressbar"]
+    implementation rootProject.ext.dependencies["filedownloader"]
+    implementation rootProject.ext.dependencies["crashreport_upgrade"]
 //    compile rootProject.ext.dependencies["tinkerpatch-android-sdk"]
 //    provided rootProject.ext.dependencies["tinker-android-anno"]
-    compile(name: 'matisse_ucrop_1.0.0', ext: 'aar')
-    compile(name: 'progress-release', ext: 'aar')
+    implementation(name: 'matisse_ucrop_1.0.0', ext: 'aar')
+    implementation(name: 'progress-release', ext: 'aar')
 }
 
 apply plugin: AspectjPlugin

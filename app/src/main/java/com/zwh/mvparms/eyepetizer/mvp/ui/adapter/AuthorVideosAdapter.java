@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
@@ -33,7 +33,7 @@ public class AuthorVideosAdapter extends BaseQuickAdapter<VideoListInfo.Video,Ba
                 .getAppComponent();
         Context context = img.getContext();
         mAppComponent.imageLoader().loadImage(context,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getData().getCover().getFeed())
                         .imageView(img)

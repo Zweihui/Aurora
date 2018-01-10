@@ -3,7 +3,7 @@ package com.jess.arms.base;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import com.jess.arms.integration.lifecycle.FragmentLifecycleable;
 import com.jess.arms.mvp.IPresenter;
 import com.jess.arms.utils.ArmsUtils;
 import com.trello.rxlifecycle2.android.FragmentEvent;
-import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import javax.inject.Inject;
 
@@ -26,7 +25,7 @@ import io.reactivex.subjects.Subject;
  * Created by Administrator on 2017/8/24 0024.
  */
 
-public abstract class BaseLazyLoadFragment<P extends IPresenter> extends RxFragment implements IFragment, FragmentLifecycleable {
+public abstract class BaseLazyLoadFragment<P extends IPresenter> extends Fragment implements IFragment, FragmentLifecycleable {
     protected final String TAG = this.getClass().getSimpleName();
     private final BehaviorSubject<FragmentEvent> mLifecycleSubject = BehaviorSubject.create();
     private Cache<String, Object> mCache;

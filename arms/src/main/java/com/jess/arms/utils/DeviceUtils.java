@@ -1,8 +1,22 @@
+/**
+  * Copyright 2017 JessYan
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  *      http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
 package com.jess.arms.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
@@ -32,9 +46,17 @@ import android.view.inputmethod.InputMethodManager;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ================================================
+ * 获取设备常用信息和处理设备常用操作的工具类
+ * <p>
+ * Created by JessYan on 2016/3/15
+ * <a href="mailto:jess.yan.effort@gmail.com">Contact me</a>
+ * <a href="https://github.com/JessYanCoding">Follow me</a>
+ * ================================================
+ */
 @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class DeviceUtils {
     // 手机网络类型
@@ -58,6 +80,7 @@ public class DeviceUtils {
     }
 
     private DeviceUtils() {
+        throw new IllegalStateException("you can't instantiate me!");
     }
 
     /**
@@ -775,21 +798,7 @@ public class DeviceUtils {
         else
             return false;
     }
-    public static boolean isServiceRunning(Context context, String ServiceName) {
-        if (("").equals(ServiceName) || ServiceName == null)
-            return false;
-        ActivityManager myManager = (ActivityManager) context
-                .getSystemService(Context.ACTIVITY_SERVICE);
-        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager
-                .getRunningServices(200);
-        for (int i = 0; i < runningService.size(); i++) {
-            if (runningService.get(i).service.getClassName().toString()
-                    .equals(ServiceName)) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
 }
 

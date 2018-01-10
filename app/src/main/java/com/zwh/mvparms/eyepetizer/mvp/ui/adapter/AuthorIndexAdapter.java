@@ -12,10 +12,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.DateUtils;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -93,7 +93,7 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                 ImageView iv_left = helper.getView(R.id.iv_left);
                 helper.addOnClickListener(R.id.ctl_root);
                 mAppComponent.imageLoader().loadImage(context,
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
                             .url(video.getCover().getFeed())
                             .imageView(iv_left)
@@ -105,9 +105,9 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                 ImageView imgAutor = helper.getView(R.id.iv_avatar);
                 try {
                     mAppComponent.imageLoader().loadImage(context,
-                            GlideImageConfig
+                            ImageConfigImpl
                                     .builder()
-                                    .transformation(new GlideCircleTransform(context))
+                                    .transformation(new GlideCircleTransform())
                                     .url(StringUtils.replaceNull(item.getData().getHeader().getIcon()))
                                     .imageView(helper.getView(R.id.iv_avatar))
                                     .build());
@@ -164,7 +164,7 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                 helper.setText(R.id.tv_date, DateUtils.DateToString(new Date(item.getData().getCreateDate()),DateUtils.DATE_TO_STRING_SHORT_PATTERN));
                 ImageView face = helper.getView(R.id.iv_face);
                 mAppComponent.imageLoader().loadImage(context,
-                        GlideImageConfig
+                        ImageConfigImpl
                                 .builder()
                                 .url(item.getData().getUser().getAvatar())
                                 .imageView(face)
@@ -176,7 +176,7 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                     helper.getView(R.id.ctl_follow).setVisibility(View.GONE);
                     ImageView iv6 = helper.getView(R.id.imageView6);
                     mAppComponent.imageLoader().loadImage(context,
-                            GlideImageConfig
+                            ImageConfigImpl
                                     .builder()
                                     .url(item.getData().getSimpleVideo().getCover().getFeed())
                                     .imageView(iv6)
@@ -189,9 +189,9 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                     helper.getView(R.id.ctl_follow).setVisibility(View.VISIBLE);
                     ImageView iv7 = helper.getView(R.id.imageView7);
                     mAppComponent.imageLoader().loadImage(context,
-                            GlideImageConfig
+                            ImageConfigImpl
                                     .builder()
-                                    .transformation(new GlideCircleTransform(context))
+                                    .transformation(new GlideCircleTransform())
                                     .url(item.getData().getBriefCard().getIcon())
                                     .imageView(iv7)
                                     .build());

@@ -10,8 +10,8 @@ def variantName = "sunny-release"
 tinkerSupport {
 
     // 开启tinker-support插件，默认值true
-    enable = true
-    tinkerEnable = true
+    enable = false
+    tinkerEnable = false
 
     // 自动生成tinkerId, 你无须关注tinkerId，默认为false
     autoGenerateTinkerId = true
@@ -44,7 +44,7 @@ tinkerSupport {
 //    tinkerId = "1.0.2-base"
 
     // 打多渠道补丁时指定目录
-    // buildAllFlavorsDir = "${bakPath}/${baseApkDir}"
+     buildAllFlavorsDir = "${bakPath}/app-0103-16-17-30"
 
     // 是否使用加固模式，默认为false
     // isProtectedApp = true
@@ -63,7 +63,7 @@ tinkerSupport {
  * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97
  */
 tinkerPatch {
-    tinkerEnable = true
+    tinkerEnable = false
     ignoreWarning = false
     useSign = false
     dex {

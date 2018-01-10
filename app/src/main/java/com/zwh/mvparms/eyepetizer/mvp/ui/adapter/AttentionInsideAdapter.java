@@ -8,7 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
@@ -31,7 +31,7 @@ public class AttentionInsideAdapter extends BaseQuickAdapter<VideoListInfo.Video
         helper.setText(R.id.tv_title,item.getData().getTitle())
                 .setText(R.id.tv_detail,getDetailStr(item));
         mAppComponent.imageLoader().loadImage(imgBg.getContext(),
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getData().getCover().getFeed())
                         .imageView(imgBg)

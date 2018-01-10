@@ -12,10 +12,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.widget.imageloader.ImageLoader;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -23,9 +22,6 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
 import java.util.List;
-
-import static android.R.attr.data;
-import static android.R.attr.pointerIcon;
 
 /**
  * Created by Administrator on 2017/8/24 0024.
@@ -46,7 +42,7 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
         Glide.with(context).load(item.getData().getCover().getFeed())
                 .into(imgMian);
         mAppComponent.imageLoader().loadImage(context,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getData().getCover().getFeed())
                         .imageView(imgMian)
@@ -54,9 +50,9 @@ public class VideoAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseViewH
         try {
             ((App)context.getApplicationContext())
                     .getAppComponent().imageLoader().loadImage(context,
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
-                            .transformation(new GlideCircleTransform(context))
+                            .transformation(new GlideCircleTransform())
                             .url(StringUtils.replaceNull(item.getData().getAuthor().getIcon()))
                             .imageView(helper.getView(R.id.img_author))
                             .build());
