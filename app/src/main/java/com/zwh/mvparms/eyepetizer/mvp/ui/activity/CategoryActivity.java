@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
@@ -111,7 +111,7 @@ public class CategoryActivity extends BaseActivity{
                 CategoryActivity.this.position = position;
                 ((BaseApplication)getApplication())
                         .getAppComponent()
-                        .imageLoader().loadImage(CategoryActivity.this, GlideImageConfig
+                        .imageLoader().loadImage(CategoryActivity.this, ImageConfigImpl
                         .builder()
                         .url(list.get(position).getHeaderImage())
                         .imageView(mToolbarIvTarget)
@@ -127,7 +127,7 @@ public class CategoryActivity extends BaseActivity{
         mTabLayout.setupWithViewPager(mViewpager);
         ((BaseApplication)getApplication())
                 .getAppComponent()
-                .imageLoader().loadImage(CategoryActivity.this, GlideImageConfig
+                .imageLoader().loadImage(CategoryActivity.this, ImageConfigImpl
                 .builder()
                 .url(list.get(0).getHeaderImage())
                 .imageView(mToolbarIvTarget)

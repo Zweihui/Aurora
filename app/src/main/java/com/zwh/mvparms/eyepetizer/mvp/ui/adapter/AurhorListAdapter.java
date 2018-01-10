@@ -9,8 +9,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
@@ -33,9 +33,9 @@ public class AurhorListAdapter extends BaseQuickAdapter<MyAttentionEntity,BaseVi
         AppComponent mAppComponent = ((App)context.getApplicationContext())
                 .getAppComponent();
         mAppComponent.imageLoader().loadImage(context,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
-                        .transformation(new GlideCircleTransform(context))
+                        .transformation(new GlideCircleTransform())
                         .url(item.getIcon())
                         .imageView(imgAutor)
                         .build());

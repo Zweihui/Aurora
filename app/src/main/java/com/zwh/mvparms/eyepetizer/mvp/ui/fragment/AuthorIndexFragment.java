@@ -18,7 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
@@ -273,7 +273,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
         shareNum.setText(info.getPgcInfo().getShareCount()+"");
         if (info.getPgcInfo().getIcon()!=null){
             appComponent.imageLoader().loadImage(getActivity(),
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
                             .url(info.getPgcInfo().getIcon())
                             .imageView(face)
@@ -281,7 +281,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
         }
         if (info.getPgcInfo().getCover()!=null){
             appComponent.imageLoader().loadImage(getActivity(),
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
                             .url(info.getPgcInfo().getCover())
                             .imageView(bg)

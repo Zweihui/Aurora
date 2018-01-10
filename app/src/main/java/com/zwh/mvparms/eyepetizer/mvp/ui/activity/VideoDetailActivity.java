@@ -16,13 +16,13 @@ import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.AnimationUtils;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
@@ -263,11 +263,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             ((TextView) headView.findViewById(R.id.tv_author_name)).setText(videoInfo.getData().getAuthor().getName());
             ((TextView) headView.findViewById(R.id.tv_author_des)).setText(videoInfo.getData().getAuthor().getDescription());
             mAppComponent.imageLoader().loadImage(this,
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
                             .url(videoInfo.getData().getCover().getFeed())
                             .imageView(((ImageView) headView.findViewById(R.id.iv_author)))
-                            .transformation(new GlideCircleTransform(VideoDetailActivity.this))
+                            .transformation(new GlideCircleTransform())
                             .build());
             headView.findViewById(R.id.iv_author).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -311,9 +311,15 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                     }
 
                     @Override
-                    public void onRequestPermissionFailure() {
+                    public void onRequestPermissionFailure(List<String> permissions) {
                         showMessage("Request permissons failure");
                     }
+
+                    @Override
+                    public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                        showMessage("Request permissons failure");
+                    }
+
                 }, mRxPermissions, mAppComponent.rxErrorHandler());
             }
         });
@@ -610,7 +616,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             detailPlayer.setUp(list, true, "");
         }
         mAppComponent.imageLoader().loadImage(this,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(videoInfo.getData().getCover().getFeed())
                         .imageView(mIvVideoBg)

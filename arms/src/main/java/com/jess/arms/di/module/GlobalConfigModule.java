@@ -24,12 +24,12 @@ import com.bumptech.glide.Glide;
 import com.jess.arms.http.BaseUrl;
 import com.jess.arms.http.GlobalHttpHandler;
 import com.jess.arms.http.RequestInterceptor;
+import com.jess.arms.http.imageloader.BaseImageLoaderStrategy;
+import com.jess.arms.http.imageloader.glide.GlideImageLoaderStrategy;
 import com.jess.arms.integration.cache.Cache;
 import com.jess.arms.integration.cache.CacheType;
 import com.jess.arms.integration.cache.LruCache;
 import com.jess.arms.utils.DataHelper;
-import com.jess.arms.widget.imageloader.BaseImageLoaderStrategy;
-import com.jess.arms.widget.imageloader.glide.GlideImageLoaderStrategy;
 
 import java.io.File;
 import java.util.ArrayList;

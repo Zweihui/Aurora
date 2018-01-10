@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.apt.TRouter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 import com.zhihu.matisse.Matisse;
@@ -193,7 +193,7 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                 }
             }
         });
-        appComponent.imageLoader().loadImage(getActivity(), GlideImageConfig
+        appComponent.imageLoader().loadImage(getActivity(), ImageConfigImpl
                 .builder()
                 .url(path)
                 .imageView(mCivFace)
@@ -204,7 +204,7 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
         mTvName.setText(user.getUsername());
         if (user.getIcon() != null){
             BmobFile file = user.getIcon();
-            appComponent.imageLoader().loadImage(getActivity(), GlideImageConfig
+            appComponent.imageLoader().loadImage(getActivity(), ImageConfigImpl
                     .builder()
                     .url(file.getFileUrl())
                     .imageView(mCivFace)
@@ -215,9 +215,8 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     @Subscriber(tag = EventBusTags.SETTING_ACTIVITY_LOG_OUT)
     public void logoutReset(String tag) {
         mTvName.setText("未登录");
-        appComponent.imageLoader().loadImage(getActivity(), GlideImageConfig
+        appComponent.imageLoader().loadImage(getActivity(), ImageConfigImpl
                     .builder()
-                    .load(R.drawable.ic_noface)
                     .placeholder(R.drawable.ic_noface)
                     .errorPic(R.drawable.ic_noface)
                     .imageView(mCivFace)

@@ -27,10 +27,10 @@ import android.widget.TextView;
 
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.UiUtils;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.ui.MatisseActivity;
@@ -407,9 +407,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         name.setText(user.getUsername());
         if (user.getIcon() != null) {
             appComponent.imageLoader().loadImage(this,
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
-                            .transformation(new GlideCircleTransform(this))
+                            .transformation(new GlideCircleTransform())
                             .url(user.getIcon().getFileUrl())
                             .errorPic(R.drawable.ic_noface)
                             .imageView(img)
@@ -432,10 +432,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         TextView name = (TextView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.tv_name);
         name.setText("点击头像登录");
         appComponent.imageLoader().loadImage(this,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
-                        .transformation(new GlideCircleTransform(this))
-                        .load(R.drawable.ic_noface)
+                        .transformation(new GlideCircleTransform())
                         .placeholder(R.drawable.ic_noface)
                         .errorPic(R.drawable.ic_noface)
                         .imageView(img)
@@ -452,9 +451,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
 
             @Override
-            public void onRequestPermissionFailure() {
+            public void onRequestPermissionFailure(List<String> permissions) {
                 UiUtils.makeText(MainActivity.this, "权限被拒绝");
             }
+
+            @Override
+            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                UiUtils.makeText(MainActivity.this, "权限被拒绝");
+            }
+
         }, rxPermissions, mErrorHandler);
     }
 
@@ -462,9 +467,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void setFacePic(String path){
         CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
         appComponent.imageLoader().loadImage(this,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
-                        .transformation(new GlideCircleTransform(this))
+                        .transformation(new GlideCircleTransform())
                         .url(path)
                         .errorPic(R.drawable.ic_noface)
                         .imageView(img)

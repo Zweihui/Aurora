@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -15,7 +16,6 @@ import com.jess.arms.integration.lifecycle.ActivityLifecycleable;
 import com.jess.arms.mvp.IPresenter;
 import com.jess.arms.utils.ArmsUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityBase;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackLayout;
@@ -34,7 +34,7 @@ import static com.jess.arms.utils.ThirdViewUtil.convertAutoView;
  * Created by mac on 2017/9/2.
  */
 
-public abstract class BaseActivity<P extends IPresenter> extends RxAppCompatActivity implements IActivity,SwipeBackActivityBase, ActivityLifecycleable {
+public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivity implements IActivity,SwipeBackActivityBase, ActivityLifecycleable {
     protected final String TAG = this.getClass().getSimpleName();
     private final BehaviorSubject<ActivityEvent> mLifecycleSubject = BehaviorSubject.create();
     private Cache<String, Object> mCache;

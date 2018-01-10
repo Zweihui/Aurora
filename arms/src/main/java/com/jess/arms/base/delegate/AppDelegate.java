@@ -33,7 +33,6 @@ import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.integration.ManifestParser;
 import com.jess.arms.integration.lifecycle.ActivityLifecycleForRxLifecycle;
 import com.jess.arms.utils.Preconditions;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,15 +66,25 @@ public class AppDelegate implements App, AppLifecycles {
     private ComponentCallbacks2 mComponentCallback;
 
     public AppDelegate(Context context) {
+
+        //用反射, 将 AndroidManifest.xml 中带有 ConfigModule 标签的 class 转成对象集合（List<ConfigModule>）
         this.mModules = new ManifestParser(context).parse();
+
+        //遍历之前获得的集合, 执行每一个 ConfigModule 实现类的某些方法
         for (ConfigModule module : mModules) {
+
+            //将个人实现的 Application 的生命周期回调 (AppLifecycles) 存入 mAppLifecycles 集合 (此时还未注册回调)
             module.injectAppLifecycle(context, mAppLifecycles);
+
+            //将个人实现的 Activity 的生命周期回调 (ActivityLifecycleCallbacks) 存入 mActivityLifecycles 集合 (此时还未注册回调)
             module.injectActivityLifecycle(context, mActivityLifecycles);
         }
     }
 
     @Override
     public void attachBaseContext(Context base) {
+
+        //遍历 mAppLifecycles, 回调所有已注册的 AppLifecycles 的 attachBaseContext() 方法
         for (AppLifecycles lifecycle : mAppLifecycles) {
             lifecycle.attachBaseContext(base);
         }
@@ -92,13 +101,20 @@ public class AppDelegate implements App, AppLifecycles {
                 .build();
         mAppComponent.inject(this);
 
+        //将 ConfigModule 的实现类的集合存放到缓存 Cache, 可以随时获取
+        //大于或等于缓存所能允许的最大 size, 则会根据 LRU 算法清除之前的条目
         mAppComponent.extras().put(ConfigModule.class.getName(), mModules);
 
         this.mModules = null;
 
+        //该注册是为了给每个 Activity 增加 Arms 框架中统一的全局逻辑
         mApplication.registerActivityLifecycleCallbacks(mActivityLifecycle);
+
+        //该注册是为了 RxLifecycle 能在每个 Activity 或 Fragment 的生命周期中, 发送对应 Event 事件
         mApplication.registerActivityLifecycleCallbacks(mActivityLifecycleForRxLifecycle);
 
+        //遍历 mActivityLifecycles, 注册所有 Activity 的生命周期回调, 每个 ConfigModule 的实现类可以声明多个 Activity 的生命周期回调
+        //也可以有 N 个 ConfigModule 的实现类 (完美支持组件化项目 各个 Module 的各种独特需求)
         for (Application.ActivityLifecycleCallbacks lifecycle : mActivityLifecycles) {
             mApplication.registerActivityLifecycleCallbacks(lifecycle);
         }
@@ -107,6 +123,7 @@ public class AppDelegate implements App, AppLifecycles {
 
         mApplication.registerComponentCallbacks(mComponentCallback);
 
+        //遍历 mAppLifecycles, 回调所有已注册的 AppLifecycles 的 onCreate() 方法
         for (AppLifecycles lifecycle : mAppLifecycles) {
             lifecycle.onCreate(mApplication);
         }
@@ -155,6 +172,7 @@ public class AppDelegate implements App, AppLifecycles {
         GlobalConfigModule.Builder builder = GlobalConfigModule
                 .builder();
 
+        //遍历 ConfigModule 集合, 给全局配置 GlobalConfigModule 添加参数
         for (ConfigModule module : modules) {
             module.applyOptions(context, builder);
         }
@@ -199,11 +217,7 @@ public class AppDelegate implements App, AppLifecycles {
 
         @Override
         public void onLowMemory() {
-            //内存不足时清理图片请求框架的内存缓存
-            mAppComponent.imageLoader().clear(mApplication, GlideImageConfig
-                    .builder()
-                    .isClearMemory(true)
-                    .build());
+            //内存不足时清理不必要的资源
         }
     }
 

@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 
@@ -31,7 +31,7 @@ public class SearchAdapter extends BaseQuickAdapter<VideoListInfo.Video,BaseView
         ImageView imgbg = helper.getView(R.id.iv_bg);
         Context context = imgbg.getContext();
         mAppComponent.imageLoader().loadImage(context,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getData().getCover().getFeed())
                         .imageView(imgbg)

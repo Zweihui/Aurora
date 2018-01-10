@@ -9,17 +9,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -27,26 +24,19 @@ import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.exception.BmobException;
 import cn.bmob.sms.listener.RequestSMSCodeListener;
 import cn.bmob.sms.listener.VerifySMSCodeListener;
 import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
-
-import static com.zwh.mvparms.eyepetizer.R.id.edt_password1;
-import static com.zwh.mvparms.eyepetizer.R.id.view;
 
 @Router(Constants.REGIST)
 public class RegistActivity extends BaseActivity {
@@ -381,9 +371,15 @@ public class RegistActivity extends BaseActivity {
             }
 
             @Override
-            public void onRequestPermissionFailure() {
+            public void onRequestPermissionFailure(List<String> permissions) {
                 UiUtils.makeText(RegistActivity.this,"权限被拒绝");
             }
+
+            @Override
+            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                UiUtils.makeText(RegistActivity.this,"权限被拒绝");
+            }
+
         }, rxPermissions, mErrorHandler);
     }
 }

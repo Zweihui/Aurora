@@ -6,20 +6,17 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.StringUtils;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 
 import java.util.List;
-
-import static android.R.attr.data;
 
 /**
  * Created by Administrator on 2017/10/20 0020.
@@ -87,7 +84,7 @@ public class CacheAdapter extends BaseQuickAdapter<VideoDownLoadInfo,BaseViewHol
 //            }
         }
         mAppComponent.imageLoader().loadImage(context,
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getVideo().getCover().getFeed())
                         .imageView(imgMian)

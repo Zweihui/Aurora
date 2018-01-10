@@ -8,13 +8,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 
 import java.util.List;
-
-import static android.R.attr.id;
 
 /**
  * Created by Administrator on 2017/9/18 0018.
@@ -34,7 +32,7 @@ public class CategoryAdapter extends BaseQuickAdapter<Category,BaseViewHolder> {
         ImageView bg = helper.getView(R.id.iv_bg);
         helper.setText(R.id.tv_name,item.getName());
         mAppComponent.imageLoader().loadImage(bg.getContext(),
-                GlideImageConfig
+                ImageConfigImpl
                         .builder()
                         .url(item.getBgPicture())
                         .imageView(bg)

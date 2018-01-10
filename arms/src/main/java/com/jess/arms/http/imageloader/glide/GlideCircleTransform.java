@@ -1,6 +1,5 @@
-package com.jess.arms.widget.imageloader.glide;
+package com.jess.arms.http.imageloader.glide;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -9,14 +8,13 @@ import android.graphics.Paint;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
+import java.security.MessageDigest;
+
 /**
- * Created by Administrator on 2017/8/25 0025.
+ * Created by Administrator on 2018\1\9 0009.
  */
 
 public class GlideCircleTransform extends BitmapTransformation {
-    public GlideCircleTransform(Context context) {
-        super(context);
-    }
 
     @Override protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
         return circleCrop(pool, toTransform);
@@ -46,7 +44,8 @@ public class GlideCircleTransform extends BitmapTransformation {
         return result;
     }
 
-    @Override public String getId() {
-        return getClass().getName();
+    @Override
+    public void updateDiskCacheKey(MessageDigest messageDigest) {
+
     }
 }

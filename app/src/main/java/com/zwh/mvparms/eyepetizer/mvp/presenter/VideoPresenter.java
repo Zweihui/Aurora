@@ -3,10 +3,10 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 import android.app.Application;
 
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
 import com.jess.arms.utils.PermissionUtil;
-import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.IndextVideoListInfo;
@@ -52,9 +52,15 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
             }
 
             @Override
-            public void onRequestPermissionFailure() {
+            public void onRequestPermissionFailure(List<String> permissions) {
                 mRootView.showMessage("Request permissons failure");
             }
+
+            @Override
+            public void onRequestPermissionFailureWithAskNeverAgain(List<String> permissions) {
+                mRootView.showMessage("Request permissons failure");
+            }
+
         }, mRootView.getRxPermissions(), mErrorHandler);
         if (pullToRefresh) lastId = 1;//下拉刷新默认只请求第一页
         else lastId = queryId;

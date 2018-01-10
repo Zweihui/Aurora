@@ -3,9 +3,9 @@ package com.zwh.mvparms.eyepetizer.mvp.presenter;
 import android.app.Application;
 
 import com.jess.arms.di.scope.ActivityScope;
+import com.jess.arms.http.imageloader.ImageLoader;
 import com.jess.arms.integration.AppManager;
 import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.widget.imageloader.ImageLoader;
 import com.zwh.mvparms.eyepetizer.app.utils.RxUtils;
 import com.zwh.mvparms.eyepetizer.mvp.contract.VideoListActivityContract;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;

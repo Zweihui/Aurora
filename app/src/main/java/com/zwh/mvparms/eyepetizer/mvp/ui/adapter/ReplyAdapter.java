@@ -7,13 +7,10 @@ import com.chad.library.adapter.base.BaseSectionQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jess.arms.base.App;
 import com.jess.arms.di.component.AppComponent;
-import com.jess.arms.widget.imageloader.glide.GlideCircleTransform;
-import com.jess.arms.widget.imageloader.glide.GlideImageConfig;
+import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
+import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.zwh.mvparms.eyepetizer.R;
-import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.section.ReplySection;
-
-import org.simple.eventbus.EventBus;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,9 +54,9 @@ public class ReplyAdapter extends BaseSectionQuickAdapter<ReplySection,BaseViewH
                 .getAppComponent();
         if (item.t.getData().getUser()!=null){
             mAppComponent.imageLoader().loadImage(img.getContext(),
-                    GlideImageConfig
+                    ImageConfigImpl
                             .builder()
-                            .transformation(new GlideCircleTransform(img.getContext()))
+                            .transformation(new GlideCircleTransform())
                             .url(item.t.getData().getUser().getAvatar())
                             .imageView(img)
                             .build());
