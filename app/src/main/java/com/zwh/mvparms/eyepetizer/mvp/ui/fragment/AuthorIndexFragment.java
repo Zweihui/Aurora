@@ -277,6 +277,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
                             .builder()
                             .url(info.getPgcInfo().getIcon())
                             .imageView(face)
+                            .dontAnimate(true)
                             .build());
         }
         if (info.getPgcInfo().getCover()!=null){

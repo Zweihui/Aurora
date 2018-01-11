@@ -412,6 +412,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             .transformation(new GlideCircleTransform())
                             .url(user.getIcon().getFileUrl())
                             .errorPic(R.drawable.ic_noface)
+                            .dontAnimate(true)
                             .imageView(img)
                             .build());
         }
@@ -431,14 +432,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
         TextView name = (TextView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.tv_name);
         name.setText("点击头像登录");
-        appComponent.imageLoader().loadImage(this,
-                ImageConfigImpl
-                        .builder()
-                        .transformation(new GlideCircleTransform())
-                        .placeholder(R.drawable.ic_noface)
-                        .errorPic(R.drawable.ic_noface)
-                        .imageView(img)
-                        .build());
+        img.setImageDrawable(getResources().getDrawable(R.drawable.ic_noface));
         MyFollowedInfo.getInstance().setList(null);
     }
 
@@ -470,8 +464,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 ImageConfigImpl
                         .builder()
                         .transformation(new GlideCircleTransform())
-                        .url(path)
+                        .placeholder(R.drawable.ic_noface)
                         .errorPic(R.drawable.ic_noface)
+                        .url(path)
+                        .dontAnimate(true)
                         .imageView(img)
                         .build());
     }

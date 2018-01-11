@@ -208,6 +208,8 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                     .builder()
                     .url(file.getFileUrl())
                     .imageView(mCivFace)
+                    .dontAnimate(true)
+                    .placeholder(R.drawable.ic_noface)
                     .errorPic(R.drawable.ic_noface)
                     .build());
         }
@@ -215,11 +217,6 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     @Subscriber(tag = EventBusTags.SETTING_ACTIVITY_LOG_OUT)
     public void logoutReset(String tag) {
         mTvName.setText("未登录");
-        appComponent.imageLoader().loadImage(getActivity(), ImageConfigImpl
-                    .builder()
-                    .placeholder(R.drawable.ic_noface)
-                    .errorPic(R.drawable.ic_noface)
-                    .imageView(mCivFace)
-                    .build());
+        mCivFace.setImageDrawable(getResources().getDrawable(R.drawable.ic_noface));
     }
 }

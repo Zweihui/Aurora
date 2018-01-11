@@ -50,6 +50,8 @@ public class ImageConfigImpl extends ImageConfig {
         this.imageViews = builder.imageViews;
         this.isClearMemory = builder.isClearMemory;
         this.isClearDiskCache = builder.isClearDiskCache;
+        this.resID = builder.resID;
+        this.dontAnimate = builder.dontAnimate;
     }
 
     public int getCacheStrategy() {
@@ -93,6 +95,7 @@ public class ImageConfigImpl extends ImageConfig {
         private boolean isClearMemory;//清理内存缓存
         private boolean isClearDiskCache;//清理本地缓存
         private int resID;
+        private boolean dontAnimate;
 
         private Builder() {
         }
@@ -111,6 +114,10 @@ public class ImageConfigImpl extends ImageConfig {
             this.errorPic = errorPic;
             return this;
         }
+        public Builder dontAnimate(boolean dontAnimate) {
+            this.dontAnimate = dontAnimate;
+            return this;
+        }
 
         public Builder fallback(int fallback) {
             this.fallback = fallback;
@@ -119,6 +126,11 @@ public class ImageConfigImpl extends ImageConfig {
 
         public Builder imageView(ImageView imageView) {
             this.imageView = imageView;
+            return this;
+        }
+
+        public Builder load(int resID) {
+            this.resID = resID;
             return this;
         }
 

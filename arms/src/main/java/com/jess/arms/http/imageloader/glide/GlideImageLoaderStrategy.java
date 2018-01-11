@@ -52,17 +52,23 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
     public void loadImage(Context ctx, ImageConfigImpl config) {
         if (ctx == null) throw new NullPointerException("Context is required");
         if (config == null) throw new NullPointerException("ImageConfigImpl is required");
-        if (TextUtils.isEmpty(config.getUrl())) throw new NullPointerException("Url is required");
+        if (TextUtils.isEmpty(config.getUrl())&&config.getPlaceholder()==0) throw new NullPointerException("Url is required");
         if (config.getImageView() == null) throw new NullPointerException("Imageview is required");
 
 
         GlideRequests requests;
 
         requests = GlideArms.with(ctx);//如果context是activity则自动使用Activity的生命周期
+        GlideRequest<Drawable> glideRequest;
+        if (config.getDontAnimate()){
+            glideRequest = requests.load(config.getUrl())
+                    .dontAnimate();
+        }else {
+            glideRequest = requests.load(config.getUrl())
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .centerCrop();
+        }
 
-        GlideRequest<Drawable> glideRequest = requests.load(config.getUrl())
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .centerCrop();
 
         switch (config.getCacheStrategy()) {//缓存策略
             case 0:
@@ -95,6 +101,8 @@ public class GlideImageLoaderStrategy implements BaseImageLoaderStrategy<ImageCo
         if (config.getFallback() != 0)//设置请求 url 为空图片
             glideRequest.fallback(config.getFallback());
 
+        if (config.getResID() != 0)
+            glideRequest.load(config.getResID());
 
         glideRequest
                 .into(config.getImageView());

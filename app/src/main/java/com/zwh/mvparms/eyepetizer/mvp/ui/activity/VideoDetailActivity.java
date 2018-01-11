@@ -620,7 +620,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
                         .builder()
                         .url(videoInfo.getData().getCover().getFeed())
                         .imageView(mIvVideoBg)
-                        .transformation(new FitCenter(VideoDetailActivity.this))
+                        .transformation(new FitCenter())
                         .build());
         detailPlayer.setThumbImageView(mIvVideoBg);
     }

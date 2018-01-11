@@ -32,7 +32,8 @@ public class ImageConfig {
     protected ImageView imageView;
     protected int placeholder;//占位符
     protected int errorPic;//错误占位符
-
+    protected int resID;
+    protected boolean dontAnimate;
 
     public String getUrl() {
         return url;
@@ -45,8 +46,14 @@ public class ImageConfig {
     public int getPlaceholder() {
         return placeholder;
     }
+    public int getResID() {
+        return resID;
+    }
 
     public int getErrorPic() {
         return errorPic;
+    }
+    public boolean getDontAnimate() {
+        return dontAnimate;
     }
 }
