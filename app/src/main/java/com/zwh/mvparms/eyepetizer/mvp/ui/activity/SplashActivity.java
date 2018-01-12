@@ -1,7 +1,10 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Fade;
 
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
@@ -64,6 +67,11 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             findViewById(R.id.root).setBackgroundResource(R.color.white);
         }
 //        mPresenter.requestCategories();
+        if (Build.VERSION.SDK_INT>=21){
+            Fade fade = new Fade();
+            fade.setDuration(2500L);
+            getWindow().setExitTransition(fade);
+        }
     }
 
     @Override
@@ -94,12 +102,20 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
                     }
                 }, 200);
             isInit = false;
+        }else {
+            EventBus.getDefault().post("gotomain",EventBusTags.JUMP_TO_HOME);
         }
     }
 
     @Subscriber(tag = EventBusTags.JUMP_TO_HOME)
     public void goToHomePage(String s) {
         if (isAnimated){
+            if (Build.VERSION.SDK_INT>=21){
+                startActivity(new android.content.Intent(this, MainActivity.class),
+                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            }else {
+                TRouter.go(Constants.MAIN);
+            }
             TRouter.go(Constants.MAIN);
             finish();
         }

@@ -1,9 +1,11 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.widget.video;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,6 @@ import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.zwh.mvparms.eyepetizer.R;
-import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.dialog.SwitchVideoTypeDialog;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.model.SwitchVideoModel;
 
 import java.io.File;
@@ -322,10 +323,49 @@ public class SampleVideo extends StandardGSYVideoPlayer {
         if (!mHadPlay) {
             return;
         }
-        SwitchVideoTypeDialog switchVideoTypeDialog = new SwitchVideoTypeDialog(getContext());
-        switchVideoTypeDialog.initList(mUrlList, new SwitchVideoTypeDialog.OnListItemClickListener() {
+//        SwitchVideoTypeDialog switchVideoTypeDialog = new SwitchVideoTypeDialog(getContext());
+//        switchVideoTypeDialog.initList(mUrlList, new SwitchVideoTypeDialog.OnListItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                final String name = mUrlList.get(position).getName();
+//                if (mSourcePosition != position) {
+//                    if ((mCurrentState == GSYVideoPlayer.CURRENT_STATE_PLAYING
+//                            || mCurrentState == GSYVideoPlayer.CURRENT_STATE_PAUSE)
+//                            && GSYVideoManager.instance().getMediaPlayer() != null) {
+//                        final String url = mUrlList.get(position).getUrl();
+//                        onVideoPause();
+//                        final long currentPosition = mCurrentPosition;
+//                        GSYVideoManager.instance().releaseMediaPlayer();
+//                        cancelProgressTimer();
+//                        hideAllWidget();
+//                        new Handler().postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                setUp(url, mCache, mCachePath, mTitle);
+//                                setSeekOnStart(currentPosition);
+//                                startPlayLogic();
+//                                cancelProgressTimer();
+//                                hideAllWidget();
+//                            }
+//                        }, 500);
+//                        mSwitchSize.setText(name);
+//                        mSourcePosition = position;
+//                    }
+//                } else {
+//                    Toast.makeText(getContext(), "已经是 " + name, Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//        switchVideoTypeDialog.show();
+        String[] strSwitchs = new String[mUrlList.size()];
+        for (int i=0;i<mUrlList.size();i++){
+            strSwitchs[i] = mUrlList.get(i).getName();
+        }
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        dialog.setSingleChoiceItems(strSwitchs, mSourcePosition, new DialogInterface.OnClickListener() {
+
             @Override
-            public void onItemClick(int position) {
+            public void onClick(DialogInterface dialog, int position) {
                 final String name = mUrlList.get(position).getName();
                 if (mSourcePosition != position) {
                     if ((mCurrentState == GSYVideoPlayer.CURRENT_STATE_PLAYING
@@ -353,9 +393,20 @@ public class SampleVideo extends StandardGSYVideoPlayer {
                 } else {
                     Toast.makeText(getContext(), "已经是 " + name, Toast.LENGTH_LONG).show();
                 }
+                dialog.dismiss();
             }
         });
-        switchVideoTypeDialog.show();
+
+//        dialog.setNegativeButton("取消",
+//                new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+
+        dialog.show();
     }
 
 

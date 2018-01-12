@@ -1,5 +1,6 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
-import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
@@ -26,7 +26,6 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerHistoryComponent;
 import com.zwh.mvparms.eyepetizer.di.module.HistoryModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.HistoryContract;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -41,7 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
 
-import static android.media.CamcorderProfile.get;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 @Router(Constants.HISTORY)
@@ -132,7 +130,10 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
     private void gotoDetail(View view,int position){
         VideoListInfo.Video videoInfo = new VideoListInfo.Video();
         videoInfo.setData(data.get(position).getVideo());
-        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, videoInfo).build(),view.findViewById(R.id.iv_bg));
+        Intent intent = new Intent(this,VideoDetailActivity.class);
+        intent.putExtra(Constants.VIDEO_INFO, videoInfo);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+//        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, videoInfo).build(),view.findViewById(R.id.iv_bg));
     }
 
     @Override

@@ -2,10 +2,14 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -175,8 +179,21 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         }else {
             mPresenter.getVideoData(videoInfo.getData().getId());
         }
+        if (Build.VERSION.SDK_INT>=21){
+            Slide slide = new Slide(Gravity.BOTTOM);
+            slide.setDuration(500L);
+            slide.excludeTarget(android.R.id.statusBarBackground, true);
+            slide.excludeTarget(android.R.id.navigationBarBackground, true);
+            slide.excludeTarget(R.id.rl_screen, true);
+            slide.excludeTarget(R.id.detail_player, true);
+            getWindow().setEnterTransition(slide);
+            getWindow().getEnterTransition().excludeTarget(R.id.frameLayout,true);
+            getWindow().getEnterTransition().excludeTarget(R.id.fl_loading,true);
+            Fade fade = new Fade();
+            fade.setDuration(500L);
+            getWindow().setReturnTransition(fade);
+        }
 
-        flLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -429,7 +446,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         //增加封面
         mIvVideoBg = new ImageView(this);
         mIvVideoBg.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
         resolveNormalVideoUI();
 
         //外部辅助的旋转，帮助全屏

@@ -28,7 +28,6 @@ import com.jess.arms.di.component.DaggerAppComponent;
 import com.jess.arms.di.module.AppModule;
 import com.jess.arms.di.module.ClientModule;
 import com.jess.arms.di.module.GlobalConfigModule;
-import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.integration.ActivityLifecycle;
 import com.jess.arms.integration.ConfigModule;
 import com.jess.arms.integration.ManifestParser;
@@ -219,10 +218,6 @@ public class AppDelegate implements App, AppLifecycles {
         @Override
         public void onLowMemory() {
             //内存不足时清理不必要的资源
-            mAppComponent.imageLoader().clear(mApplication, ImageConfigImpl
-                    .builder()
-                    .isClearMemory(true)
-                    .build());
         }
     }
 
