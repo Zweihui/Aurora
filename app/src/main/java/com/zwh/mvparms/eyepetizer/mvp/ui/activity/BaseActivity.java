@@ -1,6 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -159,5 +160,10 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+
+    public boolean supportsTransitions() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 }

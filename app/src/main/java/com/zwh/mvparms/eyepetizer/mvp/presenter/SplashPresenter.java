@@ -41,7 +41,6 @@ public class SplashPresenter extends BasePresenter<SplashContract.Model, SplashC
         PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
             @Override
             public void onRequestPermissionSuccess() {
-                mRootView.showMessage("Request permissons failure");
             }
 
             @Override

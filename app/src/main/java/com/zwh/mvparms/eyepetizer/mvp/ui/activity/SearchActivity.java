@@ -2,7 +2,6 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.transition.Fade;
@@ -25,7 +24,6 @@ import android.widget.TextView;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jess.arms.base.delegate.IFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
@@ -49,9 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-import static android.R.attr.data;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 @Router(Constants.SEARCH)
@@ -225,10 +221,6 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         fader.hideContentOf(mToolbar);
         TransitionManager.beginDelayedTransition(mContent, new Fade(Fade.OUT));
         mContent.setVisibility(View.GONE);
-    }
-
-    private boolean supportsTransitions() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     @Override

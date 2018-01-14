@@ -3,7 +3,6 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +17,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -128,11 +126,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT>=21){
-            Fade fade = new Fade();
-            fade.setDuration(2500L);
-            getWindow().setEnterTransition(fade);
-        }
+//        if (supportsTransitions()){
+//            Fade fade=new Fade();
+//            fade.setDuration(500);
+//            fade.setMode(Visibility.MODE_IN);
+//            getWindow().setEnterTransition(fade);
+//        }
         Bmob.initialize(this, Constants.BMOB_APP_ID);
         initFragment();
         BottomNavigationViewHelper.disableShiftMode(bottomNavigation);

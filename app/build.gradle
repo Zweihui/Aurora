@@ -7,10 +7,10 @@ apply from: 'tinkerpatch.gradle'
 android {
     signingConfigs {
         release {
-            keyAlias 'keystore'
-            keyPassword 'zwh12583258'
-            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
-            storePassword 'zwh12583258'
+//            keyAlias 'keystore'
+//            keyPassword 'zwh12583258'
+//            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
+//            storePassword 'zwh12583258'
         }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
