@@ -114,6 +114,11 @@ public class VideoFullCreenActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         detailPlayer.onVideoResume();

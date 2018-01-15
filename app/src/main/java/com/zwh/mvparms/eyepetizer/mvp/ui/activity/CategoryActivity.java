@@ -74,24 +74,21 @@ public class CategoryActivity extends BaseActivity{
     }
 
     @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
+    }
+
+    @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_home;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState != null){
             list = savedInstanceState.getParcelableArrayList(Constants.CATEGORY_DATA);
             finish();
         }
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,6 +98,7 @@ public class CategoryActivity extends BaseActivity{
         });
         mViewpager.setAdapter(FragmentAdapter.newInstance(getSupportFragmentManager(),list));
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -134,6 +132,7 @@ public class CategoryActivity extends BaseActivity{
                 .build());
         mViewpager.setOffscreenPageLimit(4);
         mViewpager.setCurrentItem(position);
+        mCollapsingToolbar.setTitle(list.get(CategoryActivity.this.position).getName());
     }
 
 }

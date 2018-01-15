@@ -93,20 +93,19 @@ public class VideoListActivity extends BaseActivity<VideoListActivityPresenter> 
         fetchData(false);
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    @Override
+    protected void initToolBar() {
+       super.initToolBar();
         if ("popular".equals(type)){
             setTitle("最受欢迎");
         }else {
             setTitle(type);
         }
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 
     @SingleClick

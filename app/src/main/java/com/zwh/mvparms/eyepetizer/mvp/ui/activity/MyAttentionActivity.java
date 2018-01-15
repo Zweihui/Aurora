@@ -84,15 +84,9 @@ public class MyAttentionActivity extends BaseActivity<AttentionPresenter> implem
         TRouter.go(Constants.AUTHORDETAIL, new DataExtra(Constants.AUTHOR_ID, authors.get(position).getId()).build());
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 
     @Override

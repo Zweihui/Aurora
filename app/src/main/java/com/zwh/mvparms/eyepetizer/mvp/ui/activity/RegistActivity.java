@@ -116,15 +116,20 @@ public class RegistActivity extends BaseActivity {
         etPassword2.addTextChangedListener(new MyTextWatcher());
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    @Override
+    protected void initToolBar() {
+        super.initToolBar();
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 backpress();
             }
         });
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 
     @OnClick({R.id.rl_select_district, R.id.btn_reget_code, R.id.btn_verification})
@@ -295,7 +300,7 @@ public class RegistActivity extends BaseActivity {
         } else {
             timer.cancel();
             timer = null;
-            finish();
+            super.onBackPressed();
         }
     }
 

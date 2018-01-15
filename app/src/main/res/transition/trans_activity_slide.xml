@@ -1,0 +1,11 @@
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android">
+    <slide
+        android:duration="500"
+        android:slideEdge="bottom">
+        <targets>
+            <target android:excludeId="@android:id/statusBarBackground" />
+            <target android:excludeId="@id/appbar" />
+            <target android:excludeId="@id/dl_main_drawer" />
+        </targets>
+    </slide>
+</transitionSet>

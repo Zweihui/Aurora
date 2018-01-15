@@ -6,7 +6,6 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.mvp.IView;
@@ -19,7 +18,6 @@ import com.zwh.mvparms.eyepetizer.app.utils.helper.CacheFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDownLoadInfoDao;
 import com.zwh.mvparms.eyepetizer.mvp.ui.fragment.CacheFragment;
-import com.zwh.mvparms.eyepetizer.mvp.ui.service.DownLoadService;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -31,8 +29,6 @@ import butterknife.BindView;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
-
-import static android.R.attr.type;
 
 @Router(Constants.CACHE)
 public class CacheActivity extends BaseActivity implements IView{
@@ -98,16 +94,6 @@ public class CacheActivity extends BaseActivity implements IView{
 
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
     @Subscriber(tag = EventBusTags.CACHE_DOWNLOAD_FINISH)
     private void downloadFinish(String tag) {
         VideoDownLoadInfo entity = new VideoDownLoadInfo();
@@ -156,5 +142,10 @@ public class CacheActivity extends BaseActivity implements IView{
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().removeStickyEvent(VideoDownLoadInfo.class,EventBusTags.CACHE_DOWNLOAD_BEGIN);
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 }

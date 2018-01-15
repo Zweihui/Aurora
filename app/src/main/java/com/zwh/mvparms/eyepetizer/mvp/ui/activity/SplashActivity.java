@@ -2,9 +2,7 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 
-import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.SharedPreferencesUtils;
 import com.jess.arms.utils.StringUtils;
@@ -64,6 +62,12 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         if ((Boolean) SharedPreferencesUtils.getParam(SplashActivity.this,Constants.SETTING_SPLASH,false)){
             findViewById(R.id.root).setBackgroundResource(R.color.white);
         }
+//        if (supportsTransitions()){
+//            Fade fade=new Fade();
+//            fade.setDuration(1500);
+//            fade.setMode(Visibility.MODE_OUT);
+//            getWindow().setExitTransition(fade);
+//        }
 //        mPresenter.requestCategories();
     }
 
@@ -100,16 +104,17 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         }
     }
 
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return false;
+    }
+
     @Subscriber(tag = EventBusTags.JUMP_TO_HOME)
     public void goToHomePage(String s) {
         if (isAnimated){
-            if(supportsTransitions()){
-                Intent intent = new Intent(this, MainActivity.class);
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-                startActivity(intent,activityOptionsCompat.toBundle());
-            }else {
-                TRouter.go(Constants.MAIN);
-            }
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+//            TRouter.go(Constants.MAIN);
             finish();
         }
     }

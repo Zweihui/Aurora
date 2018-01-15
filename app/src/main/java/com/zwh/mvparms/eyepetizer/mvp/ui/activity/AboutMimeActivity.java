@@ -32,7 +32,7 @@ public class AboutMimeActivity extends BaseWebActivity {
         if (mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
-            finish();
+            super.onBackPressed();
         }
     }
 }

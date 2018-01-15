@@ -11,9 +11,7 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
         <item name="android:buttonStyle">@style/style_button</item>
-        <!-- 允许使用transitions -->
-        <item name="android:windowContentTransitions">false</item>
-        <!--是否覆盖执行，其实可以理解成是否同步执行还是顺序执行-->
+        <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
     </style>
@@ -41,6 +39,7 @@
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>

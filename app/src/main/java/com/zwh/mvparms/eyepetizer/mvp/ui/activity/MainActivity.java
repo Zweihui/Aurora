@@ -127,10 +127,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public void initData(Bundle savedInstanceState) {
 //        if (supportsTransitions()){
-//            Fade fade=new Fade();
-//            fade.setDuration(500);
-//            fade.setMode(Visibility.MODE_IN);
-//            getWindow().setEnterTransition(fade);
+//            Transition transition = TransitionInflater.from(this).inflateTransition(R.transition.trans_activity_slide);
+//            getWindow().setEnterTransition(transition);
 //        }
         Bmob.initialize(this, Constants.BMOB_APP_ID);
         initFragment();
@@ -205,7 +203,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setTitle("首页");
     }
 
-    private void initToolBar() {
+    @Override
+    protected void initToolBar() {
         searchView.setToolbar(mToolbar);
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -289,6 +288,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         }, 500);
 
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return false;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -410,7 +414,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public void setUserInfo(User user) {
         CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
         TextView name = (TextView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.tv_name);
-        name.setText(user.getUsername());
+        name.setText(User.getCurrentUser().getUsername());
         if (user.getIcon() != null) {
             appComponent.imageLoader().loadImage(this,
                     ImageConfigImpl
@@ -463,20 +467,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }, rxPermissions, mErrorHandler);
     }
 
-    @Subscriber(tag = EventBusTags.MINE_FRAGMENT_SET_FACE_PIC)
-    private void setFacePic(String path){
-        CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
-        appComponent.imageLoader().loadImage(this,
-                ImageConfigImpl
-                        .builder()
-                        .transformation(new GlideCircleTransform())
-                        .placeholder(R.drawable.ic_noface)
-                        .errorPic(R.drawable.ic_noface)
-                        .url(path)
-                        .dontAnimate(true)
-                        .imageView(img)
-                        .build());
-    }
+//    @Subscriber(tag = EventBusTags.MINE_FRAGMENT_SET_FACE_PIC)
+//    private void setFacePic(String path){
+//        CircleImageView img = (CircleImageView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.im_face);
+//        appComponent.imageLoader().loadImage(this,
+//                ImageConfigImpl
+//                        .builder()
+//                        .transformation(new GlideCircleTransform())
+//                        .placeholder(R.drawable.ic_noface)
+//                        .errorPic(R.drawable.ic_noface)
+//                        .url(path)
+//                        .dontAnimate(true)
+//                        .imageView(img)
+//                        .build());
+//    }
     @Subscriber(tag = EventBusTags.HOT_FRAGMENT_SET_VIEWPAGER)
     private void setHotPager(ViewPager viewPager){
         mTabLayout.setupWithViewPager(viewPager);

@@ -19,7 +19,6 @@ import com.jess.arms.di.component.AppComponent;
 import com.zwh.mvparms.eyepetizer.R;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/11/7 0007.
@@ -50,20 +49,8 @@ public class BaseWebActivity extends BaseActivity {
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        initToolBar();
         configWebView();
         setWebViewProgress();
-    }
-
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     protected void configWebView() {
@@ -113,5 +100,10 @@ public class BaseWebActivity extends BaseActivity {
         mWebView.destroy();
         mWebView = null;
         super.onDestroy();
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 }

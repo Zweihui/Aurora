@@ -144,12 +144,22 @@ public class RouterProcessor implements IProcessor {
                             item.getSceneTransitionElement(),//4
                             item.getSceneTransitionElementName());//5
                 } else {
-                    blockBuilderGo.add("mContext.startActivity(" +//2
+//                    blockBuilderGo.add("mContext.startActivity(" +//2
+//                                    "\nnew $L(mContext," +//3
+//                                    "\n$L.class));", //7
+//                            mIntentClassName,//3
+//                            item.getElement()//4
+//                    );
+                    blockBuilderGo.add("$L.startActivity(mContext," +//2
                                     "\nnew $L(mContext," +//3
-                                    "\n$L.class));", //7
+                                    "\n$L.class)," +//4
+                                    "\n$T.makeSceneTransitionAnimation(" +//5
+                                    "\nmContext" +//6
+                                    "\n).toBundle());", //7
+                            mActivityCompatName,//2
                             mIntentClassName,//3
-                            item.getElement()//4
-                    );
+                            item.getElement(),//4
+                            mActivityOptionsCompatName);//5
                 }
                 blockBuilderGo.addStatement("\nbreak");//1
                 if (item.isNeedBind()) blockBuilderBind.addStatement("break");//1

@@ -1,6 +1,5 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupWindow;
 
+import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
@@ -26,6 +26,7 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerHistoryComponent;
 import com.zwh.mvparms.eyepetizer.di.module.HistoryModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.HistoryContract;
+import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoDaoEntity;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
@@ -78,7 +79,6 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        initToolBar();
         mSwipeRefresh.setOnRefreshListener(this);
         mSwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         mSwipeRefresh.setProgressViewOffset(true, 0, (int) TypedValue
@@ -94,6 +94,7 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
             }
         });
         adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 initPopupWindow(view,position);
@@ -115,25 +116,11 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
         }
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
     @SingleClick
     private void gotoDetail(View view,int position){
         VideoListInfo.Video videoInfo = new VideoListInfo.Video();
         videoInfo.setData(data.get(position).getVideo());
-        Intent intent = new Intent(this,VideoDetailActivity.class);
-        intent.putExtra(Constants.VIDEO_INFO, videoInfo);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-//        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, videoInfo).build(),view.findViewById(R.id.iv_bg));
+        TRouter.go(Constants.VIDEO,new DataExtra(Constants.VIDEO_INFO, videoInfo).build(),view.findViewById(R.id.iv_bg));
     }
 
     @Override
@@ -253,5 +240,10 @@ public class HistoryActivity extends BaseActivity<HistoryPresenter> implements H
     @Override
     public void onRefresh() {
         refreshData("");
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 }

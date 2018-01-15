@@ -161,8 +161,14 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Sea
         mPresenter.getHotWords();
     }
 
-    private void initToolBar() {
+    @Override
+    protected void initToolBar() {
         setSupportActionBar(mToolbar);
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return false;
     }
 
 

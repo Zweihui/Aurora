@@ -2,8 +2,8 @@ package com.zwh.mvparms.eyepetizer.mvp.ui.activity;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -91,8 +91,10 @@ import io.reactivex.functions.Consumer;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 @Router(Constants.VIDEO)
-public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View {
+public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> implements VideoDetailContract.View, DragBottomView.onDragBottomViewDismissedListener {
 
+    @BindView(R.id.ctl_root)
+    public ConstraintLayout ctlRoot;
     @BindView(R.id.rl_screen)
     FrameLayout rlScreen;
     @Extra(Constants.VIDEO_INFO)
@@ -100,6 +102,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @SceneTransition(Constants.TRANSLATE_VIEW)
     @BindView(R.id.detail_player)
     public SampleVideo detailPlayer;
+    @BindView(R.id.fl_loading)
+    public FrameLayout flLoading;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.second_recyclerView)
@@ -110,8 +114,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     MultiRecyclerView replyRecyclerView2;
     @BindView(R.id.dbv_drag_reply)
     DragBottomView replyDragBottomView;
-    @BindView(R.id.fl_loading)
-    FrameLayout flLoading;
     @BindView(R.id.detail_loading)
     MaterialProgressBar indicatorView;
 
@@ -179,7 +181,8 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         }else {
             mPresenter.getVideoData(videoInfo.getData().getId());
         }
-        if (Build.VERSION.SDK_INT>=21){
+        dragBottomView.setDismissedListener(this);
+        if (supportsTransitions()){
             Slide slide = new Slide(Gravity.BOTTOM);
             slide.setDuration(500L);
             slide.excludeTarget(android.R.id.statusBarBackground, true);
@@ -282,7 +285,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             mAppComponent.imageLoader().loadImage(this,
                     ImageConfigImpl
                             .builder()
-                            .url(videoInfo.getData().getCover().getFeed())
+                            .url(videoInfo.getData().getAuthor().getIcon())
                             .imageView(((ImageView) headView.findViewById(R.id.iv_author)))
                             .transformation(new GlideCircleTransform())
                             .build());
@@ -587,6 +590,11 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     }
 
     @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         detailPlayer.onVideoResume();
@@ -848,9 +856,12 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         if (isShow) {
             AnimationUtils.startTranslate(view, 0, dragBottomView.getHeight()
                     , 0, 0, 200, true);
+            setSwipeBackEnable(false);
+
         } else {
             AnimationUtils.startTranslate(view, 0, 0
                     , 0, dragBottomView.getHeight(), 200, false);
+            setSwipeBackEnable(true);
         }
     }
 
@@ -997,5 +1008,10 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
         saveVideoHistory(videoInfo);
         EventBus.getDefault().post("",EventBusTags.HISTORY_BACK_REFRESH);
         super.finish();
+    }
+
+    @Override
+    public void onDragBottomViewDismissed() {
+        setSwipeBackEnable(true);
     }
 }

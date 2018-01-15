@@ -1,5 +1,6 @@
 package com.zwh.mvparms.eyepetizer.mvp.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -22,7 +23,6 @@ import com.yalantis.ucrop.UCrop;
 import com.yalantis.ucrop.UCropActivity;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
 import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
@@ -32,6 +32,7 @@ import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
+import com.zwh.mvparms.eyepetizer.mvp.ui.widget.glide.GlideEngine;
 
 import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
@@ -174,7 +175,9 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
     }
     @Subscriber(tag = EventBusTags.MINE_FRAGMENT_SET_FACE_PIC)
     private void setFacePic(String path){
-        BmobUser bmobUser = BmobUser.getCurrentUser();
+        ProgressDialog dialog = ProgressDialog.show(getActivity(), "", "正在上传...",
+                false, true);
+        BmobUser bmobUser = User.getCurrentUser();
         BmobFile file = new BmobFile(new File(path));
         file.upload(new UploadFileListener() {
             @Override
@@ -186,22 +189,23 @@ public class MineFragment extends BaseLazyLoadFragment implements View.OnClickLi
                         @Override
                         public void done(BmobException e) {
                             if (e == null){
-
+                                if (user.getIcon()!=null){
+                                    EventBus.getDefault().post(user, EventBusTags.SET_USER_INFO);
+                                    dialog.dismiss();
+                                }
                             }
                         }
                     });
+                }else {
+
                 }
             }
         });
-        appComponent.imageLoader().loadImage(getActivity(), ImageConfigImpl
-                .builder()
-                .url(path)
-                .imageView(mCivFace)
-                .build());
+
     }
     @Subscriber(tag = EventBusTags.SET_USER_INFO)
     public void setUserInfo(User user) {
-        mTvName.setText(user.getUsername());
+        mTvName.setText(User.getCurrentUser().getUsername());
         if (user.getIcon() != null){
             BmobFile file = user.getIcon();
             appComponent.imageLoader().loadImage(getActivity(), ImageConfigImpl

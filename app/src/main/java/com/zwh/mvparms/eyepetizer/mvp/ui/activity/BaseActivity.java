@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -17,6 +18,7 @@ import com.jess.arms.integration.lifecycle.ActivityLifecycleable;
 import com.jess.arms.mvp.IPresenter;
 import com.jess.arms.utils.ArmsUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
+import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityBase;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackActivityHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.swipebacklayout.SwipeBackLayout;
@@ -80,6 +82,7 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
             e.printStackTrace();
         }
         TRouter.bind(this);
+        initToolBar();
         initData(savedInstanceState);
         mHelper = new SwipeBackActivityHelper(this);
         mHelper.onActivityCreate();
@@ -89,6 +92,22 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mHelper.onPostCreate();
+    }
+
+    protected void initToolBar(){
+       Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar!=null){
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(isDisplayHomeAsUpEnabled());
+            if (isDisplayHomeAsUpEnabled()){
+                mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -166,4 +185,6 @@ public abstract class BaseActivity<P extends IPresenter> extends AppCompatActivi
     public boolean supportsTransitions() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
+
+    protected abstract boolean isDisplayHomeAsUpEnabled();
 }

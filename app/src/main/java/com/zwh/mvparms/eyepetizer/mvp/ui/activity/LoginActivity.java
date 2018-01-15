@@ -67,15 +67,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 
 

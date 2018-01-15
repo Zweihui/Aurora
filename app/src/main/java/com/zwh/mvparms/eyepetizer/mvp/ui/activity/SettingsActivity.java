@@ -101,17 +101,6 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
     @OnClick({R.id.ctl_flow, R.id.ctl_wifi, R.id.ctl_splash, R.id.ctl_clear, R.id.ctl_author, R.id.ctl_rate, R.id.ctl_open_source, R.id.ctl_update, R.id.ctl_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -209,5 +198,10 @@ public class SettingsActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         mRxPermissions = null;
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 }

@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
@@ -89,7 +88,6 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
         if (savedInstanceState != null) {
             authorId = savedInstanceState.getInt(Constants.AUTHOR_ID);
         }
-        initToolBar();
         mPresenter.getAuthorTabs(authorId);
         mPresenter.getShareInfo(authorId);
     }
@@ -100,15 +98,9 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
         super.onSaveInstanceState(outState);
     }
 
-    private void initToolBar() {
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    @Override
+    protected void initToolBar() {
+        super.initToolBar();
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -132,6 +124,11 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
             }
         });
         setTitle("");
+    }
+
+    @Override
+    protected boolean isDisplayHomeAsUpEnabled() {
+        return true;
     }
 
 

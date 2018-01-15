@@ -19,6 +19,7 @@ import com.zwh.mvparms.eyepetizer.R;
 
 public class DragBottomView extends LinearLayout {
 
+    private onDragBottomViewDismissedListener listener;
     private SlideViewDragHelper mDragger;
     private View targetView;
 
@@ -64,8 +65,12 @@ public class DragBottomView extends LinearLayout {
 
             @Override
             public void scrollComplete() {
-                if (!mInit)
+                if (!mInit){
                     DragBottomView.this.setVisibility(GONE);
+                    if (listener!=null){
+                        listener.onDragBottomViewDismissed();
+                    }
+                }
             }
 
             @Override
@@ -143,5 +148,13 @@ public class DragBottomView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         targetView = getChildAt(0);
+    }
+
+    public void setDismissedListener(onDragBottomViewDismissedListener listener){
+        this.listener = listener;
+    }
+
+    public interface onDragBottomViewDismissedListener{
+        void onDragBottomViewDismissed();
     }
 }
