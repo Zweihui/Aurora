@@ -15,6 +15,9 @@ android {
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    useLibrary 'org.apache.http.legacy'
+
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -170,7 +173,6 @@ dependencies {
         exclude group: 'com.squareup.okhttp3'
         exclude module: 'com.squareup.okio'
     }
-    implementation rootProject.ext.dependencies["http-legacy"]
     implementation rootProject.ext.dependencies["bmob-sms"]
     implementation rootProject.ext.dependencies["ucrop"]
     implementation rootProject.ext.dependencies["greendao"]

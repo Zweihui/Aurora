@@ -122,7 +122,6 @@ ext {
 
                 //Server
                 "bmob-sdk"                  : "cn.bmob.android:bmob-sdk:3.5.8",
-                "http-legacy"               : "cn.bmob.android:http-legacy:1.0",
                 "bmob-sms"                  : "cn.bmob.android:bmob-sms:1.0.1",
                 //dao
                 "greendao"                  : "org.greenrobot:greendao:3.2.2",
