@@ -31,6 +31,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"other"]
     }
+
     packagingOptions {
         //打包时的相关配置
         exclude 'META-INF/rxjava.properties'
@@ -45,7 +46,6 @@ android {
             buildConfigField "boolean", "USE_CANARY", "true"
             minifyEnabled false
             multiDexEnabled true
-            multiDexKeepProguard file('multiDexKeep.pro')
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
                 abiFilters "armeabi-v7a"

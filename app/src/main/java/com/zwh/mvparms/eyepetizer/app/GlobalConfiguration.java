@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
@@ -152,7 +153,7 @@ public final class GlobalConfiguration implements ConfigModule {
 
             @Override
             public void attachBaseContext(Context base) {
-//                MultiDex.install(base);  //这里比 onCreate 先执行,常用于 MultiDex 初始化,插件化框架的初始化
+                MultiDex.install(base);  //这里比 onCreate 先执行,常用于 MultiDex 初始化,插件化框架的初始化
                 // 安装tinker
                 Beta.installTinker();
             }

@@ -182,6 +182,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             mPresenter.getVideoData(videoInfo.getData().getId());
         }
         dragBottomView.setDismissedListener(this);
+        replyDragBottomView.setDismissedListener(this);
         if (supportsTransitions()){
             Slide slide = new Slide(Gravity.BOTTOM);
             slide.setDuration(500L);
