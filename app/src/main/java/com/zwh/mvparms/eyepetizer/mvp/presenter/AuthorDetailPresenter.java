@@ -76,7 +76,7 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
                 });
     }
     public void getAuthorDynamicList(int id, int startCount, boolean isLoadMore) {
-        mModel.getAuthorDynamicList(id,startCount).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+        mModel.getAuthorDynamicList(id,startCount).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .subscribe(new ErrorHandleSubscriber<AuthorDynamicInfo>(mErrorHandler) {
                     @Override
                     public void onNext(AuthorDynamicInfo info) {
@@ -85,7 +85,7 @@ public class AuthorDetailPresenter extends BasePresenter<AuthorDetailContract.Mo
                 });
     }
     public void getAuthorAlbumList(int id, int startCount, boolean isLoadMore) {
-        mModel.getAuthorAlbumList(id,startCount).compose(RxUtils.applySchedulersWithLifeCycle(mRootView))
+        mModel.getAuthorAlbumList(id,startCount).compose(RxUtils.applySchedulers(mRootView,isLoadMore))
                 .subscribe(new ErrorHandleSubscriber<AuthorAlbumInfo>(mErrorHandler) {
                     @Override
                     public void onNext(AuthorAlbumInfo info) {

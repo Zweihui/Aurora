@@ -35,6 +35,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import cn.bmob.v3.Bmob;
 import me.jessyan.progressmanager.ProgressManager;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -179,6 +180,7 @@ public final class GlobalConfiguration implements ConfigModule {
                 FileDownloader.setupOnApplicationOnCreate(application);
                 Beta.upgradeDialogLayoutId = R.layout.view_update_dialog;
                 Bugly.init(application, Constants.BUGLY_APP_ID, BuildConfig.DEBUG);
+                Bmob.initialize(application, Constants.BMOB_APP_ID);
 //                UUIDS.buidleID(application).check();
 //                CrashReport.initCrashReport(application, Constants.BUGLY_APP_ID, false);
             }

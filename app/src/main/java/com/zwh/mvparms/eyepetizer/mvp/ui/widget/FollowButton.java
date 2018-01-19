@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.jess.arms.integration.cache.Cache;
+import com.jess.arms.utils.ArmsUtils;
 import com.jess.arms.utils.UiUtils;
 import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
+import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.app.utils.CommonUtils;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 
 import java.util.List;
 
@@ -67,7 +70,7 @@ public class FollowButton extends FrameLayout {
     @SingleClick
     private void processClick(View view) {
         attention.setUserId(BmobUser.getCurrentUser().getObjectId());
-        if (MyFollowedInfo.getInstance().getList() == null) {
+        if (CommonUtils.getFollowedInfo(mContext) == null) {
             fetchFollowData(true);
         } else {
             if (state == FOLLOWED) {
@@ -93,9 +96,10 @@ public class FollowButton extends FrameLayout {
                                         setState(FollowButton.UNFOLLOWED);
                                     }
                                 },350);
-                                for (int i = 0; i < MyFollowedInfo.getInstance().getList().size(); i++) {
-                                    if (MyFollowedInfo.getInstance().getList().get(i).getId() == attention.getId()) {
-                                        MyFollowedInfo.getInstance().getList().remove(i);
+                                List<MyAttentionEntity> entities = CommonUtils.getFollowedInfo(mContext);
+                                for (int i = 0; i < entities.size(); i++) {
+                                    if (entities.get(i).getId() == attention.getId()) {
+                                        entities.remove(i);
                                     }
                                 }
                             }
@@ -123,9 +127,9 @@ public class FollowButton extends FrameLayout {
                                 setState(FollowButton.FOLLOWED);
                             }
                         },350);
-//                        MyAttentionEntity entity = new MyAttentionEntity();
-//                        entity.setId(attention.getId());
-                        MyFollowedInfo.getInstance().getList().add(attention);
+                        Cache cache = ArmsUtils.obtainAppComponentFromContext(FollowButton.this.getContext()).extras();
+                        List<MyAttentionEntity> entities = CommonUtils.getFollowedInfo(mContext);
+                        entities.add(attention);
                     }
                 });
                 if (listener != null) {
@@ -136,14 +140,17 @@ public class FollowButton extends FrameLayout {
     }
 
     private void fetchFollowData(boolean needDoNext) {
-        if (MyFollowedInfo.getInstance().getList() == null && BmobUser.getCurrentUser() != null) {
+        Cache cache = ArmsUtils.obtainAppComponentFromContext(FollowButton.this.getContext()).extras();
+        List<MyAttentionEntity> entities = CommonUtils.getFollowedInfo(mContext);
+        if (entities == null && BmobUser.getCurrentUser() != null) {
             BmobQuery<MyAttentionEntity> query = new BmobQuery<MyAttentionEntity>();
             query.addWhereEqualTo("userId", BmobUser.getCurrentUser().getObjectId());
             query.order("-createdAt");
             query.findObjects(new FindListener<MyAttentionEntity>() {
                 @Override
                 public void done(List<MyAttentionEntity> list, BmobException e) {
-                    MyFollowedInfo.getInstance().setList(list);
+                    Cache cache = ArmsUtils.obtainAppComponentFromContext(FollowButton.this.getContext()).extras();
+                    cache.put(Constants.CACHE_FOLLOWED_INFO,list);
                     refreshView();
                 }
             });
@@ -151,9 +158,11 @@ public class FollowButton extends FrameLayout {
     }
 
     private void refreshView() {
-        if (MyFollowedInfo.getInstance().getList() != null && BmobUser.getCurrentUser() != null) {
+        Cache cache = ArmsUtils.obtainAppComponentFromContext(FollowButton.this.getContext()).extras();
+        List<MyAttentionEntity> entities = CommonUtils.getFollowedInfo(mContext);
+        if (entities != null && BmobUser.getCurrentUser() != null) {
             boolean isFollowed = false;
-            for (MyAttentionEntity entity : MyFollowedInfo.getInstance().getList()) {
+            for (MyAttentionEntity entity : entities) {
                 if (entity.getId() == this.attention.getId()) {
                     isFollowed = true;
                 }

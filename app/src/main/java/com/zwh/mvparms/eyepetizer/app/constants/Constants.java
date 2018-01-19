@@ -74,4 +74,7 @@ public class Constants {
     public static final int VIDEOCOLLECTIONWITHBRIEF  = 4;
     public static final int DYNAMICINFOCARD  = 5;
 
+    //==================Cache============//
+    public static final String CACHE_FOLLOWED_INFO  = "cache_followed_info";
+
 }

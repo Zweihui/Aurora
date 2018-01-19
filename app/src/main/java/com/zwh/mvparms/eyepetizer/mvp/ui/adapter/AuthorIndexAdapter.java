@@ -19,10 +19,10 @@ import com.jess.arms.utils.StringUtils;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.app.utils.CommonUtils;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.MyBanner;
@@ -122,8 +122,8 @@ public class AuthorIndexAdapter extends BaseMultiItemQuickAdapter<AuthorIndexInf
                     helper.addOnClickListener(R.id.ctl_author_index_like);
                     helper.addOnClickListener(R.id.btn_attention);
                     FollowButton button = helper.getView(R.id.btn_attention);
-                    button.setState(MyFollowedInfo.getInstance().
-                            checkFollowed(item.getData().getHeader().getId())?FollowButton.FOLLOWED:FollowButton.UNFOLLOWED);
+                    button.setState(CommonUtils.checkFollowed(context,item.getData().getHeader().getId())
+                            ?FollowButton.FOLLOWED:FollowButton.UNFOLLOWED);
                     MyAttentionEntity attention = new MyAttentionEntity();
                     attention.setId(item.getData().getHeader().getId());
                     attention.setTitle((item.getData().getHeader().getTitle()));

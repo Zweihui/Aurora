@@ -20,6 +20,7 @@ import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.app.utils.CommonUtils;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.AuthorFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailComponent;
 import com.zwh.mvparms.eyepetizer.di.module.AuthorDetailModule;
@@ -30,7 +31,6 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
@@ -157,13 +157,13 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_author_detail, menu);
-        menu.getItem(2).setTitle(MyFollowedInfo.getInstance().checkFollowed(authorId) ? "取消关注" : "关注");
+        menu.getItem(2).setTitle(CommonUtils.checkFollowed(this,authorId) ? "取消关注" : "关注");
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.getItem(2).setTitle(MyFollowedInfo.getInstance().checkFollowed(authorId) ? "取消关注" : "关注");
+        menu.getItem(2).setTitle(CommonUtils.checkFollowed(this,authorId) ? "取消关注" : "关注");
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -265,9 +265,10 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
                                 return;
                             }
                             UiUtils.makeText(AuthorDetailActivity.this, "已取消关注");
-                            for (int i = 0; i < MyFollowedInfo.getInstance().getList().size(); i++) {
-                                if (MyFollowedInfo.getInstance().getList().get(i).getId() == attention.getId()) {
-                                    MyFollowedInfo.getInstance().getList().remove(i);
+                            List<MyAttentionEntity> list = CommonUtils.getFollowedInfo(AuthorDetailActivity.this);
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getId() == attention.getId()) {
+                                    list.remove(i);
                                 }
                             }
                         }
@@ -286,7 +287,8 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
                         return;
                     }
                     UiUtils.makeText(AuthorDetailActivity.this, "已关注");
-                    MyFollowedInfo.getInstance().getList().add(attention);
+                    List<MyAttentionEntity> list = CommonUtils.getFollowedInfo(AuthorDetailActivity.this);
+                    list.add(attention);
                 }
             });
         }

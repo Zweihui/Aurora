@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apt.TRouter;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.di.component.AppComponent;
@@ -434,7 +433,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             List<SwitchVideoModel> list = new ArrayList<>();
             list.add(switchVideoModel);
             list.add(switchVideoModel2);
-            detailPlayer.setUp(list, true, "");
+            detailPlayer.setUp(list, true, videoInfo.getData().getTitle());
         } catch (Exception e) {
             String source1 = videoInfo.getData().getPlayUrl();
             String name = "标清";
@@ -447,9 +446,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             list.add(switchVideoModel2);
             detailPlayer.setUp(list, true,"");
         }
-        //增加封面
-        mIvVideoBg = new ImageView(this);
-        mIvVideoBg.setScaleType(ImageView.ScaleType.CENTER_CROP);
         resolveNormalVideoUI();
 
         //外部辅助的旋转，帮助全屏
@@ -640,14 +636,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
             list.add(switchVideoModel2);
             detailPlayer.setUp(list, true, "");
         }
-        mAppComponent.imageLoader().loadImage(this,
-                ImageConfigImpl
-                        .builder()
-                        .url(videoInfo.getData().getCover().getFeed())
-                        .imageView(mIvVideoBg)
-                        .transformation(new FitCenter())
-                        .build());
-        detailPlayer.setThumbImageView(mIvVideoBg);
     }
 
 

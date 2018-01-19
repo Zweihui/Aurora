@@ -75,11 +75,11 @@ android {
         }
     }
     productFlavors {
-        baidu {
-
-            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"baidu"]
-
-        }
+//        baidu {
+//
+//            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"baidu"]
+//
+//        }
         fir {
 
             manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"fir"]
@@ -98,8 +98,8 @@ android {
             if (variant.buildType.name.equals('release')) {
                 //生成apk名字的格式：Channel1.0.0_2016-06-22_baidu.apk
                 //可自定义自己想要生成的格式
-                def fileName = "Channel${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-                outputFileName = new File(outputFile.parent, fileName)
+                outputFileName = "Channel${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+//                outputFileName = new File(outputFile.parent, fileName)
             }
         }
     }

@@ -78,12 +78,11 @@
             android:text="标准"
             android:textColor="#ffffff" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/fullscreen"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginRight="16dp"
-            android:scaleType="fitXY"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
             />
     </LinearLayout>
 

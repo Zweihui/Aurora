@@ -31,6 +31,8 @@ import com.jess.arms.http.imageloader.glide.GlideCircleTransform;
 import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
 import com.jess.arms.utils.PermissionUtil;
 import com.jess.arms.utils.UiUtils;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.shuyu.gsyvideoplayer.model.VideoOptionModel;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.ui.MatisseActivity;
@@ -41,7 +43,6 @@ import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.app.utils.helper.MainFragmentAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.User;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.BottomNavigationViewHelper;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.CircleImageView;
@@ -56,12 +57,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 import static com.zwh.mvparms.eyepetizer.R.id.toolbar;
 import static com.zwh.mvparms.eyepetizer.mvp.ui.fragment.MineFragment.REQUEST_CODE_CHOOSE;
@@ -126,11 +127,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initData(Bundle savedInstanceState) {
-//        if (supportsTransitions()){
-//            Transition transition = TransitionInflater.from(this).inflateTransition(R.transition.trans_activity_slide);
-//            getWindow().setEnterTransition(transition);
-//        }
-        Bmob.initialize(this, Constants.BMOB_APP_ID);
+        //初始化视频播放器缓冲大小2M
+        VideoOptionModel videoOptionModel = new VideoOptionModel(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "max-buffer-size",  1024*1024*2);
+        List<VideoOptionModel> list1 = new ArrayList<>();
+        list1.add(videoOptionModel);
+        GSYVideoManager.instance().setOptionModelList(list1);
         initFragment();
         BottomNavigationViewHelper.disableShiftMode(bottomNavigation);
         setSupportActionBar(mToolbar);
@@ -432,7 +433,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         query.findObjects(new FindListener<MyAttentionEntity>() {
             @Override
             public void done(List<MyAttentionEntity> list, BmobException e) {
-                MyFollowedInfo.getInstance().setList(list);
+                appComponent.extras().put(Constants.CACHE_FOLLOWED_INFO,list);
             }
         });
 
@@ -443,7 +444,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         TextView name = (TextView) mNvMainNavigation.getHeaderView(0).findViewById(R.id.tv_name);
         name.setText("点击头像登录");
         img.setImageDrawable(getResources().getDrawable(R.drawable.ic_noface));
-        MyFollowedInfo.getInstance().setList(null);
+        appComponent.extras().remove(Constants.CACHE_FOLLOWED_INFO);
     }
 
     @Subscriber(tag = EventBusTags.MAIN_ACTIVITY_PERMISSION)

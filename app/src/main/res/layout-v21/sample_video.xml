@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/black">
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
 
     <FrameLayout
         android:id="@+id/surface_container"
@@ -78,13 +78,12 @@
             android:text="标准"
             android:textColor="#ffffff" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/fullscreen"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_marginRight="16dp"
-            android:scaleType="fitXY"
-            />
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+             />
     </LinearLayout>
 
     <ProgressBar
@@ -108,21 +107,21 @@
         android:id="@+id/loading1"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:indeterminateTintMode="src_atop"
-        android:indeterminateTint="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/white"
+        android:indeterminateTintMode="src_atop" />
 
     <com.zwh.mvparms.eyepetizer.mvp.ui.widget.video.VideoControlView
         android:id="@+id/start"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="@drawable/ripple_video_control"
-        app:itemColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical" />
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/ripple_video_control"
+        app:itemColor="@android:color/white" />
 
 
     <ImageView
@@ -180,9 +179,9 @@
             android:minEms="5"
             android:paddingLeft="10dp"
             android:text="旋转镜像"
-            android:visibility="gone"
             android:textColor="@android:color/white"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/change_rotate"
@@ -192,9 +191,9 @@
             android:minEms="5"
             android:paddingLeft="10dp"
             android:text="旋转画面"
-            android:visibility="gone"
             android:textColor="@android:color/white"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/moreScale"
@@ -204,9 +203,9 @@
             android:minEms="5"
             android:paddingLeft="10dp"
             android:text="默认比例"
-            android:visibility="gone"
             android:textColor="@android:color/white"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <RelativeLayout

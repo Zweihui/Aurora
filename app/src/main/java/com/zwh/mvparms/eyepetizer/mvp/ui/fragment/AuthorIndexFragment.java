@@ -23,6 +23,7 @@ import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
+import com.zwh.mvparms.eyepetizer.app.utils.CommonUtils;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerAuthorDetailIndexComponent;
 import com.zwh.mvparms.eyepetizer.di.module.AuthorDetailModule;
 import com.zwh.mvparms.eyepetizer.mvp.contract.AuthorDetailContract;
@@ -32,7 +33,6 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorIndexInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.AuthorTabsInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyAttentionEntity;
-import com.zwh.mvparms.eyepetizer.mvp.model.entity.MyFollowedInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
@@ -245,7 +245,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
         attention.setDescription((info.getPgcInfo().getDescription()));
         attention.setIcon((info.getPgcInfo().getIcon()));
         FollowButton button = headView.findViewById(R.id.btn_attention);
-        button.setState(MyFollowedInfo.getInstance().checkFollowed(id) ? FollowButton.FOLLOWED:FollowButton.UNFOLLOWED);
+        button.setState(CommonUtils.checkFollowed(headView.getContext(),id) ? FollowButton.FOLLOWED:FollowButton.UNFOLLOWED);
         button.setOnFollowClickListener(new FollowButton.onFollowClickListener() {
             @Override
             public void onFollowed() {
