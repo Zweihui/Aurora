@@ -170,11 +170,11 @@ dependencies {
     implementation rootProject.ext.dependencies["gsyVideoPlayer-armv7a"]
     implementation rootProject.ext.dependencies["gsyVideoPlayer-x86"]
     implementation rootProject.ext.dependencies["gsyVideoPlayer-arm64"]
-//    implementation(rootProject.ext.dependencies["bmob-sdk"]) {
-//        exclude group: 'com.squareup.okhttp3'
-//        exclude module: 'com.squareup.okio'
-//    }
-//    implementation rootProject.ext.dependencies["bmob-sms"]
+    implementation(rootProject.ext.dependencies["bmob-sdk"]) {
+        exclude group: 'com.squareup.okhttp3'
+        exclude module: 'com.squareup.okio'
+    }
+    implementation rootProject.ext.dependencies["bmob-sms"]
     implementation rootProject.ext.dependencies["ucrop"]
     implementation rootProject.ext.dependencies["greendao"]
     implementation rootProject.ext.dependencies["materialprogressbar"]
@@ -184,8 +184,6 @@ dependencies {
 //    provided rootProject.ext.dependencies["tinker-android-anno"]
     implementation(name: 'matisse_ucrop_1.0.0', ext: 'aar')
     implementation(name: 'progress-release', ext: 'aar')
-    implementation(name: 'bmob-sdk-3.5.8', ext: 'aar')
-    implementation(name: 'bmob-sms-1.0.1', ext: 'jar')
 }
 
 apply plugin: AspectjPlugin
