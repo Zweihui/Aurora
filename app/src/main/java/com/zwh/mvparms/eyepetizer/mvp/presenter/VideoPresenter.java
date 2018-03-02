@@ -32,6 +32,8 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
     private AppManager mAppManager;
     private boolean isFirst = true;
     private int lastId = 1;
+    private long date = 0;
+    private int num = 0;
 
     @Inject
     public VideoPresenter(VideoContract.Model model, VideoContract.View rootView
@@ -84,9 +86,11 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                     }
                 });
     }
-    public void getIndexVideoList(int lastStartId,Boolean isPullRefresh,int page) {
+    public void getIndexVideoList(Boolean isPullRefresh,int page) {
         if (isPullRefresh){
-            mModel.getIndexVideoList(lastStartId).compose(RxUtils.applySchedulers(mRootView,!isPullRefresh))
+            date = 0;
+            num = 0;
+            mModel.getIndexVideoList(date,num).compose(RxUtils.applySchedulers(mRootView,!isPullRefresh))
                     .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
@@ -99,7 +103,7 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                         }
                     });
         }else {
-            mModel.getMoreIndexVideoList(page).compose(RxUtils.applySchedulers(mRootView,!isPullRefresh ))
+            mModel.getIndexVideoList(date,num).compose(RxUtils.applySchedulers(mRootView,!isPullRefresh ))
                     .subscribe(new ErrorHandleSubscriber<IndextVideoListInfo>(mErrorHandler) {
                         @Override
                         public void onSubscribe(@NonNull Disposable d) {
@@ -135,6 +139,8 @@ public class VideoPresenter extends BasePresenter<VideoContract.Model, VideoCont
                 list.add(itemList.getData().getContent());
             }
         }
+        date = info.getDateFromNextPageUrl();
+        num = info.getNumFromNextPageUrl();
         return list;
     }
 

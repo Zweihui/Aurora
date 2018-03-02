@@ -1,5 +1,7 @@
 package com.zwh.mvparms.eyepetizer.mvp.model.entity;
 
+import com.jess.arms.utils.StringUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,7 +9,7 @@ import java.util.List;
  * Created by Administrator on 2017/9/15 0015.
  */
 
-public class IndextVideoListInfo implements Serializable{
+public class IndextVideoListInfo implements Serializable {
     private int count;
     private int total;
     private int refreshCount;
@@ -102,6 +104,33 @@ public class IndextVideoListInfo implements Serializable{
             public void setContent(VideoListInfo.Video content) {
                 this.content = content;
             }
+        }
+    }
+
+    public long getDateFromNextPageUrl() {
+        if (!StringUtils.isEmpty(nextPageUrl)) {
+            String date = nextPageUrl.substring(nextPageUrl.indexOf("date=") + 5, nextPageUrl.indexOf("&"));
+            try {
+                return Long.parseLong(date);
+            } catch (Exception e) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    public int getNumFromNextPageUrl() {
+        if (!StringUtils.isEmpty(nextPageUrl)) {
+            String date = nextPageUrl.substring(nextPageUrl.indexOf("num=") + 4, nextPageUrl.length());
+            try {
+                return Integer.parseInt(date);
+            } catch (Exception e) {
+                return 0;
+            }
+
+        } else {
+            return 0;
         }
     }
 }

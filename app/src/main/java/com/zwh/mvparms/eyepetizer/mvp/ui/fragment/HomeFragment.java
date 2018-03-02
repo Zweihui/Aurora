@@ -65,7 +65,7 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
 
     @Override
     public void onRefresh() {
-        mPresenter.getIndexVideoList(getFirstQuryId(),true,page);
+        mPresenter.getIndexVideoList(true,page);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
         adapter.setOnLoadMoreListener(() -> mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.getIndexVideoList(lastStartId,false,page);
+                mPresenter.getIndexVideoList(false,page);
             }
         },500), mRecyclerView);
         mSwipeRefresh.setOnRefreshListener(this);
@@ -181,7 +181,7 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
                                 mRecyclerView.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mPresenter.getIndexVideoList(lastStartId,false,page);
+                                        mPresenter.getIndexVideoList(false,page);
                                     }
                                 },500);
                             }
@@ -219,7 +219,7 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
         mSwipeRefresh.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.getIndexVideoList(lastStartId,true,page);
+                mPresenter.getIndexVideoList(true,page);
                 mSwipeRefresh.setRefreshing(true);
             }
         },300);
@@ -230,7 +230,7 @@ public class  HomeFragment extends BaseLazyLoadFragment<VideoPresenter> implemen
             return;
         }
         mSwipeRefresh.setRefreshing(true);
-        mPresenter.getIndexVideoList(lastStartId,true,page);
+        mPresenter.getIndexVideoList(true,page);
     }
     public int getFirstQuryId() {
         if (StringUtils.isEmpty(data)){

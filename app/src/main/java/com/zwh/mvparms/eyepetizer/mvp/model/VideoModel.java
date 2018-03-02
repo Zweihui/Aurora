@@ -44,11 +44,12 @@ public class VideoModel extends BaseModel implements VideoContract.Model {
     }
 
     @Override
-    public Observable<IndextVideoListInfo> getIndexVideoList(int lastStartId) {
-         Observable<IndextVideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoService.class)
-                .getIndexVideoList(lastStartId, Constants.UDID,Constants.VC,Constants.VN,Constants.DEVICEMODEL);
+    public Observable<IndextVideoListInfo> getIndexVideoList(long date, int num) {
+        Observable<IndextVideoListInfo> observable = mRepositoryManager.obtainRetrofitService(VideoService.class)
+                .getIndexVideoList(date,num, Constants.UDID,Constants.VC,Constants.VN,Constants.DEVICEMODEL);
         return observable;
     }
+
 
     @Override
     public Observable<IndextVideoListInfo> getMoreIndexVideoList(int page) {
@@ -73,4 +74,5 @@ public class VideoModel extends BaseModel implements VideoContract.Model {
                     }
                 });
     }
+
 }
