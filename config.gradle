@@ -45,7 +45,7 @@ ext {
 
                 //view
                 "autolayout"               : "com.zhy:autolayout:1.4.5",
-                "constraint-layout"        : "com.android.support.constraint:constraint-layout:1.1.0-beta1",
+                "constraint-layout"        : "com.android.support.constraint:constraint-layout:1.1.0",
                 "butterknife"              : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
                 "butterknife-compiler"     : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
                 "pickerview"               : "com.contrarywind:Android-PickerView:3.2.5",

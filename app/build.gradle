@@ -32,7 +32,7 @@ android {
         flavorDimensions "versionCode"
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"other"]
+        manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE: "other"]
     }
 
     packagingOptions {
@@ -82,12 +82,12 @@ android {
 //        }
         fir {
 
-            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"fir"]
+            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE: "fir"]
 
         }
         xiaomi {
 
-            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE:"xiaomi"]
+            manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE: "xiaomi"]
 
         }
     }
@@ -141,6 +141,7 @@ dependencies {
         exclude module: 'support-annotations'
     }
     //tools
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     provided rootProject.ext.dependencies["javax.annotation"]
     annotationProcessor rootProject.ext.dependencies["dagger2-compiler"]
     //view
@@ -156,7 +157,7 @@ dependencies {
     testImplementation rootProject.ext.dependencies["mockito-core"]
     testImplementation rootProject.ext.dependencies["robolectric"]
     testImplementation rootProject.ext.dependencies["DaggerMock"]
-    androidTestImplementation  rootProject.ext.dependencies["robolectric"]
+    androidTestImplementation rootProject.ext.dependencies["robolectric"]
     debugImplementation rootProject.ext.dependencies["canary-debug"]
     releaseImplementation rootProject.ext.dependencies["canary-release"]
     testImplementation rootProject.ext.dependencies["canary-release"]

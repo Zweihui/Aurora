@@ -42,6 +42,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 import org.simple.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -295,6 +296,14 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
 
     @Override
     public void setIndexInfo(AuthorIndexInfo info) {
+        List<AuthorIndexInfo.ItemListBeanX> list = info.getItemList();
+        Iterator<AuthorIndexInfo.ItemListBeanX> it = list.iterator();
+        while (it.hasNext()) {
+            AuthorIndexInfo.ItemListBeanX item = it.next();
+            if ("briefCard".equals(item.getType())) {
+                it.remove();
+            }
+        }
         data.addAll(info.getItemList());
         adapter.setNewData(data);
         View footView = getActivity().getLayoutInflater().inflate(R.layout.item_video_detail_foot, mRecyclerView, false);
