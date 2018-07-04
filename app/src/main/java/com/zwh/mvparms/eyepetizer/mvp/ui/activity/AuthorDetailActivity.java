@@ -35,6 +35,7 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.ShareInfo;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.AuthorDetailPresenter;
 
+import org.simple.eventbus.EventBus;
 import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
@@ -269,6 +270,7 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
                             for (int i = 0; i < list.size(); i++) {
                                 if (list.get(i).getId() == attention.getId()) {
                                     list.remove(i);
+                                    EventBus.getDefault().post(attention,EventBusTags.FOLLOW_STATE_CHANGEDE);
                                 }
                             }
                         }
@@ -289,6 +291,7 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
                     UiUtils.makeText(AuthorDetailActivity.this, "已关注");
                     List<MyAttentionEntity> list = CommonUtils.getFollowedInfo(AuthorDetailActivity.this);
                     list.add(attention);
+                    EventBus.getDefault().post(attention,EventBusTags.FOLLOW_STATE_CHANGEDE);
                 }
             });
         }
