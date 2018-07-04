@@ -40,6 +40,7 @@ import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.AuthorIndexAdapter;
 import com.zwh.mvparms.eyepetizer.mvp.ui.widget.FollowButton;
 
 import org.simple.eventbus.EventBus;
+import org.simple.eventbus.Subscriber;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -56,6 +57,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     private AuthorIndexAdapter adapter ;
     private List<AuthorIndexInfo.ItemListBeanX> data = new ArrayList<>();
     private AppComponent appComponent;
+    private View headView;
 
     private int id;
 
@@ -239,7 +241,7 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     }
 
     private void initHeadView(AuthorTabsInfo info) {
-        View headView = getActivity().getLayoutInflater().inflate(R.layout.view_head_author_detail, mRecyclerView, false);
+        headView = getActivity().getLayoutInflater().inflate(R.layout.view_head_author_detail, mRecyclerView, false);
         MyAttentionEntity attention = new MyAttentionEntity();
         attention.setId(info.getPgcInfo().getId());
         attention.setTitle((info.getPgcInfo().getName()));
@@ -292,6 +294,23 @@ public class AuthorIndexFragment extends BaseLazyLoadFragment<AuthorDetailPresen
            bg.setImageResource(R.drawable.profile_cover);
         }
         adapter.setHeaderView(headView);
+    }
+
+    @Subscriber(tag = EventBusTags.FOLLOW_STATE_CHANGEDE)
+    public void refreshFollowBtnState(MyAttentionEntity attentionEntity){
+        if (headView == null){
+            return;
+        }
+        FollowButton button = headView.findViewById(R.id.btn_attention);
+        if (attentionEntity.getFollow()!=null){
+            if (attentionEntity.getFollow()){
+                button.setState(FollowButton.FOLLOWED);
+            }else {
+                button.setState(FollowButton.UNFOLLOWED);
+            }
+        }else {
+            button.setState(FollowButton.UNFOLLOWED);
+        }
     }
 
     @Override
