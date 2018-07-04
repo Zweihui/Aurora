@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.jess.arms.integration.cache.Cache;
 import com.jess.arms.utils.ArmsUtils;
+import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.zwh.annotation.aspect.CheckLogin;
 import com.zwh.annotation.aspect.SingleClick;
@@ -81,6 +82,16 @@ public class FollowButton extends FrameLayout {
                 query.findObjects(new FindListener<MyAttentionEntity>() {
                     @Override
                     public void done(List<MyAttentionEntity> list, BmobException e) {
+                        if (e != null) {
+                            setState(FollowButton.FOLLOWED);
+                            UiUtils.makeText(mContext, e.getMessage());
+                            return;
+                        }
+                        if (StringUtils.isEmpty(list)){
+                            UiUtils.makeText(mContext, "已取消关注");
+                            setState(FollowButton.UNFOLLOWED);
+                            return;
+                        }
                         list.get(0).delete(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
