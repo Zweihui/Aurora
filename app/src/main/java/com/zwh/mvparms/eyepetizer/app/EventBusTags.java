@@ -23,4 +23,5 @@ public interface EventBusTags {
     String CACHE_DOWNLOAD_CACNCEL = "cache_download_cacncel";
     String NET_CHANGE_FLOW = "net_change_flow";
     String AUTHOR_DETAIL_TAB = "author_detail_tab_video";
+    String FOLLOW_STATE_CHANGEDE = "follow_state_changede";
 }
