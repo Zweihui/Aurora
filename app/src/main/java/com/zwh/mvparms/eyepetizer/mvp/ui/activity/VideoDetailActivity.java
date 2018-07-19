@@ -31,6 +31,7 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.apt.SceneTransition;
@@ -97,6 +98,7 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
     @BindView(R.id.rl_screen)
     FrameLayout rlScreen;
     @Extra(Constants.VIDEO_INFO)
+    @AutoRestore
     public VideoListInfo.Video videoInfo;
     @SceneTransition(Constants.TRANSLATE_VIEW)
     @BindView(R.id.detail_player)
@@ -169,9 +171,6 @@ public class VideoDetailActivity extends BaseActivity<VideoDetailPresenter> impl
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        if (savedInstanceState != null){
-            videoInfo = (VideoListInfo.Video) savedInstanceState.getSerializable(Constants.VIDEO_INFO);
-        }
         initMedia();
         if (videoInfo.getData().getConsumption() !=null ){
             initRecyclerView();

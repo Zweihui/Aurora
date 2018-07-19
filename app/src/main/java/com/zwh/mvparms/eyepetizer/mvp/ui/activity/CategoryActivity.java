@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.http.imageloader.glide.ImageConfigImpl;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.mvparms.eyepetizer.R;
@@ -51,6 +52,7 @@ public class CategoryActivity extends BaseActivity{
     NestedScrollView mNestedScrollView;
 
     @Extra(Constants.CATEGORY_DATA)
+    @AutoRestore
     public ArrayList<Category> list;
 
     @Extra(Constants.CATEGORY_DATA_POSITION)
@@ -63,12 +65,6 @@ public class CategoryActivity extends BaseActivity{
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList(Constants.CATEGORY_DATA,list);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -78,6 +74,7 @@ public class CategoryActivity extends BaseActivity{
         return true;
     }
 
+
     @Override
     public int initView(Bundle savedInstanceState) {
         return R.layout.activity_home;
@@ -85,10 +82,6 @@ public class CategoryActivity extends BaseActivity{
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        if (savedInstanceState != null){
-            list = savedInstanceState.getParcelableArrayList(Constants.CATEGORY_DATA);
-            finish();
-        }
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

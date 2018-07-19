@@ -15,6 +15,7 @@ import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -46,8 +47,8 @@ public class AuthorVideoFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     private List<VideoListInfo.Video> data = new ArrayList<>();
     private View footView;
 
-
-    private int id;
+    @AutoRestore
+    public int id;
 
 
     public static AuthorVideoFragment newInstance(int id) {
@@ -59,20 +60,9 @@ public class AuthorVideoFragment extends BaseLazyLoadFragment<AuthorDetailPresen
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(Constants.AUTHOR_ID, id);
-        getArguments().putBundle(Constants.AUTHOR_ID, outState);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            id = savedInstanceState.getInt(Constants.AUTHOR_ID);
-        }else {
-            id = (int) getArguments().get(Constants.AUTHOR_ID);
-        }
+        id = (int) getArguments().get(Constants.AUTHOR_ID);
     }
 
     @Override

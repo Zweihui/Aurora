@@ -19,6 +19,7 @@ import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
@@ -56,7 +57,8 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
     private BaseQuickAdapter adapter;
     private List<AttentionInfo.ItemListBeanX> data = new ArrayList<>();
     private List<MyAttentionEntity> authors = new ArrayList<>();
-    private String type = "";
+    @AutoRestore
+    public String type = "";
 
     public static AttentionFragment newInstance(Category category) {
         Bundle arguments = new Bundle();
@@ -66,11 +68,6 @@ public class AttentionFragment extends BaseLazyLoadFragment<AttentionPresenter> 
         return fragment;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("type", type);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

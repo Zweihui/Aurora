@@ -7,6 +7,7 @@ dependencies {
     implementation 'com.android.tools.build:gradle:2.2.2'
     implementation 'org.javassist:javassist:3.20.0-GA'
     implementation 'org.aspectj:aspectjtools:1.8.1'
+    implementation 'commons-io:commons-io:2.6'
 }
 uploadArchives {
     repositories.mavenDeployer {

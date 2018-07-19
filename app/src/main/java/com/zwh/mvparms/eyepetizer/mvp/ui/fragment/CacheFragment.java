@@ -27,6 +27,7 @@ import com.jess.arms.utils.UiUtils;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.model.FileDownloadStatus;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.EventBusTags;
@@ -67,7 +68,8 @@ public class CacheFragment extends BaseFragment {
     private SwipeRefreshLayout mSwipeRefresh;
     private CacheAdapter adapter;
     private List<VideoDownLoadInfo> data = new ArrayList<>();
-    private String type;
+    @AutoRestore
+    public String type;
     private Gson mGson;
     private int currentPosition;
     private int changePosition;
@@ -85,18 +87,9 @@ public class CacheFragment extends BaseFragment {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("type", type);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = (String) getArguments().get(Constants.TYPE);
-        if (savedInstanceState != null) {
-            type = savedInstanceState.getString("type");
-        }
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.apt.TRouter;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.apt.Extra;
 import com.zwh.annotation.apt.Router;
 import com.zwh.annotation.aspect.CheckLogin;
@@ -55,6 +56,7 @@ import static com.jess.arms.utils.Preconditions.checkNotNull;
 public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> implements AuthorDetailContract.View {
 
     @Extra(Constants.AUTHOR_ID)
+    @AutoRestore
     public int authorId;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -86,18 +88,10 @@ public class AuthorDetailActivity extends BaseActivity<AuthorDetailPresenter> im
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            authorId = savedInstanceState.getInt(Constants.AUTHOR_ID);
-        }
         mPresenter.getAuthorTabs(authorId);
         mPresenter.getShareInfo(authorId);
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(Constants.AUTHOR_ID, authorId);
-        super.onSaveInstanceState(outState);
-    }
 
     @Override
     protected void initToolBar() {

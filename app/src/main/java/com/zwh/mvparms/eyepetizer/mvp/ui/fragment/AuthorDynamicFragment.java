@@ -16,6 +16,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -48,8 +49,8 @@ public class AuthorDynamicFragment extends BaseLazyLoadFragment<AuthorDetailPres
     private List<AuthorDynamicInfo.Dynamic> data = new ArrayList<>();
     private View footView;
     AppComponent appComponent ;
-
-    private int id;
+    @AutoRestore
+    public int id;
 
 
     public static AuthorDynamicFragment newInstance(int id) {
@@ -61,20 +62,9 @@ public class AuthorDynamicFragment extends BaseLazyLoadFragment<AuthorDetailPres
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(Constants.AUTHOR_ID, id);
-        getArguments().putBundle(Constants.AUTHOR_ID, outState);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            id = savedInstanceState.getInt(Constants.AUTHOR_ID);
-        }else {
-            id = (int) getArguments().get(Constants.AUTHOR_ID);
-        }
+        id = (int) getArguments().get(Constants.AUTHOR_ID);
     }
 
     @Override

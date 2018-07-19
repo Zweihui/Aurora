@@ -19,6 +19,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.StringUtils;
 import com.jess.arms.utils.UiUtils;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.aspect.SingleClick;
 import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
@@ -48,8 +49,8 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
     private List<VideoListInfo.Video> data = new ArrayList<>();
     private RxPermissions mRxPermissions;
     private boolean isFirstLoad = true;
-
-    private String type ="";
+    @AutoRestore
+    public String type ="";
 
     public static VideoListFragment newInstance(Category category) {
         Bundle arguments = new Bundle();
@@ -59,19 +60,11 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
         return fragment;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("type", type);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = (String) getArguments().get(Constants.TYPE);
-        if (savedInstanceState != null){
-            type =  savedInstanceState.getString("type");
-        }
     }
 
     @Override

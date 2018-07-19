@@ -1,4 +1,5 @@
 import com.zwh.plugin.AspectjPlugin
+import com.zwh.plugin.SaveStatePlugin
 
 apply plugin: 'com.android.application'
 apply from: 'tinkerpatch.gradle'
@@ -33,6 +34,11 @@ android {
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         vectorDrawables.useSupportLibrary = true
         manifestPlaceholders = [BUGLY_APP_CHANNEL_VALUE: "other"]
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ serializer : "gson" ]
+            }
+        }
     }
 
     packagingOptions {
@@ -188,5 +194,6 @@ dependencies {
 }
 
 apply plugin: AspectjPlugin
+apply plugin: SaveStatePlugin
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'

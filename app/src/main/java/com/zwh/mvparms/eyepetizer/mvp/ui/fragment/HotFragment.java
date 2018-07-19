@@ -15,13 +15,13 @@ import android.view.ViewGroup;
 
 import com.apt.TRouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.jess.arms.base.BaseFragment;
 import com.jess.arms.base.BaseLazyLoadFragment;
 import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.utils.UiUtils;
-
 import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zwh.annotation.apt.AutoRestore;
 import com.zwh.annotation.aspect.SingleClick;
+import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.app.constants.Constants;
 import com.zwh.mvparms.eyepetizer.di.component.DaggerHotComponent;
 import com.zwh.mvparms.eyepetizer.di.module.HotModule;
@@ -30,14 +30,11 @@ import com.zwh.mvparms.eyepetizer.mvp.model.entity.Category;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.DataExtra;
 import com.zwh.mvparms.eyepetizer.mvp.model.entity.VideoListInfo;
 import com.zwh.mvparms.eyepetizer.mvp.presenter.HotPresenter;
-
-import com.zwh.mvparms.eyepetizer.R;
 import com.zwh.mvparms.eyepetizer.mvp.ui.adapter.VideoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.category;
 import static com.jess.arms.utils.Preconditions.checkNotNull;
 
 
@@ -57,22 +54,13 @@ public class HotFragment extends BaseLazyLoadFragment<HotPresenter> implements H
         fragment.setArguments(arguments);
         return fragment;
     }
-
-    private String type ="";
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("type", type);
-    }
+    @AutoRestore
+    public String type ="";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type = (String) getArguments().get(Constants.TYPE);
-        if (savedInstanceState != null){
-            type =  savedInstanceState.getString("type");
-        }
     }
 
     @Override
