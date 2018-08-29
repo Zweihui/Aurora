@@ -54,7 +54,7 @@ public class VideoListFragment extends BaseLazyLoadFragment<VideoPresenter> impl
 
     public static VideoListFragment newInstance(Category category) {
         Bundle arguments = new Bundle();
-        arguments.putString(Constants.TYPE, category.getName());
+        arguments.putString(Constants.TYPE, category.getId()+"");
         VideoListFragment fragment = new VideoListFragment();
         fragment.setArguments(arguments);
         return fragment;

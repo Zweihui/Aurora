@@ -14,8 +14,8 @@ import retrofit2.http.Query;
 
 public interface VideoService {
     //获取分类信息
-    @GET("v3/videos")
-    Observable<VideoListInfo> getVideoList(@Query("start") int startCount,@Query("num") int num,@Query("categoryName") String categoryName);
+    @GET("v4/categories/videoList")
+    Observable<VideoListInfo> getVideoList(@Query("start") int startCount,@Query("num") int num,@Query("id") String id,@Query("udid") String udid);
     @GET("v5/index/tab/feed")
     Observable<IndextVideoListInfo> getIndexVideoList(@Query("date") long date,@Query("num") int num, @Query("udid") String udid, @Query("vc") String vc, @Query("vn") String vn, @Query("deviceModel") String deviceModel);
     @GET("v4/tabs/selected")
