@@ -9,9 +9,11 @@ public class Constants {
     public static final String HOME = "home";
     public static final String SPLASH = "splash";
     public static final String VIDEO = "video";
+    public static final String FLUTTER_VIDEO = "flutter_video";
     public static final String FULL_VIDEO = "full_video";
     public static final String TEST = "test";
     public static final String MAIN = "main";
+    public static final String FLUTTER = "flutter";
     public static final String SETTINGS = "settings";
     public static final String SEARCH = "search";
     public static final String CATEGORY = "category";
@@ -55,6 +57,7 @@ public class Constants {
     public static final String SETTING_FLOW = "setting_flow";
     public static final String SETTING_WIFI = "setting_wifi";
     public static final String SETTING_SPLASH = "setting_splash";
+    public static final String SETTING_FLUTTER = "setting_flutter";
 
 
     //==================SDKScrete============//

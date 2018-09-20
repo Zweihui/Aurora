@@ -62,14 +62,6 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.ViewHolder
         }catch (NullPointerException e){
 
         }
-        holder.mLlRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoDetail(view,fakePosition);
-            }
-        });
-        holder.mTvTitle.setText(mList.get(fakePosition).getData().getTitle());
-        holder.mTvdesc.setText(getDetailStr(mList.get(fakePosition)));
     }
 
     @Override

@@ -1,1 +1,6 @@
 include ':app', ':arms', ':apt-lib', ':apt', ':plugin'
+setBinding(new Binding([gradle: this]))
+evaluate(new File(
+        settingsDir.parentFile,
+        'Aurora/flutter_aurora/.android/include_flutter.groovy'
+))

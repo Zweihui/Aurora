@@ -289,7 +289,13 @@ public static java.lang.String TABLENAME;
 -keep class com.google.android.exoplayer.* {*; }
 -keepclasseswithmembernames class tv.danmaku.ijk.media.player.IjkMediaPlayer{*;}
 -keepclasseswithmembernames class tv.danmaku.ijk.media.player.ffmpeg.FFmpegApi{*;}
-
+################Flutter Wrapper#################
+-keep class io.flutter.app.** { *; }
+-keep class io.flutter.plugin.**  { *; }
+-keep class io.flutter.util.**  { *; }
+-keep class io.flutter.view.**  { *; }
+-keep class io.flutter.**  { *; }
+-keep class io.flutter.plugins.**  { *; }
 # 如果你需要兼容6.0系统，请不要混淆org.apache.http.legacy.jar
 -dontwarn android.net.compatibility.**
 -dontwarn android.net.http.**

@@ -112,9 +112,14 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     @Subscriber(tag = EventBusTags.JUMP_TO_HOME)
     public void goToHomePage(String s) {
         if (isAnimated){
-            Intent intent = new Intent(this, MainActivity.class);
+            boolean showFlutter = (boolean) SharedPreferencesUtils.getParam(this, Constants.SETTING_FLUTTER,false);
+            Intent intent;
+            if (showFlutter){
+                intent = new Intent(this, AppFlutterActivity.class);
+            }else {
+                intent = new Intent(this, MainActivity.class);
+            }
             startActivity(intent);
-//            TRouter.go(Constants.MAIN);
             finish();
         }
     }

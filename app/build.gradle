@@ -8,10 +8,10 @@ apply from: 'tinkerpatch.gradle'
 android {
     signingConfigs {
         release {
-//            keyAlias 'keystore'
-//            keyPassword 'zwh12583258'
-//            storeFile file('C:/Users/Administrator/Desktop/keystore.jks')
-//            storePassword 'zwh12583258'
+            keyAlias 'keystore'
+            keyPassword 'zwh12583258'
+            storeFile file("$rootDir/keystore.jks")
+            storePassword 'zwh12583258'
         }
     }
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -58,9 +58,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
                 abiFilters "armeabi-v7a"
-                abiFilters "armeabi"
-                abiFilters "x86"
-                abiFilters "x86_64"
             }
         }
 
@@ -76,7 +73,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
                 abiFilters "armeabi-v7a"
-                abiFilters "armeabi"
             }
         }
     }
@@ -157,7 +153,7 @@ dependencies {
     implementation rootProject.ext.dependencies["paginate"]
     //arms
     implementation project(':arms')
-    //    compile 'me.jessyan:arms:2.1.5'
+    implementation project(':flutter')
     implementation rootProject.ext.dependencies["multidex"]
     testImplementation rootProject.ext.dependencies["junit"]
     testImplementation rootProject.ext.dependencies["mockito-core"]

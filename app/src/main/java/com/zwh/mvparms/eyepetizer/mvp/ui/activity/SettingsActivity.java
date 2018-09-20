@@ -34,6 +34,7 @@ import org.simple.eventbus.EventBus;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import me.jessyan.rxerrorhandler.core.RxErrorHandler;
@@ -74,6 +75,12 @@ public class SettingsActivity extends BaseActivity {
     ConstraintLayout ctlUpdate;
     @BindView(R.id.ctl_logout)
     ConstraintLayout ctlLogout;
+    @BindView(R.id.tv_flutter_open)
+    TextView mTvFlutterOpen;
+    @BindView(R.id.switch_flutter)
+    Switch mSwitchFlutter;
+    @BindView(R.id.ctl_flutter)
+    ConstraintLayout mCtlFlutter;
 
     private RxErrorHandler mErrorHandler;
     private RxPermissions mRxPermissions;
@@ -92,57 +99,72 @@ public class SettingsActivity extends BaseActivity {
     @Override
     public void initData(Bundle savedInstanceState) {
         initToolBar();
-        switchFlow.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_FLOW,true));
-        switchWifi.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_WIFI,true));
-        switchSplash.setChecked((Boolean) SharedPreferencesUtils.getParam(this,Constants.SETTING_SPLASH,false));
-        tvVersionName.setText("当前版本"+DeviceUtils.getVersionName(this));
-        if (BmobUser.getCurrentUser()==null){
+        switchFlow.setChecked((Boolean) SharedPreferencesUtils.getParam(this, Constants.SETTING_FLOW, true));
+        switchWifi.setChecked((Boolean) SharedPreferencesUtils.getParam(this, Constants.SETTING_WIFI, true));
+        boolean splashchecked = (Boolean) SharedPreferencesUtils.getParam(this, Constants.SETTING_SPLASH, false);
+        boolean flutterchecked = (Boolean) SharedPreferencesUtils.getParam(this, Constants.SETTING_FLUTTER, false);
+        switchSplash.setChecked(splashchecked);
+        tvSplashOpen.setText(splashchecked?"开":"关");
+        mSwitchFlutter.setChecked(flutterchecked);
+        mTvFlutterOpen.setText(flutterchecked?"开":"关");
+        tvVersionName.setText("当前版本" + DeviceUtils.getVersionName(this));
+        if (BmobUser.getCurrentUser() == null) {
             ctlLogout.setVisibility(View.GONE);
         }
     }
 
-    @OnClick({R.id.ctl_flow, R.id.ctl_wifi, R.id.ctl_splash, R.id.ctl_clear, R.id.ctl_author, R.id.ctl_rate, R.id.ctl_open_source, R.id.ctl_update, R.id.ctl_logout})
+    @OnClick({R.id.ctl_flow, R.id.ctl_wifi, R.id.ctl_splash, R.id.ctl_flutter,R.id.ctl_clear, R.id.ctl_author, R.id.ctl_rate, R.id.ctl_open_source, R.id.ctl_update, R.id.ctl_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ctl_flow:
-                if (switchFlow.isChecked()){
+                if (switchFlow.isChecked()) {
                     switchFlow.setChecked(false);
-                }else {
+                } else {
                     switchFlow.setChecked(true);
                 }
-                SharedPreferencesUtils.setParam(this,Constants.SETTING_FLOW,switchFlow.isChecked());
+                SharedPreferencesUtils.setParam(this, Constants.SETTING_FLOW, switchFlow.isChecked());
                 break;
             case R.id.ctl_wifi:
-                if (switchWifi.isChecked()){
+                if (switchWifi.isChecked()) {
                     switchWifi.setChecked(false);
                     tvWifiOpen.setText("关");
-                }else {
+                } else {
                     switchWifi.setChecked(true);
                     tvWifiOpen.setText("开");
                 }
-                SharedPreferencesUtils.setParam(this,Constants.SETTING_WIFI,switchWifi.isChecked());
+                SharedPreferencesUtils.setParam(this, Constants.SETTING_WIFI, switchWifi.isChecked());
                 break;
             case R.id.ctl_splash:
-                if (switchSplash.isChecked()){
+                if (switchSplash.isChecked()) {
                     switchSplash.setChecked(false);
                     tvSplashOpen.setText("关");
-                }else {
+                } else {
                     switchSplash.setChecked(true);
                     tvSplashOpen.setText("开");
                 }
-                SharedPreferencesUtils.setParam(this,Constants.SETTING_SPLASH,switchSplash.isChecked());
+                SharedPreferencesUtils.setParam(this, Constants.SETTING_SPLASH, switchSplash.isChecked());
+                break;
+            case R.id.ctl_flutter:
+                if (mSwitchFlutter.isChecked()) {
+                    mSwitchFlutter.setChecked(false);
+                    mTvFlutterOpen.setText("关");
+                } else {
+                    mSwitchFlutter.setChecked(true);
+                    mTvFlutterOpen.setText("开");
+                }
+                SharedPreferencesUtils.setParam(this, Constants.SETTING_FLUTTER, mSwitchFlutter.isChecked());
                 break;
             case R.id.ctl_clear:
                 PermissionUtil.externalStorage(new PermissionUtil.RequestPermission() {
                     @Override
                     public void onRequestPermissionSuccess() {
-                        if (!DataHelper.findFile(getExternalCacheDir())){
-                            UiUtils.makeText(SettingsActivity.this,"暂无缓存");
+                        if (!DataHelper.findFile(getExternalCacheDir())) {
+                            UiUtils.makeText(SettingsActivity.this, "暂无缓存");
                             return;
                         }
                         DataHelper.deleteDir(getCacheDir());
                         DataHelper.deleteDir(getExternalCacheDir());
-                        UiUtils.makeText(SettingsActivity.this,"缓存已删除");
+                        UiUtils.makeText(SettingsActivity.this, "缓存已删除");
                     }
 
                     @Override
@@ -158,15 +180,15 @@ public class SettingsActivity extends BaseActivity {
                 }, mRxPermissions, mErrorHandler);
                 break;
             case R.id.ctl_author:
-                TRouter.go(Constants.AUTHOR,new DataExtra(Constants.AUTHOR_TYPE,0).build());
+                TRouter.go(Constants.AUTHOR, new DataExtra(Constants.AUTHOR_TYPE, 0).build());
                 break;
             case R.id.ctl_rate:
-                try{
-                    Uri uri = Uri.parse("market://details?id="+getPackageName());
-                    Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                try {
+                    Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }catch(Exception e){
+                } catch (Exception e) {
                     Toast.makeText(this, "您的手机没有安装Android应用市场", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
@@ -203,5 +225,12 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected boolean isDisplayHomeAsUpEnabled() {
         return true;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -146,12 +145,18 @@ public class MyBanner extends RelativeLayout{
     public void notifyDataHasChanged() {
         initPoints();
         adapter.notifyDataSetChanged();
-        mRecyclerView.getLayoutManager().scrollToPosition(1000);
+        mRecyclerView.getLayoutManager().scrollToPosition(10);
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
                 mRecyclerView.smoothScrollBy(10,0);
             }
         });
+        mRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRecyclerView.getLayoutManager().scrollToPosition(0);
+            }
+        },3000);
     }
 }

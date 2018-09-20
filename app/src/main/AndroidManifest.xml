@@ -79,10 +79,24 @@
             <!-- <category android:name="android.intent.category.LAUNCHER"/> -->
             <!-- </intent-filter> -->
         </activity>
+
+        <activity
+            android:name=".mvp.ui.activity.AppFlutterActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/FlutterAppTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <meta-data
+                android:name="io.flutter.app.android.SplashScreenUntilFirstFrame"
+                android:value="true"/>
+        </activity>
         <activity
             android:name=".mvp.ui.activity.VideoDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_video_detail"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mvp.ui.activity.FlutterVideoDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait" />
         <activity
             android:name=".mvp.ui.activity.SearchActivity"
